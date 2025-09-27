@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Parroquial</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⛪</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Base y Diseño Neumorfista --- */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #eef0f4;
+            color: #4b5563;
+        }
+        #app-loading {
+            position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+            background-color: #eef0f4; z-index: 100; font-size: 1.25rem; color: #4b5563;
+        }
+        #app-container { opacity: 0; transition: opacity 0.3s ease-in-out; }
+        #app-container.loaded { opacity: 1; }
+        .page { display: none; }
+        .page.active { display: block; }
+
+        /* Tarjeta Neumorfista (Extruida) */
+        .neumorphic-card {
+            background: #eef0f4;
+            border-radius: 20px;
+            box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+        }
+
+        /* Estilo Presionado (Intruido) */
+        .neumorphic-inset {
+            box-shadow: inset 6px 6px 12px #d1d9e6, inset -6px -6px 12px #ffffff;
+        }
+
+        /* Botones Neumorfistas */
+        .neumorphic-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            border: none;
+            background: #eef0f4;
+            box-shadow: 4px 4px 8px #d1d9e6, -4px -4px 8px #ffffff;
+            color: #4b5563;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .neumorphic-btn:hover {
+            box-shadow: 2px 2px 4px #d1d9e6, -2px -2px 4px #ffffff;
+        }
+        .neumorphic-btn:active {
+            box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
+            color: #3b82f6;
+        }
+        .neumorphic-btn.primary { color: #3b82f6; font-weight: 600; }
+        .neumorphic-btn.danger { color: #ef4444; }
+        .btn-sm { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
+
+        /* Pestañas de Navegación */
+        #tabs-container {
+            border-bottom: none;
+            padding: 1rem;
+        }
+        .nav-tab {
+            border-bottom: none;
+            border-radius: 12px;
+            padding: 0.75rem 1.25rem;
+            transition: all 0.2s ease-in-out;
+        }
+        .nav-tab.active {
+            color: #3b82f6;
+            box-shadow: inset 5px 5px 10px #d1d9e6, inset -5px -5px 10px #ffffff;
+        }
+        .nav-tab:not(.active):hover {
+            color: #3b82f6;
+        }
+
+        /* Campos de Formulario */
+        .neumorphic-input {
+            width: 100%;
+            background: #eef0f4;
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
+        }
+        .neumorphic-input:focus {
+            outline: none;
+        }
+        textarea.neumorphic-input {
+            resize: none;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="app-loading">Cargando Portal...</div>
+
+    <div id="app-container" class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-700">Portal Parroquial</h1>
+            <p class="text-gray-500 mt-2">Un espacio para toda la comunidad.</p>
+        </header>
+
+        <nav class="mb-8 neumorphic-card">
+            <div id="tabs-container" class="flex flex-wrap justify-center items-center gap-2 sm:gap-4">
+                <div class="nav-tab active" data-target="page-tablero"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 8.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg><span>Tablero</span></div>
+                <div class="nav-tab" data-target="page-agenda"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span>Agenda</span></div>
+                <div class="nav-tab" data-target="page-directorio"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-4.67c.12-.24.232-.487.335-.737m-3.058 3.07A3.375 3.375 0 008.25 15c0-1.01.39-1.928 1.04-2.625M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" /></svg><span>Directorio</span></div>
+                <div class="nav-tab" data-target="page-noticias"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" /></svg><span>Noticias</span></div>
+                <div class="nav-tab" data-target="page-manuales"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg><span>Manuales</span></div>
+                <div class="nav-tab" data-target="page-archivos"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" /></svg><span>Archivos</span></div>
+                <div class="nav-tab" data-target="page-calendario"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0h18M-4.5 12h22.5" /></svg><span>Calendario</span></div>
+            </div>
+        </nav>
+
+        <main>
+            <div id="pages-container">
+                <div id="page-tablero" class="page active">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="md:col-span-1 neumorphic-card flex flex-col p-6">
+                            <h2 class="text-xl font-bold mb-4">Hoy</h2>
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <p id="current-date" class="text-3xl font-bold text-blue-600"></p>
+                                    <p id="current-time" class="text-lg"></p>
+                                </div>
+                                <div class="text-right">
+                                    <p id="weather-temp" class="text-3xl font-bold">--°C</p>
+                                    <p id="weather-desc" class="text-sm">Cargando...</p>
+                                </div>
+                            </div>
+                             <div class="text-sm text-gray-400 flex items-center justify-end gap-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M9.69 18.933l.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.12.406-.28.653-.478l.048-.041a11.956 11.956 0 002.55-2.55c.33-.445.626-.902.87-1.371.243-.47.44-1.003.58-1.583a7.996 7.996 0 00.12-2.318C15.02 5.09 12.833 3 10 3S4.98 5.09 4.98 8.132a7.996 7.996 0 00.12 2.318c.14.58.337 1.113.58 1.583.244.469.54.926.87 1.371a11.956 11.956 0 002.55 2.55l.048.041c.247.198.467.358.653.478a5.741 5.741 0 00.281.14l.018.008.006.003zM10 11.25a3.125 3.125 0 100-6.25 3.125 3.125 0 000 6.25z" clip-rule="evenodd" /></svg>
+                                <span id="weather-location"></span>
+                             </div>
+                        </div>
+                        <div class="md:col-span-2 space-y-6">
+                            <div id="birthday-card" class="neumorphic-card p-6" style="display: none;">
+                                <h2 class="text-xl font-bold mb-4">Cumpleaños de Hoy</h2>
+                                <ul id="birthday-list" class="space-y-3"></ul>
+                            </div>
+                            <div class="neumorphic-card p-6">
+                                <h2 class="text-xl font-bold mb-4">Próximos Eventos</h2>
+                                <ul id="upcoming-events-list" class="space-y-3"><li class="text-gray-500">Cargando eventos...</li></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="page-agenda" class="page">
+                    <div class="neumorphic-card p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold">Agenda de Eventos</h2>
+                            <button data-modal-target="event-modal" class="neumorphic-btn primary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Evento</span></button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="border-b border-gray-300"><tr><th class="p-3 font-semibold">Fecha</th><th class="p-3 font-semibold">Hora</th><th class="p-3 font-semibold">Nombre del Evento</th><th class="p-3 font-semibold">Acciones</th></tr></thead>
+                                <tbody id="agenda-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="page-directorio" class="page">
+                    <div class="neumorphic-card p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold">Directorio de Parroquianos</h2>
+                            <button data-modal-target="parroquiano-modal" class="neumorphic-btn primary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M11 5a3 3 0 11-6 0 3 3 0 016 0zM12.73 10.21a5.002 5.002 0 016.536 6.536l.243.243a1 1 0 11-1.414 1.414l-.243-.243a5.002 5.002 0 01-7.95-7.95l-1.01-1.01A5.002 5.002 0 012.27 12.27l-1.01 1.01a1 1 0 11-1.414-1.414l1.01-1.01a5.002 5.002 0 017.95 7.95l.243.243a1 1 0 011.414 1.414l-.243-.243a5.002 5.002 0 01-6.536-6.536l1.01 1.01z" /></svg><span>Agregar Parroquiano</span></button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="border-b border-gray-300">
+                                    <tr>
+                                        <th class="p-3 font-semibold">Nombre</th>
+                                        <th class="p-3 font-semibold">Teléfono</th>
+                                        <th class="p-3 font-semibold">Contacto de Emergencia</th>
+                                        <th class="p-3 font-semibold">Tel. Emergencia</th>
+                                        <th class="p-3 font-semibold">Tipo Sangre</th>
+                                        <th class="p-3 font-semibold">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="directorio-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="page-noticias" class="page">
+                    <div class="neumorphic-card p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold">Noticias Parroquiales</h2>
+                            <button data-modal-target="news-modal" class="neumorphic-btn primary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Noticia</span></button>
+                        </div>
+                        <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Las tarjetas de noticias se insertarán aquí -->
+                        </div>
+                    </div>
+                </div>
+                <div id="page-manuales" class="page"><div class="neumorphic-card p-8 text-center">Contenido de Manuales...</div></div>
+                <div id="page-archivos" class="page"><div class="neumorphic-card p-8 text-center">Contenido de Archivos...</div></div>
+                <div id="page-calendario" class="page"><div class="neumorphic-card p-8 text-center">Contenido de Calendario...</div></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modales -->
+    <div id="event-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="event-form" data-type="event">
+                <input type="hidden" name="id">
+                <div class="mb-4"><label for="event-name" class="block text-sm font-medium mb-1">Nombre del Evento</label><input type="text" id="event-name" name="name" class="neumorphic-input" required></div>
+                <div class="mb-4"><label for="event-date" class="block text-sm font-medium mb-1">Fecha</label><input type="date" id="event-date" name="date" class="neumorphic-input" required></div>
+                <div class="mb-6"><label for="event-time" class="block text-sm font-medium mb-1">Hora</label><input type="time" id="event-time" name="time" class="neumorphic-input" required></div>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="parroquiano-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-lg">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="parroquiano-form" data-type="parroquiano">
+                <input type="hidden" name="id">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto pr-2">
+                    <div class="md:col-span-2"><label for="parroquiano-nombre" class="block text-sm font-medium mb-1">Nombre Completo</label><input type="text" id="parroquiano-nombre" name="nombre" class="neumorphic-input" required></div>
+                    <div class="md:col-span-2"><label for="parroquiano-direccion" class="block text-sm font-medium mb-1">Dirección</label><input type="text" id="parroquiano-direccion" name="direccion" class="neumorphic-input"></div>
+                    <div><label for="parroquiano-telefono" class="block text-sm font-medium mb-1">Teléfono</label><input type="tel" id="parroquiano-telefono" name="telefono" class="neumorphic-input"></div>
+                    <div><label for="parroquiano-correo" class="block text-sm font-medium mb-1">Correo Electrónico</label><input type="email" id="parroquiano-correo" name="correo" class="neumorphic-input"></div>
+                    <div><label for="parroquiano-nacimiento" class="block text-sm font-medium mb-1">Fecha de Nacimiento</label><input type="date" id="parroquiano-nacimiento" name="nacimiento" class="neumorphic-input"></div>
+                    <div><label for="parroquiano-tipo-sangre" class="block text-sm font-medium mb-1">Tipo de Sangre</label><input type="text" id="parroquiano-tipo-sangre" name="tipo_sangre" class="neumorphic-input"></div>
+                    <div class="md:col-span-2"><label for="parroquiano-alergias" class="block text-sm font-medium mb-1">Alergias</label><textarea id="parroquiano-alergias" name="alergias" rows="2" class="neumorphic-input"></textarea></div>
+                    <div class="md:col-span-2"><label for="parroquiano-medicamentos" class="block text-sm font-medium mb-1">Medicamentos</label><textarea id="parroquiano-medicamentos" name="medicamentos" rows="2" class="neumorphic-input"></textarea></div>
+                    <div class="md:col-span-2"><hr class="my-2 border-gray-300/50"></div>
+                    <div><label for="parroquiano-emergencia-nombre" class="block text-sm font-medium mb-1">Llamar a (Emergencia)</label><input type="text" id="parroquiano-emergencia-nombre" name="emergencia_nombre" class="neumorphic-input"></div>
+                    <div><label for="parroquiano-emergencia-telefono" class="block text-sm font-medium mb-1">Teléfono (Emergencia)</label><input type="tel" id="parroquiano-emergencia-telefono" name="emergencia_telefono" class="neumorphic-input"></div>
+                    <div class="md:col-span-2"><label for="parroquiano-notas" class="block text-sm font-medium mb-1">Notas Adicionales</label><textarea id="parroquiano-notas" name="notas" rows="2" class="neumorphic-input"></textarea></div>
+                </div>
+                <div class="flex justify-end gap-4 mt-6">
+                    <button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+     <div id="news-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-lg">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="news-form" data-type="news">
+                <input type="hidden" name="id">
+                <div class="grid grid-cols-1 gap-4 max-h-[60vh] overflow-y-auto pr-2">
+                    <div><label for="news-titulo" class="block text-sm font-medium mb-1">Título</label><input type="text" id="news-titulo" name="titulo" class="neumorphic-input" required></div>
+                    <div><label for="news-imagenUrl" class="block text-sm font-medium mb-1">URL de la Imagen Principal</label><input type="url" id="news-imagenUrl" name="imagenUrl" class="neumorphic-input" placeholder="https://ejemplo.com/imagen.jpg"></div>
+                    <div><label for="news-resumen" class="block text-sm font-medium mb-1">Resumen (para la tarjeta)</label><textarea id="news-resumen" name="resumen" rows="3" class="neumorphic-input" required></textarea></div>
+                    <div><label for="news-contenido" class="block text-sm font-medium mb-1">Contenido Completo</label><textarea id="news-contenido" name="contenido" rows="6" class="neumorphic-input" required></textarea></div>
+                </div>
+                <div class="flex justify-end gap-4 mt-6">
+                    <button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button>
+                    <button type="submit" class="neumorphic-btn primary">Guardar Noticia</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="news-detail-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-2xl max-h-[80vh] flex flex-col">
+            <h2 id="news-detail-title" class="text-3xl font-bold mb-4"></h2>
+            <p id="news-detail-date" class="text-sm text-gray-500 mb-4"></p>
+            <div class="overflow-y-auto pr-2">
+                <img id="news-detail-image" src="" alt="Imagen de la noticia" class="rounded-2xl w-full h-64 object-cover mb-6">
+                <div id="news-detail-content" class="prose max-w-none"></div>
+            </div>
+            <div class="flex justify-end gap-4 mt-6">
+                <button type="button" data-action="close-modal" class="neumorphic-btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="confirm-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-sm">
+            <h2 class="text-xl font-bold mb-4">Confirmar Eliminación</h2>
+            <p id="confirm-message" class="mb-6">¿Estás seguro?</p>
+            <div class="flex justify-end gap-4">
+                <button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button>
+                <button type="button" id="confirm-delete-btn" class="neumorphic-btn danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        /**
+         * @module App
+         * Módulo principal que orquesta la aplicación del Portal Parroquial.
+         */
+
+        // -----------------------------------------------------------------------------
+        // 1. SERVICIO DE UI: Maneja toda la interacción con el DOM.
+        // -----------------------------------------------------------------------------
+        const UI = {
+            elements: {
+                appLoading: document.getElementById('app-loading'),
+                appContainer: document.getElementById('app-container'),
+                tabsContainer: document.getElementById('tabs-container'),
+                pagesContainer: document.getElementById('pages-container'),
+                
+                // Tablero
+                currentDate: document.getElementById('current-date'),
+                currentTime: document.getElementById('current-time'),
+                weatherTemp: document.getElementById('weather-temp'),
+                weatherDesc: document.getElementById('weather-desc'),
+                weatherLocation: document.getElementById('weather-location'),
+                upcomingEventsList: document.getElementById('upcoming-events-list'),
+                birthdayCard: document.getElementById('birthday-card'),
+                birthdayList: document.getElementById('birthday-list'),
+
+                // Contenido
+                agendaTableBody: document.getElementById('agenda-table-body'),
+                directorioTableBody: document.getElementById('directorio-table-body'),
+                newsGrid: document.getElementById('news-grid'),
+
+                // Modales
+                modals: {
+                    event: document.getElementById('event-modal'),
+                    parroquiano: document.getElementById('parroquiano-modal'),
+                    news: document.getElementById('news-modal'),
+                    newsDetail: document.getElementById('news-detail-modal'),
+                    confirm: document.getElementById('confirm-modal'),
+                },
+                confirmMessage: document.getElementById('confirm-message'),
+                confirmDeleteBtn: document.getElementById('confirm-delete-btn'),
+            },
+
+            showPage(pageId) {
+                this.elements.pagesContainer.querySelectorAll('.page').forEach(page => {
+                    page.style.display = page.id === pageId ? 'block' : 'none';
+                });
+                this.elements.tabsContainer.querySelectorAll('.nav-tab').forEach(tab => {
+                    tab.classList.toggle('active', tab.dataset.target === pageId);
+                });
+            },
+
+            renderGrid(container, data, cardRenderer, emptyMessage) {
+                container.innerHTML = '';
+                if (data.length === 0) {
+                    container.innerHTML = `<p class="col-span-full text-center text-gray-500">${emptyMessage}</p>`;
+                    return;
+                }
+                 const sortedData = [...data].sort((a, b) => new Date(b.fechaPublicacion) - new Date(a.fechaPublicacion));
+                sortedData.forEach(item => {
+                    container.insertAdjacentHTML('beforeend', cardRenderer(item));
+                });
+            },
+
+            renderTable(tbody, data, rowRenderer, emptyMessage) {
+                tbody.innerHTML = '';
+                if (data.length === 0) {
+                    const colSpan = tbody.closest('table')?.querySelector('thead tr').childElementCount || 1;
+                    tbody.innerHTML = `<tr><td colspan="${colSpan}" class="p-4 text-center text-gray-500">${emptyMessage}</td></tr>`;
+                    return;
+                }
+                const sortedData = [...data].sort((a, b) => (a.nombre || a.name || '').localeCompare(b.nombre || b.name || ''));
+                sortedData.forEach(item => {
+                    tbody.insertAdjacentHTML('beforeend', rowRenderer(item));
+                });
+            },
+            
+            createNewsCard(article) {
+                const placeholderImage = 'https://placehold.co/600x400/eef0f4/4b5563?text=Noticia';
+                return `
+                    <div class="neumorphic-card flex flex-col">
+                        <img src="${article.imagenUrl || placeholderImage}" alt="Imagen de la noticia" class="rounded-t-2xl h-48 w-full object-cover" onerror="this.src='${placeholderImage}'">
+                        <div class="p-4 flex flex-col flex-grow">
+                            <h3 class="text-lg font-bold mb-2">${article.titulo}</h3>
+                            <p class="text-sm text-gray-500 mb-2">${new Date(article.fechaPublicacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                            <p class="text-sm mb-4 flex-grow">${article.resumen}</p>
+                            <div class="flex justify-between items-center mt-auto">
+                                <button data-action="read-more" data-type="news" data-id="${article.id}" class="neumorphic-btn primary btn-sm">Leer Más</button>
+                                <div>
+                                    <button data-action="edit" data-type="news" data-id="${article.id}" class="neumorphic-btn btn-sm">Editar</button>
+                                    <button data-action="delete" data-type="news" data-id="${article.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+            },
+
+            createEventRow(event) {
+                return `
+                    <tr class="border-b border-gray-300/50">
+                        <td class="p-3">${new Date(event.date + 'T00:00:00Z').toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</td>
+                        <td class="p-3">${event.time}</td>
+                        <td class="p-3 font-medium">${event.name}</td>
+                        <td class="p-3">
+                            <div class="flex gap-2">
+                                <button data-action="edit" data-type="event" data-id="${event.id}" class="neumorphic-btn btn-sm">Editar</button>
+                                <button data-action="delete" data-type="event" data-id="${event.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
+                            </div>
+                        </td>
+                    </tr>`;
+            },
+
+            createParroquianoRow(p) {
+                return `
+                    <tr class="border-b border-gray-300/50">
+                        <td class="p-3 font-medium">${p.nombre || ''}</td>
+                        <td class="p-3">${p.telefono || ''}</td>
+                        <td class="p-3">${p.emergencia_nombre || ''}</td>
+                        <td class="p-3">${p.emergencia_telefono || ''}</td>
+                        <td class="p-3">${p.tipo_sangre || ''}</td>
+                        <td class="p-3">
+                            <div class="flex gap-2">
+                                <button data-action="edit" data-type="parroquiano" data-id="${p.id}" class="neumorphic-btn btn-sm">Editar</button>
+                                <button data-action="delete" data-type="parroquiano" data-id="${p.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
+                            </div>
+                        </td>
+                    </tr>`;
+            },
+
+            renderUpcomingEvents(events) {
+                this.elements.upcomingEventsList.innerHTML = '';
+                const now = new Date();
+                now.setHours(0, 0, 0, 0);
+                const upcoming = events
+                    .filter(event => new Date(event.date + 'T00:00:00Z') >= now)
+                    .sort((a, b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`))
+                    .slice(0, 5);
+
+                if (upcoming.length === 0) {
+                    this.elements.upcomingEventsList.innerHTML = '<li class="text-gray-500">No hay próximos eventos.</li>';
+                    return;
+                }
+                
+                upcoming.forEach(event => {
+                    this.elements.upcomingEventsList.insertAdjacentHTML('beforeend', `
+                        <li class="flex justify-between items-center p-2 rounded-md">
+                            <div>
+                                <p class="font-semibold">${event.name}</p>
+                                <p class="text-sm text-gray-500">${new Date(event.date + 'T00:00:00Z').toLocaleDateString('es-ES', { month: 'long', day: 'numeric' })} - ${event.time}h</p>
+                            </div>
+                            <span class="text-sm font-medium text-blue-600">Próximamente</span>
+                        </li>`);
+                });
+            },
+
+            renderBirthdayReminders(parroquianos) {
+                const today = new Date();
+                const todayMonth = today.getMonth() + 1;
+                const todayDay = today.getDate();
+
+                const birthdayFolks = parroquianos.filter(p => {
+                    if (!p.nacimiento) return false;
+                    const birthDate = new Date(p.nacimiento + 'T00:00:00Z');
+                    return (birthDate.getMonth() + 1 === todayMonth) && (birthDate.getDate() === todayDay);
+                });
+
+                this.elements.birthdayList.innerHTML = '';
+                if (birthdayFolks.length === 0) {
+                    this.elements.birthdayCard.style.display = 'none';
+                } else {
+                    this.elements.birthdayCard.style.display = 'block';
+                    birthdayFolks.forEach(person => {
+                        this.elements.birthdayList.insertAdjacentHTML('beforeend', `
+                            <li class="flex items-center gap-4 p-3 rounded-lg neumorphic-inset">
+                                <div class="text-amber-500"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-8 h-8"><path fill-rule="evenodd" d="M10.868 2.884c.321-.772 1.415-.772 1.736 0l1.681 4.06c.064.155.19.283.348.333l4.48.653c.84.123 1.171 1.157.536 1.748l-3.242 3.159c-.12.117-.175.284-.15.444l.764 4.463c.145.845-.733 1.493-1.488 1.085l-4.01-2.108a.75.75 0 00-.702 0l-4.01 2.108c-.755.408-1.633-.24-1.488-1.085l.764-4.463c.025-.16-.03-.327-.15-.444l-3.242-3.159c-.635-.591-.304-1.625.536-1.748l4.48-.653c.158-.023.284-.15.348-.333l1.681-4.06z" clip-rule="evenodd" /></svg></div>
+                                <div><p class="font-semibold">${person.nombre}</p><p class="text-sm">¡Hoy es su cumpleaños!</p></div>
+                            </li>`);
+                    });
+                }
+            },
+
+            updateDateTime() {
+                const now = new Date();
+                this.elements.currentDate.textContent = now.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+                this.elements.currentTime.textContent = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+            },
+
+            updateWeatherUI(data) {
+                if (data.temp !== undefined) {
+                    this.elements.weatherTemp.textContent = `${Math.round(data.temp)}°C`;
+                    this.elements.weatherDesc.textContent = data.description.charAt(0).toUpperCase() + data.description.slice(1);
+                    this.elements.weatherLocation.textContent = data.location;
+                } else {
+                    this.elements.weatherTemp.textContent = '--°C';
+                    this.elements.weatherDesc.textContent = data.description;
+                    this.elements.weatherLocation.textContent = data.location || '';
+                }
+            },
+        };
+
+        // -----------------------------------------------------------------------------
+        // 2. SERVICIO DE FIREBASE
+        // -----------------------------------------------------------------------------
+        const FirebaseService = {
+            db: null,
+            auth: null,
+            appIdPath: '',
+            basePaths: {},
+
+            async init(onAuthReadyCallback) {
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
+                const firebaseConfig = JSON.parse(firebaseConfigStr);
+                if (!firebaseConfig.apiKey) throw new Error("La configuración de Firebase no está disponible.");
+
+                const app = initializeApp(firebaseConfig);
+                this.db = getFirestore(app);
+                this.auth = getAuth(app);
+                
+                this.appIdPath = `artifacts/${appId}`;
+                this.basePaths = {
+                    events:       `public/data/events`,
+                    parroquianos: `public/data/parroquianos`,
+                    news:         `public/data/news`,
+                };
+                
+                onAuthStateChanged(this.auth, (user) => {
+                    // Para datos públicos, la autenticación solo es necesaria para escribir.
+                    // La devolución de llamada se ejecuta para que los listeners de lectura puedan adjuntarse.
+                     onAuthReadyCallback();
+                });
+
+                const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+                if (initialAuthToken) {
+                    await signInWithCustomToken(this.auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(this.auth);
+                }
+            },
+            
+            _getCollectionPath(type) {
+                let pathTemplate = this.basePaths[type];
+                if (!pathTemplate) throw new Error(`Collection type "${type}" not defined.`);
+                return `${this.appIdPath}/${pathTemplate}`;
+            },
+
+            onCollectionSnapshot(type, callback) {
+                const path = this._getCollectionPath(type);
+                if (!path) return () => {};
+                return onSnapshot(collection(this.db, path), (snapshot) => {
+                    const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    callback(data);
+                }, (error) => console.error(`Error en listener de ${type}: `, error));
+            },
+
+            async saveDoc(type, id, data) {
+                const path = this._getCollectionPath(type);
+                const collectionRef = collection(this.db, path);
+                if (id) {
+                    return updateDoc(doc(collectionRef, id), data);
+                } else {
+                    if(type === 'news' && !data.fechaPublicacion) {
+                        data.fechaPublicacion = new Date().toISOString();
+                    }
+                    return addDoc(collectionRef, data);
+                }
+            },
+
+            async deleteDoc(type, id) {
+                const path = this._getCollectionPath(type);
+                return deleteDoc(doc(this.db, path, id));
+            }
+        };
+
+        // -----------------------------------------------------------------------------
+        // 3. SERVICIO DEL CLIMA
+        // -----------------------------------------------------------------------------
+        const WeatherService = {
+            API_KEY: '9a11de307931b3ba88e6af9048b7f3b1',
+            
+            async fetch() {
+                const lat = 19.5437;
+                const lon = -96.91;
+                const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${this.API_KEY}&units=metric&lang=es`;
+                
+                try {
+                    const response = await fetch(url);
+                    const data = await response.json();
+
+                    if (response.status === 401) throw new Error('Invalid API key');
+                    if (!response.ok || !data.main) throw new Error(data.message || 'Respuesta inválida de la API');
+                    
+                    return {
+                        temp: data.main.temp,
+                        description: data.weather[0].description,
+                        location: data.name
+                    };
+                } catch (error) {
+                    console.error("Error al obtener el clima:", error);
+                    return { description: error.message === 'Invalid API key' ? 'Clave API inválida' : 'Error de red' };
+                }
+            }
+        };
+        
+        // -----------------------------------------------------------------------------
+        // 4. LÓGICA PRINCIPAL DE LA APLICACIÓN
+        // -----------------------------------------------------------------------------
+        const App = {
+            state: {
+                events: [],
+                parroquianos: [],
+                news: [],
+            },
+
+            async init() {
+                try {
+                    UI.elements.appLoading.style.display = 'flex';
+                    
+                    this.setupEventListeners();
+                    UI.updateDateTime();
+                    setInterval(() => UI.updateDateTime(), 60000);
+                    
+                    await FirebaseService.init(this.onAuthReady.bind(this));
+
+                } catch (error) {
+                     console.error("Error fatal durante la inicialización:", error);
+                    document.body.innerHTML = `<div class="fixed inset-0 bg-red-100 text-red-800 p-8 flex flex-col justify-center items-center text-center"><h1 class="text-3xl font-bold mb-4">¡Ups! Ocurrió un error crítico.</h1><p class="mb-4">${error.message}</p></div>`;
+                }
+            },
+
+            onAuthReady() {
+                this.setupDataListeners();
+                this.loadWeather();
+                UI.elements.appLoading.style.display = 'none';
+                UI.elements.appContainer.classList.add('loaded');
+            },
+            
+            setupDataListeners() {
+                FirebaseService.onCollectionSnapshot('events', (events) => {
+                    this.state.events = events;
+                    UI.renderTable(UI.elements.agendaTableBody, events, UI.createEventRow, 'No hay eventos programados.');
+                    UI.renderUpcomingEvents(events);
+                });
+                FirebaseService.onCollectionSnapshot('parroquianos', (parroquianos) => {
+                    this.state.parroquianos = parroquianos;
+                    UI.renderTable(UI.elements.directorioTableBody, parroquianos, UI.createParroquianoRow, 'No hay registros en el directorio.');
+                    UI.renderBirthdayReminders(parroquianos);
+                });
+                FirebaseService.onCollectionSnapshot('news', (newsItems) => {
+                    this.state.news = newsItems;
+                    UI.renderGrid(UI.elements.newsGrid, newsItems, UI.createNewsCard, 'No hay noticias publicadas.');
+                });
+            },
+
+            setupEventListeners() {
+                // Navegación
+                UI.elements.tabsContainer.addEventListener('click', (e) => {
+                    const tab = e.target.closest('.nav-tab');
+                    if (tab) UI.showPage(tab.dataset.target);
+                });
+
+                // Abrir/Cerrar Modales y Acciones
+                document.addEventListener('click', (e) => {
+                    const button = e.target.closest('button');
+                    if (!button) return;
+
+                    const modalTarget = button.dataset.modalTarget;
+                    if (modalTarget) this.openModal(modalTarget);
+
+                    const action = button.dataset.action;
+                    if (action === 'close-modal') {
+                        const modal = button.closest('.fixed.inset-0');
+                        if (modal) this.closeModal(modal.id);
+                    }
+                    
+                    if (['edit', 'delete', 'read-more'].includes(action)) {
+                        const { type, id } = button.dataset;
+                        if (action === 'edit') this.handleEdit(type, id);
+                        if (action === 'delete') this.handleDelete(type, id);
+                        if (action === 'read-more') this.handleReadMore(type, id);
+                    }
+                });
+                
+                // Cerrar modal al hacer clic fuera
+                 Object.values(UI.elements.modals).forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) this.closeModal(modal.id);
+                    });
+                });
+                
+                // Enviar formularios
+                document.addEventListener('submit', (e) => {
+                    if (e.target.matches('form')) {
+                        e.preventDefault();
+                        this.handleFormSubmit(e.target);
+                    }
+                });
+            },
+            
+            async loadWeather() {
+                const weatherData = await WeatherService.fetch();
+                UI.updateWeatherUI(weatherData);
+            },
+            
+            handleFormSubmit(form) {
+                const type = form.dataset.type;
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+                const id = data.id;
+                delete data.id;
+
+                FirebaseService.saveDoc(type, id, data)
+                    .then(() => this.closeModal(`${type}-modal`))
+                    .catch(err => console.error(`Error al guardar ${type}:`, err));
+            },
+            
+            handleReadMore(type, id) {
+                const item = this.state[type].find(i => i.id === id);
+                if (!item) return;
+
+                const modal = UI.elements.modals.newsDetail;
+                modal.querySelector('#news-detail-title').textContent = item.titulo;
+                modal.querySelector('#news-detail-date').textContent = new Date(item.fechaPublicacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+                modal.querySelector('#news-detail-image').src = item.imagenUrl || 'https://placehold.co/600x400/eef0f4/4b5563?text=Noticia';
+                modal.querySelector('#news-detail-content').innerHTML = item.contenido.replace(/\n/g, '<br>');
+                this.openModal('newsDetail');
+            },
+
+            handleEdit(type, id) {
+                const collectionName = type === 'news' ? 'news' : type + 's';
+                const item = this.state[collectionName].find(i => i.id === id);
+                this.openModal(`${type}-modal`, item);
+            },
+            
+            handleDelete(type, id) {
+                const modal = UI.elements.modals.confirm;
+                modal.querySelector('#confirm-message').textContent = `¿Estás seguro de que quieres eliminar este registro?`;
+                this.openModal('confirm');
+                
+                UI.elements.confirmDeleteBtn.onclick = () => {
+                    FirebaseService.deleteDoc(type, id)
+                        .then(() => this.closeModal('confirm'))
+                        .catch(err => console.error(`Error al eliminar ${type}:`, err));
+                };
+            },
+
+            openModal(modalId, data = null) {
+                const modal = UI.elements.modals[modalId] || document.getElementById(modalId);
+                if (!modal) return;
+                
+                const form = modal.querySelector('form');
+                if (form) {
+                    form.reset();
+                    const titleElement = modal.querySelector('h2');
+                    if (titleElement) {
+                         titleElement.textContent = data ? `Editar ${form.dataset.type.charAt(0).toUpperCase() + form.dataset.type.slice(1)}` : `Agregar ${form.dataset.type.charAt(0).toUpperCase() + form.dataset.type.slice(1)}`;
+                    }
+                    if(data) { 
+                        Object.keys(data).forEach(key => {
+                            const input = form.querySelector(`[name="${key}"]`);
+                            if (input) input.value = data[key];
+                        });
+                    }
+                }
+                modal.classList.remove('hidden');
+            },
+
+            closeModal(modalId) {
+                const modal = UI.elements.modals[modalId] || document.getElementById(modalId);
+                if (modal) modal.classList.add('hidden');
+            },
+        };
+
+        // --- PUNTO DE ENTRADA DE LA APLICACIÓN ---
+        App.init();
+
+    </script>
+</body>
+</html>
+
