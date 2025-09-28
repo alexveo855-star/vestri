@@ -197,7 +197,7 @@
 
         #edge-handle {
             position: fixed;
-            top: 50%;
+            top: 30%;
             left: 0;
             transform: translateY(-50%);
             width: 20px;
@@ -223,19 +223,22 @@
 </head>
 <body class="antialiased">
 
-    <div id="mobile-sidenav-overlay" class="md:hidden"></div>
-    <div id="mobile-sidenav" class="md:hidden">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-xl font-bold text-gray-700">Menú</h2>
-            <button id="close-sidenav-btn" class="neumorphic-btn p-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
+    <!-- Envoltura para ocultar todos los elementos de navegación móvil en pantallas de escritorio -->
+    <div id="mobile-nav-wrapper" class="md:hidden">
+        <div id="mobile-sidenav-overlay"></div>
+        <div id="mobile-sidenav">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-xl font-bold text-gray-700">Menú</h2>
+                <button id="close-sidenav-btn" class="neumorphic-btn p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+            <nav id="mobile-nav-links" class="flex flex-col gap-3">
+                 <!-- Los enlaces se generarán dinámicamente -->
+            </nav>
         </div>
-        <nav id="mobile-nav-links" class="flex flex-col gap-3">
-             <!-- Los enlaces se generarán dinámicamente -->
-        </nav>
+        <div id="edge-handle"></div>
     </div>
-    <div id="edge-handle" class="md:hidden"></div>
 
 
     <div id="app-loading">Cargando Portal...</div>
