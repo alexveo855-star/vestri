@@ -505,10 +505,7 @@
             basePaths: {},
 
             async init(onAuthReadyCallback) {
-                const firebaseConfigFromEnv = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-
-                const firebaseConfig = firebaseConfigFromEnv || {
-                   
+                const firebaseConfig = {
                    apiKey: "AIzaSyATCd0jgG2Lo5q8K5bB15eNvkakJBb15RU",
                   authDomain: "ibcgapp.firebaseapp.com",
                   projectId: "ibcgapp",
@@ -518,22 +515,11 @@
                   measurementId: "G-RBN8KZPJ5X"
                 };
 
-                if (!firebaseConfig.apiKey || firebaseConfig.apiKey.startsWith("AIzaSy...")) {
-                     const errorMessage = `
-                        ¡Casi listo! La configuración de Firebase no se ha completado.
-                        Este es un paso final y OBLIGATORIO para que la aplicación funcione en internet.
-                        Por favor, abre el archivo HTML, busca la variable 'firebaseConfig' en el script
-                        y reemplázala con las credenciales de tu propio proyecto de Firebase.
-                    `;
-                    console.error(errorMessage);
-                    throw new Error(errorMessage);
-                }
-
                 const app = initializeApp(firebaseConfig);
                 this.db = getFirestore(app);
                 this.auth = getAuth(app);
                 
-                const appId = typeof __app_id !== 'undefined' ? __app_id : firebaseConfig.projectId;
+                const appId = firebaseConfig.projectId;
                 this.appIdPath = `artifacts/${appId}`;
                 this.basePaths = {
                     events:       `public/data/events`,
@@ -714,12 +700,13 @@
             
             handleFormSubmit(form) {
                 const type = form.dataset.type;
+                const serviceType = type === 'news' ? 'news' : type + 's'; // Pluralize type for Firebase
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
                 const id = data.id;
                 delete data.id;
 
-                FirebaseService.saveDoc(type, id, data)
+                FirebaseService.saveDoc(serviceType, id, data)
                     .then(() => this.closeModal(`${type}-modal`))
                     .catch(err => console.error(`Error al guardar ${type}:`, err));
             },
@@ -747,8 +734,10 @@
                 modal.querySelector('#confirm-message').textContent = `¿Estás seguro de que quieres eliminar este registro?`;
                 this.openModal('confirm');
                 
+                const serviceType = type === 'news' ? 'news' : type + 's'; // Pluralize type for Firebase
+
                 UI.elements.confirmDeleteBtn.onclick = () => {
-                    FirebaseService.deleteDoc(type, id)
+                    FirebaseService.deleteDoc(serviceType, id)
                         .then(() => this.closeModal('confirm'))
                         .catch(err => console.error(`Error al eliminar ${type}:`, err));
                 };
@@ -787,3 +776,5 @@
     </script>
 </body>
 </html>
+
+
