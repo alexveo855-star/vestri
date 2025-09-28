@@ -260,8 +260,7 @@
                     <div><label for="news-contenido" class="block text-sm font-medium mb-1">Contenido Completo</label><textarea id="news-contenido" name="contenido" rows="6" class="neumorphic-input" required></textarea></div>
                 </div>
                 <div class="flex justify-end gap-4 mt-6">
-                    <button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button>
-                    <button type="submit" class="neumorphic-btn primary">Guardar Noticia</button>
+                    <button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar Noticia</button>
                 </div>
             </form>
         </div>
@@ -294,8 +293,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         /**
          * @module App
@@ -506,15 +505,35 @@
             basePaths: {},
 
             async init(onAuthReadyCallback) {
-                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-                const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
-                const firebaseConfig = JSON.parse(firebaseConfigStr);
-                if (!firebaseConfig.apiKey) throw new Error("La configuración de Firebase no está disponible.");
+                const firebaseConfigFromEnv = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+
+                const firebaseConfig = firebaseConfigFromEnv || {
+                   
+                   apiKey: "AIzaSyATCd0jgG2Lo5q8K5bB15eNvkakJBb15RU",
+                  authDomain: "ibcgapp.firebaseapp.com",
+                  projectId: "ibcgapp",
+                  storageBucket: "ibcgapp.appspot.com",
+                  messagingSenderId: "548258029551",
+                  appId: "1:548258029551:web:9354e4cc79ce4f25f0201a",
+                  measurementId: "G-RBN8KZPJ5X"
+                };
+
+                if (!firebaseConfig.apiKey || firebaseConfig.apiKey.startsWith("AIzaSy...")) {
+                     const errorMessage = `
+                        ¡Casi listo! La configuración de Firebase no se ha completado.
+                        Este es un paso final y OBLIGATORIO para que la aplicación funcione en internet.
+                        Por favor, abre el archivo HTML, busca la variable 'firebaseConfig' en el script
+                        y reemplázala con las credenciales de tu propio proyecto de Firebase.
+                    `;
+                    console.error(errorMessage);
+                    throw new Error(errorMessage);
+                }
 
                 const app = initializeApp(firebaseConfig);
                 this.db = getFirestore(app);
                 this.auth = getAuth(app);
                 
+                const appId = typeof __app_id !== 'undefined' ? __app_id : firebaseConfig.projectId;
                 this.appIdPath = `artifacts/${appId}`;
                 this.basePaths = {
                     events:       `public/data/events`,
@@ -523,17 +542,10 @@
                 };
                 
                 onAuthStateChanged(this.auth, (user) => {
-                    // Para datos públicos, la autenticación solo es necesaria para escribir.
-                    // La devolución de llamada se ejecuta para que los listeners de lectura puedan adjuntarse.
                      onAuthReadyCallback();
                 });
-
-                const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-                if (initialAuthToken) {
-                    await signInWithCustomToken(this.auth, initialAuthToken);
-                } else {
-                    await signInAnonymously(this.auth);
-                }
+                
+                await signInAnonymously(this.auth);
             },
             
             _getCollectionPath(type) {
