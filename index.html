@@ -23,6 +23,17 @@
         .page { display: none; }
         .page.active { display: block; }
 
+        /* --- Visibilidad del Administrador --- */
+        .admin-only, .admin-only-table-cell {
+            display: none !important;
+        }
+        .admin-mode .admin-only {
+            display: inline-flex !important;
+        }
+        .admin-mode .admin-only-table-cell {
+            display: table-cell !important;
+        }
+
         /* Tarjeta Neumorfista (Extruida) */
         .neumorphic-card {
             background: #eef0f4;
@@ -54,19 +65,21 @@
         .neumorphic-btn:hover {
             box-shadow: 2px 2px 4px #d1d9e6, -2px -2px 4px #ffffff;
         }
-        .neumorphic-btn:active {
+        .neumorphic-btn:active, .neumorphic-btn.active {
             box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
             color: #3b82f6;
         }
         .neumorphic-btn.primary { color: #3b82f6; font-weight: 600; }
         .neumorphic-btn.danger { color: #ef4444; }
         .btn-sm { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
+        .neumorphic-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+            box-shadow: inset 2px 2px 4px #d1d9e6, inset -2px -2px 4px #ffffff;
+        }
 
         /* Pestañas de Navegación */
-        #tabs-container {
-            border-bottom: none;
-            padding: 1rem;
-        }
+        #tabs-container { border-bottom: none; padding: 1rem; }
         .nav-tab {
             border-bottom: none;
             border-radius: 12px;
@@ -74,19 +87,14 @@
             transition: all 0.2s ease-in-out;
             font-size: 1rem;
         }
-        @media (min-width: 1280px) { /* xl screens */
-            .nav-tab {
-                padding: 1rem 1.75rem; /* Larger padding */
-                font-size: 1.125rem; /* Larger font */
-            }
+        @media (min-width: 1280px) {
+            .nav-tab { padding: 1rem 1.75rem; font-size: 1.125rem; }
         }
         .nav-tab.active {
             color: #3b82f6;
             box-shadow: inset 5px 5px 10px #d1d9e6, inset -5px -5px 10px #ffffff;
         }
-        .nav-tab:not(.active):hover {
-            color: #3b82f6;
-        }
+        .nav-tab:not(.active):hover { color: #3b82f6; }
 
         /* Campos de Formulario */
         .neumorphic-input {
@@ -97,149 +105,104 @@
             padding: 0.75rem 1rem;
             box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
         }
-        .neumorphic-input:focus {
-            outline: none;
-        }
-        textarea.neumorphic-input {
-            resize: none;
-        }
+        .neumorphic-input:focus { outline: none; }
+        textarea.neumorphic-input { resize: none; }
         
-        /* --- Estilos del Calendario --- */
-        .calendar-cell {
-            min-height: 100px;
-            padding: 0.25rem;
-            border-radius: 10px;
+        /* Input de Archivo Personalizado */
+        .custom-file-input-wrapper {
+            position: relative;
+            display: block;
+            cursor: pointer;
+        }
+        .custom-file-input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        .neumorphic-file-input {
             background: #eef0f4;
-            transition: all 0.2s ease-in-out;
-            border: 1px solid transparent;
-            display: flex;
-            flex-direction: column;
-        }
-        @media (min-width: 768px) {
-            .calendar-cell { min-height: 120px; padding: 0.5rem; }
-        }
-        .calendar-cell.is-today {
+            border: none;
+            border-radius: 10px;
             box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
-            border-color: #3b82f6;
+            display: flex;
+            align-items: center;
+            width: 100%;
         }
-        .calendar-cell.not-current-month {
-            color: #9ca3af;
-            background: transparent;
-        }
-        .calendar-day-number {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-        .calendar-items-container {
-            flex-grow: 1;
-            overflow-y: auto;
-        }
-        .calendar-item {
-            font-size: 0.75rem;
-            padding: 2px 6px;
-            border-radius: 6px;
-            margin-bottom: 4px;
+        .truncate {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            cursor: default;
+        }
+
+        /* Estilos del Calendario */
+        .calendar-cell {
+            min-height: 100px; padding: 0.25rem; border-radius: 10px; background: #eef0f4;
+            transition: all 0.2s ease-in-out; border: 1px solid transparent; display: flex; flex-direction: column;
+        }
+        @media (min-width: 768px) { .calendar-cell { min-height: 120px; padding: 0.5rem; } }
+        .calendar-cell.is-today { box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff; border-color: #3b82f6; }
+        .calendar-cell.not-current-month { color: #9ca3af; background: transparent; }
+        .calendar-day-number { font-weight: 600; margin-bottom: 0.25rem; }
+        .calendar-items-container { flex-grow: 1; overflow-y: auto; }
+        .calendar-item {
+            font-size: 0.75rem; padding: 2px 6px; border-radius: 6px; margin-bottom: 4px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: default;
         }
         .event-item { background-color: #bfdbfe; color: #1e40af; }
         .birthday-item { background-color: #fef08a; color: #854d0e; }
 
-        /* --- Estilos del Panel Edge Móvil --- */
+        /* Estilos del Panel Edge Móvil */
         #mobile-sidenav-overlay {
-            position: fixed;
-            inset: 0;
-            background-color: rgba(31, 41, 55, 0.5);
-            z-index: 55;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            pointer-events: none;
+            position: fixed; inset: 0; background-color: rgba(31, 41, 55, 0.5); z-index: 55;
+            opacity: 0; transition: opacity 0.3s ease-in-out; pointer-events: none;
         }
         #mobile-sidenav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 280px;
-            background-color: #eef0f4;
-            z-index: 60;
-            transform: translateX(-100%);
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            will-change: transform;
+            position: fixed; top: 0; left: 0; bottom: 0; width: 280px; background-color: #eef0f4;
+            z-index: 60; transform: translateX(-100%); padding: 1.5rem; display: flex; flex-direction: column; will-change: transform;
         }
-        #mobile-sidenav.is-transitioning {
-             transition: transform 0.3s ease-in-out;
-        }
+        #mobile-sidenav.is-transitioning { transition: transform 0.3s ease-in-out; }
         #mobile-sidenav.active { transform: translateX(0); }
         #mobile-sidenav-overlay.active { opacity: 1; pointer-events: auto; }
-
         .mobile-nav-link {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
-            font-weight: 500;
-            color: #4b5563;
-            transition: all 0.2s ease-in-out;
+            display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; border-radius: 12px;
+            font-weight: 500; color: #4b5563; transition: all 0.2s ease-in-out;
         }
-        .mobile-nav-link.active {
-            color: #3b82f6;
-            box-shadow: inset 5px 5px 10px #d1d9e6, inset -5px -5px 10px #ffffff;
-        }
-        .mobile-nav-link:not(.active):hover {
-            color: #3b82f6;
-        }
-
+        .mobile-nav-link.active { color: #3b82f6; box-shadow: inset 5px 5px 10px #d1d9e6, inset -5px -5px 10px #ffffff; }
+        .mobile-nav-link:not(.active):hover { color: #3b82f6; }
         #edge-handle {
-            position: fixed;
-            top: 30%;
-            left: 0;
-            transform: translateY(-50%);
-            width: 20px;
-            height: 80px;
-            background-color: rgba(107, 114, 128, 0.4);
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
-            z-index: 50;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            position: fixed; top: 30%; left: 0; transform: translateY(-50%); width: 20px; height: 80px;
+            background-color: rgba(107, 114, 128, 0.4); border-top-right-radius: 10px; border-bottom-right-radius: 10px;
+            z-index: 50; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 2px 0 5px rgba(0,0,0,0.1);
         }
-         #edge-handle::before {
-            content: '';
-            width: 4px;
-            height: 20px;
-            background: #fff;
-            border-radius: 2px;
-         }
+        #edge-handle::before { content: ''; width: 4px; height: 20px; background: #fff; border-radius: 2px; }
+        
+        /* Estilos de la Galería de Noticias */
+        .gallery-thumbnail {
+            width: 80px; height: 60px; border-radius: 8px; cursor: pointer; object-fit: cover;
+            opacity: 0.6; transition: all 0.2s ease-in-out; border: 2px solid transparent; flex-shrink: 0;
+        }
+        .gallery-thumbnail.active { opacity: 1; border-color: #3b82f6; box-shadow: 0 0 0 3px #eef0f4; }
+        #news-gallery-thumbnails { -ms-overflow-style: none; scrollbar-width: none; }
+        #news-gallery-thumbnails::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Envoltura para ocultar todos los elementos de navegación móvil en pantallas de escritorio -->
+    <!-- Menú Móvil -->
     <div id="mobile-nav-wrapper" class="md:hidden">
         <div id="mobile-sidenav-overlay"></div>
         <div id="mobile-sidenav">
             <div class="flex justify-between items-center mb-8">
                 <h2 class="text-xl font-bold text-gray-700">Menú</h2>
-                <button id="close-sidenav-btn" class="neumorphic-btn p-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
+                <button id="close-sidenav-btn" class="neumorphic-btn p-2"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
             </div>
-            <nav id="mobile-nav-links" class="flex flex-col gap-3">
-                 <!-- Los enlaces se generarán dinámicamente -->
-            </nav>
+            <nav id="mobile-nav-links" class="flex flex-col gap-3"></nav>
         </div>
         <div id="edge-handle"></div>
     </div>
-
 
     <div id="app-loading">Cargando Portal...</div>
 
@@ -247,12 +210,14 @@
         <header class="text-center mb-8 relative">
             <h1 class="text-3xl sm:text-4xl font-bold text-gray-700">Portal Parroquial</h1>
             <p class="text-gray-500 mt-2">Un espacio para toda la comunidad.</p>
+             <div id="admin-controls-container" class="absolute top-0 right-0"></div>
         </header>
 
+        <!-- Navegación Principal (Desktop) -->
         <nav class="mb-8 neumorphic-card hidden md:block">
             <div id="tabs-container" class="flex flex-wrap justify-center items-center gap-2 sm:gap-4">
                 <div class="nav-tab active" data-target="page-tablero"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 xl:w-6 xl:h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 8.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg><span>Tablero</span></div>
-                <div class="nav-tab" data-target="page-agenda"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 xl:w-6 xl:h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span>Agenda</span></div>
+                <div class="nav-tab" data-target="page-agenda"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 xl:w-6 xl:h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span>Eventos</span></div>
                 <div class="nav-tab" data-target="page-directorio"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 xl:w-6 xl:h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-4.67c.12-.24.232-.487.335-.737m-3.058 3.07A3.375 3.375 0 008.25 15c0-1.01.39-1.928 1.04-2.625M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" /></svg><span>Directorio</span></div>
                 <div class="nav-tab" data-target="page-noticias"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 xl:w-6 xl:h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" /></svg><span>Noticias</span></div>
                 <div class="nav-tab" data-target="page-manuales"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 xl:w-6 xl:h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg><span>Manuales</span></div>
@@ -263,6 +228,7 @@
 
         <main>
             <div id="pages-container">
+                <!-- Páginas de Contenido -->
                 <div id="page-tablero" class="page active">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="md:col-span-1 neumorphic-card flex flex-col p-6">
@@ -297,47 +263,28 @@
                 <div id="page-agenda" class="page">
                     <div class="neumorphic-card p-6">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                            <h2 class="text-2xl font-bold">Agenda de Eventos</h2>
-                            <button data-modal-target="event-modal" class="neumorphic-btn primary w-full sm:w-auto"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Evento</span></button>
+                            <h2 class="text-2xl font-bold">Eventos</h2>
+                            <button data-modal-target="event-modal" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Evento</span></button>
                         </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left">
-                                <thead class="border-b border-gray-300"><tr><th class="p-3 font-semibold">Fecha</th><th class="p-3 font-semibold hidden sm:table-cell">Hora</th><th class="p-3 font-semibold">Nombre del Evento</th><th class="p-3 font-semibold">Acciones</th></tr></thead>
-                                <tbody id="agenda-table-body"></tbody>
-                            </table>
-                        </div>
+                        <div class="overflow-x-auto"><table class="w-full text-left"><thead class="border-b border-gray-300"><tr><th class="p-3 font-semibold">Fecha</th><th class="p-3 font-semibold hidden sm:table-cell">Hora</th><th class="p-3 font-semibold">Nombre del Evento</th><th class="p-3 font-semibold admin-only-table-cell">Acciones</th></tr></thead><tbody id="agenda-table-body"></tbody></table></div>
                     </div>
                 </div>
                 <div id="page-directorio" class="page">
                     <div class="neumorphic-card p-6">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Directorio</h2>
-                            <button data-modal-target="parroquiano-modal" class="neumorphic-btn primary w-full sm:w-auto"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M11 5a3 3 0 11-6 0 3 3 0 016 0zM12.73 10.21a5.002 5.002 0 016.536 6.536l.243.243a1 1 0 11-1.414 1.414l-.243-.243a5.002 5.002 0 01-7.95-7.95l-1.01-1.01A5.002 5.002 0 012.27 12.27l-1.01 1.01a1 1 0 11-1.414-1.414l1.01-1.01a5.002 5.002 0 017.95 7.95l.243.243a1 1 0 011.414 1.414l-.243-.243a5.002 5.002 0 01-6.536-6.536l1.01 1.01z" /></svg><span>Agregar Parroquiano</span></button>
+                            <button data-modal-target="parroquiano-modal" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M11 5a3 3 0 11-6 0 3 3 0 016 0zM12.73 10.21a5.002 5.002 0 016.536 6.536l.243.243a1 1 0 11-1.414 1.414l-.243-.243a5.002 5.002 0 01-7.95-7.95l-1.01-1.01A5.002 5.002 0 012.27 12.27l-1.01 1.01a1 1 0 11-1.414-1.414l1.01-1.01a5.002 5.002 0 017.95 7.95l.243.243a1 1 0 011.414 1.414l-.243-.243a5.002 5.002 0 01-6.536-6.536l1.01 1.01z" /></svg><span>Agregar Parroquiano</span></button>
                         </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left">
-                                <thead class="border-b border-gray-300">
-                                    <tr>
-                                        <th class="p-3 font-semibold">Nombre</th>
-                                        <th class="p-3 font-semibold hidden md:table-cell">Teléfono</th>
-                                        <th class="p-3 font-semibold hidden lg:table-cell">Contacto Emergencia</th>
-                                        <th class="p-3 font-semibold">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="directorio-table-body"></tbody>
-                            </table>
-                        </div>
+                        <div class="overflow-x-auto"><table class="w-full text-left"><thead class="border-b border-gray-300"><tr><th class="p-3 font-semibold">Nombre</th><th class="p-3 font-semibold hidden md:table-cell">Teléfono</th><th class="p-3 font-semibold hidden lg:table-cell">Contacto Emergencia</th><th class="p-3 font-semibold admin-only-table-cell">Acciones</th></tr></thead><tbody id="directorio-table-body"></tbody></table></div>
                     </div>
                 </div>
                 <div id="page-noticias" class="page">
                     <div class="neumorphic-card p-6">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Noticias Parroquiales</h2>
-                            <button data-modal-target="news-modal" class="neumorphic-btn primary w-full sm:w-auto"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Noticia</span></button>
+                            <button data-modal-target="news-modal" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Noticia</span></button>
                         </div>
-                        <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <!-- Las tarjetas de noticias se insertarán aquí -->
-                        </div>
+                        <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
                     </div>
                 </div>
                 <div id="page-manuales" class="page"><div class="neumorphic-card p-8 text-center">Contenido de Manuales...</div></div>
@@ -345,20 +292,12 @@
                 <div id="page-calendario" class="page">
                     <div class="neumorphic-card p-6">
                         <div id="calendar-header" class="flex justify-between items-center mb-6">
-                            <button id="prev-month-btn" class="neumorphic-btn p-2 sm:p-auto">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
-                            </button>
+                            <button id="prev-month-btn" class="neumorphic-btn p-2 sm:p-auto"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg></button>
                             <h2 id="month-year-header" class="text-xl sm:text-2xl font-bold text-center"></h2>
-                            <button id="next-month-btn" class="neumorphic-btn p-2 sm:p-auto">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
-                            </button>
+                            <button id="next-month-btn" class="neumorphic-btn p-2 sm:p-auto"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></button>
                         </div>
-                        <div class="grid grid-cols-7 gap-1 sm:gap-2 text-center font-semibold mb-2 text-gray-600 text-sm sm:text-base">
-                            <div>Do</div><div>Lu</div><div>Ma</div><div>Mi</div><div>Ju</div><div>Vi</div><div>Sá</div>
-                        </div>
-                        <div id="calendar-grid" class="grid grid-cols-7 gap-1 sm:gap-2">
-                            <!-- Las celdas del calendario se generarán aquí -->
-                        </div>
+                        <div class="grid grid-cols-7 gap-1 sm:gap-2 text-center font-semibold mb-2 text-gray-600 text-sm sm:text-base"><div>Do</div><div>Lu</div><div>Ma</div><div>Mi</div><div>Ju</div><div>Vi</div><div>Sá</div></div>
+                        <div id="calendar-grid" class="grid grid-cols-7 gap-1 sm:gap-2"></div>
                     </div>
                 </div>
             </div>
@@ -366,6 +305,16 @@
     </div>
 
     <!-- Modales -->
+    <div id="admin-login-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-sm">
+            <h2 class="text-2xl font-bold mb-6">Acceso de Administrador</h2>
+            <form id="admin-login-form">
+                <div class="mb-4"><label for="admin-password" class="block text-sm font-medium mb-1">Contraseña</label><input type="password" id="admin-password" name="password" class="neumorphic-input" required></div>
+                <p id="login-error-msg" class="text-red-500 text-sm mb-4 hidden">Contraseña incorrecta.</p>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Ingresar</button></div>
+            </form>
+        </div>
+    </div>
     <div id="event-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
         <div class="neumorphic-card p-8 w-full max-w-md">
             <h2 class="text-2xl font-bold mb-6"></h2>
@@ -373,12 +322,22 @@
                 <input type="hidden" name="id">
                 <div class="mb-4"><label for="event-name" class="block text-sm font-medium mb-1">Nombre del Evento</label><input type="text" id="event-name" name="name" class="neumorphic-input" required></div>
                 <div class="mb-4"><label for="event-date" class="block text-sm font-medium mb-1">Fecha</label><input type="date" id="event-date" name="date" class="neumorphic-input" required></div>
-                <div class="mb-6"><label for="event-time" class="block text-sm font-medium mb-1">Hora</label><input type="time" id="event-time" name="time" class="neumorphic-input" required></div>
+                <div class="mb-4"><label for="event-time" class="block text-sm font-medium mb-1">Hora</label><input type="time" id="event-time" name="time" class="neumorphic-input" required></div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-1">Imagen del Evento (Opcional)</label>
+                    <div class="neumorphic-file-input custom-file-input-wrapper">
+                        <div class="flex items-center gap-2 p-3 w-full pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 flex-shrink-0"><path d="M9.25 13.25a.75.75 0 001.5 0V4.636l2.158 2.158a.75.75 0 001.06-1.06l-3.5-3.5a.75.75 0 00-1.06 0l-3.5 3.5a.75.75 0 101.06 1.06L9.25 4.636v8.614z"></path><path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z"></path></svg>
+                            <span id="event-image-filename" class="truncate">Seleccionar archivo...</span>
+                        </div>
+                        <input type="file" id="event-imageFile" name="imageFile" class="custom-file-input" accept="image/*">
+                    </div>
+                    <div id="event-image-preview" class="mt-2"></div>
+                </div>
                 <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
             </form>
         </div>
     </div>
-    
     <div id="parroquiano-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
         <div class="neumorphic-card p-8 w-full max-w-lg">
             <h2 class="text-2xl font-bold mb-6"></h2>
@@ -398,53 +357,78 @@
                     <div><label for="parroquiano-emergencia-telefono" class="block text-sm font-medium mb-1">Teléfono (Emergencia)</label><input type="tel" id="parroquiano-emergencia-telefono" name="emergencia_telefono" class="neumorphic-input"></div>
                     <div class="md:col-span-2"><label for="parroquiano-notas" class="block text-sm font-medium mb-1">Notas Adicionales</label><textarea id="parroquiano-notas" name="notas" rows="2" class="neumorphic-input"></textarea></div>
                 </div>
-                <div class="flex justify-end gap-4 mt-6">
-                    <button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button>
-                </div>
+                <div class="flex justify-end gap-4 mt-6"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
             </form>
         </div>
     </div>
-
      <div id="news-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
         <div class="neumorphic-card p-8 w-full max-w-lg">
             <h2 class="text-2xl font-bold mb-6"></h2>
             <form id="news-form" data-type="news">
                 <input type="hidden" name="id">
-                <div class="grid grid-cols-1 gap-4 max-h-[60vh] overflow-y-auto pr-2">
+                <div class="grid grid-cols-1 gap-4 max-h-[70vh] overflow-y-auto pr-2">
                     <div><label for="news-titulo" class="block text-sm font-medium mb-1">Título</label><input type="text" id="news-titulo" name="titulo" class="neumorphic-input" required></div>
-                    <div><label for="news-imagenUrl" class="block text-sm font-medium mb-1">URL de la Imagen Principal</label><input type="url" id="news-imagenUrl" name="imagenUrl" class="neumorphic-input" placeholder="https://ejemplo.com/imagen.jpg"></div>
-                    <div><label for="news-resumen" class="block text-sm font-medium mb-1">Resumen (para la tarjeta)</label><textarea id="news-resumen" name="resumen" rows="3" class="neumorphic-input" required></textarea></div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Imagen Principal</label>
+                        <div class="neumorphic-file-input custom-file-input-wrapper">
+                            <div class="flex items-center gap-2 p-3 w-full pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 flex-shrink-0"><path d="M9.25 13.25a.75.75 0 001.5 0V4.636l2.158 2.158a.75.75 0 001.06-1.06l-3.5-3.5a.75.75 0 00-1.06 0l-3.5 3.5a.75.75 0 101.06 1.06L9.25 4.636v8.614z"></path><path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z"></path></svg>
+                                <span id="main-image-filename" class="truncate">Seleccionar archivo...</span>
+                            </div>
+                            <input type="file" id="news-imagenFile" name="imagenFile" class="custom-file-input" accept="image/*">
+                        </div>
+                        <div id="main-image-preview" class="mt-2"></div>
+                        <div id="main-image-status" class="text-sm text-gray-500 mt-1"></div>
+                    </div>
+
+                    <div><label for="news-resumen" class="block text-sm font-medium mb-1">Resumen</label><textarea id="news-resumen" name="resumen" rows="3" class="neumorphic-input" required></textarea></div>
                     <div><label for="news-contenido" class="block text-sm font-medium mb-1">Contenido Completo</label><textarea id="news-contenido" name="contenido" rows="6" class="neumorphic-input" required></textarea></div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Imágenes de Galería (reemplaza existentes)</label>
+                         <div class="neumorphic-file-input custom-file-input-wrapper">
+                            <div class="flex items-center gap-2 p-3 w-full pointer-events-none">
+                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 flex-shrink-0"><path d="M9.25 13.25a.75.75 0 001.5 0V4.636l2.158 2.158a.75.75 0 001.06-1.06l-3.5-3.5a.75.75 0 00-1.06 0l-3.5 3.5a.75.75 0 101.06 1.06L9.25 4.636v8.614z"></path><path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z"></path></svg>
+                               <span id="gallery-images-filenames" class="truncate">Seleccionar archivos...</span>
+                            </div>
+                            <input type="file" id="news-galleryFiles" name="galleryFiles" class="custom-file-input" accept="image/*" multiple>
+                        </div>
+                        <div id="gallery-images-preview" class="mt-2 flex flex-wrap gap-2"></div>
+                        <div id="gallery-images-status" class="text-sm text-gray-500 mt-1"></div>
+                    </div>
                 </div>
                 <div class="flex justify-end gap-4 mt-6">
-                    <button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar Noticia</button>
+                    <button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button>
+                    <button type="submit" class="neumorphic-btn primary">
+                        <span id="save-news-btn-text">Guardar Noticia</span>
+                        <svg id="save-news-spinner" class="animate-spin h-5 w-5 text-gray-600 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    </button>
                 </div>
             </form>
         </div>
     </div>
-
     <div id="news-detail-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-8 w-full max-w-2xl max-h-[80vh] flex flex-col">
-            <h2 id="news-detail-title" class="text-3xl font-bold mb-4"></h2>
+        <div class="neumorphic-card p-6 sm:p-8 w-full max-w-3xl max-h-[90vh] flex flex-col">
+            <h2 id="news-detail-title" class="text-2xl sm:text-3xl font-bold mb-2"></h2>
             <p id="news-detail-date" class="text-sm text-gray-500 mb-4"></p>
-            <div class="overflow-y-auto pr-2">
-                <img id="news-detail-image" src="" alt="Imagen de la noticia" class="rounded-2xl w-full h-64 object-cover mb-6">
+            <div class="flex-grow overflow-y-auto pr-2">
+                <div id="news-gallery-container" class="relative mb-4">
+                    <img id="news-detail-image" src="" alt="Imagen de la noticia" class="rounded-2xl w-full h-64 sm:h-80 object-cover transition-opacity duration-300">
+                    <button id="gallery-prev-btn" class="absolute top-1/2 left-2 transform -translate-y-1/2 neumorphic-btn p-2 rounded-full hidden"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg></button>
+                    <button id="gallery-next-btn" class="absolute top-1/2 right-2 transform -translate-y-1/2 neumorphic-btn p-2 rounded-full hidden"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></button>
+                </div>
+                <div id="news-gallery-thumbnails" class="flex gap-2 overflow-x-auto pb-2 mb-4"></div>
                 <div id="news-detail-content" class="prose max-w-none"></div>
             </div>
-            <div class="flex justify-end gap-4 mt-6">
-                <button type="button" data-action="close-modal" class="neumorphic-btn">Cerrar</button>
-            </div>
+            <div class="flex justify-end gap-4 mt-6 flex-shrink-0"><button type="button" data-action="close-modal" class="neumorphic-btn">Cerrar</button></div>
         </div>
     </div>
-    
     <div id="confirm-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
         <div class="neumorphic-card p-8 w-full max-w-sm">
             <h2 class="text-xl font-bold mb-4">Confirmar Eliminación</h2>
             <p id="confirm-message" class="mb-6">¿Estás seguro?</p>
-            <div class="flex justify-end gap-4">
-                <button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button>
-                <button type="button" id="confirm-delete-btn" class="neumorphic-btn danger">Eliminar</button>
-            </div>
+            <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="button" id="confirm-delete-btn" class="neumorphic-btn danger">Eliminar</button></div>
         </div>
     </div>
 
@@ -452,30 +436,20 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
 
-        /**
-         * @module App
-         * Módulo principal que orquesta la aplicación del Portal Parroquial.
-         */
-
-        // -----------------------------------------------------------------------------
-        // 1. SERVICIO DE UI: Maneja toda la interacción con el DOM.
-        // -----------------------------------------------------------------------------
         const UI = {
             elements: {
                 appLoading: document.getElementById('app-loading'),
                 appContainer: document.getElementById('app-container'),
                 tabsContainer: document.getElementById('tabs-container'),
                 pagesContainer: document.getElementById('pages-container'),
-                
-                // Menú Móvil
+                adminControlsContainer: document.getElementById('admin-controls-container'),
                 edgeHandle: document.getElementById('edge-handle'),
                 mobileSidenav: document.getElementById('mobile-sidenav'),
                 mobileSidenavOverlay: document.getElementById('mobile-sidenav-overlay'),
                 closeSidenavBtn: document.getElementById('close-sidenav-btn'),
                 mobileNavLinks: document.getElementById('mobile-nav-links'),
-
-                // Tablero
                 currentDate: document.getElementById('current-date'),
                 currentTime: document.getElementById('current-time'),
                 weatherTemp: document.getElementById('weather-temp'),
@@ -484,18 +458,17 @@
                 upcomingEventsList: document.getElementById('upcoming-events-list'),
                 birthdayCard: document.getElementById('birthday-card'),
                 birthdayList: document.getElementById('birthday-list'),
-
-                // Contenido
                 agendaTableBody: document.getElementById('agenda-table-body'),
                 directorioTableBody: document.getElementById('directorio-table-body'),
                 newsGrid: document.getElementById('news-grid'),
-                
-                // Calendario
                 monthYearHeader: document.getElementById('month-year-header'),
                 calendarGrid: document.getElementById('calendar-grid'),
-
-                // Modales
+                newsDetailImage: document.getElementById('news-detail-image'),
+                galleryThumbnails: document.getElementById('news-gallery-thumbnails'),
+                galleryPrevBtn: document.getElementById('gallery-prev-btn'),
+                galleryNextBtn: document.getElementById('gallery-next-btn'),
                 modals: {
+                    adminLogin: document.getElementById('admin-login-modal'),
                     event: document.getElementById('event-modal'),
                     parroquiano: document.getElementById('parroquiano-modal'),
                     news: document.getElementById('news-modal'),
@@ -505,29 +478,18 @@
                 confirmMessage: document.getElementById('confirm-message'),
                 confirmDeleteBtn: document.getElementById('confirm-delete-btn'),
             },
-
             initMobileNav() {
                 const navTabs = this.elements.tabsContainer.querySelectorAll('.nav-tab');
                 let linksHtml = '';
                 navTabs.forEach(tab => {
-                    linksHtml += `
-                        <div class="mobile-nav-link ${tab.classList.contains('active') ? 'active' : ''}" data-target="${tab.dataset.target}">
-                            ${tab.innerHTML}
-                        </div>`;
+                    linksHtml += `<div class="mobile-nav-link ${tab.classList.contains('active') ? 'active' : ''}" data-target="${tab.dataset.target}">${tab.innerHTML}</div>`;
                 });
                 this.elements.mobileNavLinks.innerHTML = linksHtml;
             },
-
             showPage(pageId) {
-                this.elements.pagesContainer.querySelectorAll('.page').forEach(page => {
-                    page.classList.toggle('active', page.id === pageId);
-                });
-                // Sincronizar estado activo en ambas navegaciones
-                document.querySelectorAll(`[data-target]`).forEach(tab => {
-                    tab.classList.toggle('active', tab.dataset.target === pageId);
-                });
+                this.elements.pagesContainer.querySelectorAll('.page').forEach(page => page.classList.toggle('active', page.id === pageId));
+                document.querySelectorAll(`[data-target]`).forEach(tab => tab.classList.toggle('active', tab.dataset.target === pageId));
             },
-
             renderGrid(container, data, cardRenderer, emptyMessage) {
                 container.innerHTML = '';
                 if (data.length === 0) {
@@ -535,11 +497,8 @@
                     return;
                 }
                  const sortedData = [...data].sort((a, b) => new Date(b.fechaPublicacion) - new Date(a.fechaPublicacion));
-                sortedData.forEach(item => {
-                    container.insertAdjacentHTML('beforeend', cardRenderer(item));
-                });
+                sortedData.forEach(item => container.insertAdjacentHTML('beforeend', cardRenderer(item)));
             },
-
             renderTable(tbody, data, rowRenderer, emptyMessage) {
                 tbody.innerHTML = '';
                 if (data.length === 0) {
@@ -548,23 +507,20 @@
                     return;
                 }
                 const sortedData = [...data].sort((a, b) => (a.nombre || a.name || '').localeCompare(b.nombre || b.name || ''));
-                sortedData.forEach(item => {
-                    tbody.insertAdjacentHTML('beforeend', rowRenderer(item));
-                });
+                sortedData.forEach(item => tbody.insertAdjacentHTML('beforeend', rowRenderer(item)));
             },
-            
             createNewsCard(article) {
                 const placeholderImage = 'https://placehold.co/600x400/eef0f4/4b5563?text=Noticia';
                 return `
                     <div class="neumorphic-card flex flex-col">
                         <img src="${article.imagenUrl || placeholderImage}" alt="Imagen de la noticia" class="rounded-t-2xl h-48 w-full object-cover" onerror="this.src='${placeholderImage}'">
                         <div class="p-4 flex flex-col flex-grow">
-                            <h3 class="text-lg font-bold mb-2">${article.titulo}</h3>
+                            <h3 class="text-lg font-bold mb-2 break-words">${article.titulo}</h3>
                             <p class="text-sm text-gray-500 mb-2">${new Date(article.fechaPublicacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                            <p class="text-sm mb-4 flex-grow">${article.resumen}</p>
+                            <p class="text-sm mb-4 flex-grow break-words">${article.resumen}</p>
                             <div class="flex justify-between items-center mt-auto">
                                 <button data-action="read-more" data-type="news" data-id="${article.id}" class="neumorphic-btn primary btn-sm">Leer Más</button>
-                                <div>
+                                <div class="admin-only" style="gap: 0.5rem;">
                                     <button data-action="edit" data-type="news" data-id="${article.id}" class="neumorphic-btn btn-sm">Editar</button>
                                     <button data-action="delete" data-type="news" data-id="${article.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
                                 </div>
@@ -572,7 +528,6 @@
                         </div>
                     </div>`;
             },
-
             createEventRow(event) {
                 const date = new Date(event.date + 'T00:00:00Z').toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
                 return `
@@ -580,7 +535,7 @@
                         <td class="p-3">${date}</td>
                         <td class="p-3 hidden sm:table-cell">${event.time}</td>
                         <td class="p-3 font-medium">${event.name}</td>
-                        <td class="p-3">
+                        <td class="p-3 admin-only-table-cell">
                             <div class="flex gap-2">
                                 <button data-action="edit" data-type="event" data-id="${event.id}" class="neumorphic-btn btn-sm">Editar</button>
                                 <button data-action="delete" data-type="event" data-id="${event.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
@@ -588,39 +543,33 @@
                         </td>
                     </tr>`;
             },
-
             createParroquianoRow(p) {
                 return `
                     <tr class="border-b border-gray-300/50">
                         <td class="p-3 font-medium">${p.nombre || ''}</td>
                         <td class="p-3 hidden md:table-cell">${p.telefono || ''}</td>
                         <td class="p-3 hidden lg:table-cell">${p.emergencia_nombre || ''}</td>
-                        <td class="p-3">
-                            <div class="flex gap-2">
+                        <td class="p-3 admin-only-table-cell">
+                             <div class="flex gap-2">
                                 <button data-action="edit" data-type="parroquiano" data-id="${p.id}" class="neumorphic-btn btn-sm">Editar</button>
                                 <button data-action="delete" data-type="parroquiano" data-id="${p.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
                             </div>
                         </td>
                     </tr>`;
             },
-            
             renderCalendar(date, events, parroquianos) {
                 const year = date.getFullYear();
                 const month = date.getMonth();
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
-
                 const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
                 this.elements.monthYearHeader.textContent = `${monthNames[month]} ${year}`;
                 this.elements.calendarGrid.innerHTML = '';
-
                 const firstDayOfMonth = new Date(year, month, 1).getDay();
                 const daysInMonth = new Date(year, month + 1, 0).getDate();
-
                 for (let i = 0; i < firstDayOfMonth; i++) {
                     this.elements.calendarGrid.insertAdjacentHTML('beforeend', `<div class="calendar-cell not-current-month"></div>`);
                 }
-
                 for (let day = 1; day <= daysInMonth; day++) {
                     const cellDate = new Date(year, month, day);
                     const isToday = cellDate.getTime() === today.getTime();
@@ -632,20 +581,12 @@
                         const birthDate = new Date(p.nacimiento + 'T00:00:00Z');
                         return birthDate.getMonth() === month && birthDate.getDate() === day;
                     });
-                    
                     let itemsHtml = dailyEvents.map(e => `<div class="calendar-item event-item" title="${e.name} a las ${e.time}">${e.name}</div>`).join('');
                     itemsHtml += dailyBirthdays.map(p => `<div class="calendar-item birthday-item" title="Cumpleaños de ${p.nombre}">🎂 ${p.nombre.split(' ')[0]}</div>`).join('');
-
-                    const cellHtml = `
-                        <div class="${cellClasses}">
-                            <div class="calendar-day-number">${day}</div>
-                            <div class="calendar-items-container">${itemsHtml}</div>
-                        </div>`;
-                    
+                    const cellHtml = `<div class="${cellClasses}"><div class="calendar-day-number">${day}</div><div class="calendar-items-container">${itemsHtml}</div></div>`;
                     this.elements.calendarGrid.insertAdjacentHTML('beforeend', cellHtml);
                 }
             },
-
             renderUpcomingEvents(events) {
                 this.elements.upcomingEventsList.innerHTML = '';
                 const now = new Date();
@@ -659,30 +600,27 @@
                     this.elements.upcomingEventsList.innerHTML = '<li class="text-gray-500">No hay próximos eventos.</li>';
                     return;
                 }
-                
                 upcoming.forEach(event => {
+                    const placeholderImage = 'https://placehold.co/100x100/eef0f4/4b5563?text=Evento';
                     this.elements.upcomingEventsList.insertAdjacentHTML('beforeend', `
-                        <li class="flex justify-between items-center p-2 rounded-md">
-                            <div>
-                                <p class="font-semibold">${event.name}</p>
+                        <li class="flex items-center gap-4 p-3 rounded-lg neumorphic-inset">
+                            <img src="${event.imageUrl || placeholderImage}" alt="Imagen del evento" class="w-16 h-16 object-cover rounded-lg flex-shrink-0" onerror="this.src='${placeholderImage}'">
+                            <div class="overflow-hidden">
+                                <p class="font-semibold truncate">${event.name}</p>
                                 <p class="text-sm text-gray-500">${new Date(event.date + 'T00:00:00Z').toLocaleDateString('es-ES', { month: 'long', day: 'numeric' })} - ${event.time}h</p>
                             </div>
-                            <span class="text-sm font-medium text-blue-600">Próximamente</span>
                         </li>`);
                 });
             },
-
             renderBirthdayReminders(parroquianos) {
                 const today = new Date();
                 const todayMonth = today.getMonth() + 1;
                 const todayDay = today.getDate();
-
                 const birthdayFolks = parroquianos.filter(p => {
                     if (!p.nacimiento) return false;
                     const birthDate = new Date(p.nacimiento + 'T00:00:00Z');
                     return (birthDate.getMonth() + 1 === todayMonth) && (birthDate.getDate() === todayDay);
                 });
-
                 this.elements.birthdayList.innerHTML = '';
                 if (birthdayFolks.length === 0) {
                     this.elements.birthdayCard.style.display = 'none';
@@ -697,13 +635,11 @@
                     });
                 }
             },
-
             updateDateTime() {
                 const now = new Date();
                 this.elements.currentDate.textContent = now.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
                 this.elements.currentTime.textContent = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
             },
-
             updateWeatherUI(data) {
                 if (data.temp !== undefined) {
                     this.elements.weatherTemp.textContent = `${Math.round(data.temp)}°C`;
@@ -715,102 +651,83 @@
                     this.elements.weatherLocation.textContent = data.location || '';
                 }
             },
+            showGalleryImage(index) {
+                const { newsDetailImage, galleryThumbnails } = this.elements;
+                newsDetailImage.style.opacity = 0;
+                setTimeout(() => {
+                    newsDetailImage.src = App.state.currentGalleryImages[index] || 'https://placehold.co/800x600/eef0f4/4b5563?text=Imagen+no+disponible';
+                    newsDetailImage.style.opacity = 1;
+                }, 150);
+                galleryThumbnails.querySelectorAll('.gallery-thumbnail').forEach((thumb, i) => {
+                    thumb.classList.toggle('active', i === index);
+                    if (i === index) thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                });
+                App.state.currentGalleryIndex = index;
+            },
+            updateAdminUI(isAdmin) {
+                this.elements.appContainer.classList.toggle('admin-mode', isAdmin);
+                this.elements.adminControlsContainer.innerHTML = isAdmin 
+                    ? `<button id="logout-btn" class="neumorphic-btn danger">Cerrar Sesión</button>` 
+                    : `<button id="login-btn" class="neumorphic-btn">Iniciar Sesión</button>`;
+            }
         };
 
-        // -----------------------------------------------------------------------------
-        // 2. SERVICIO DE FIREBASE
-        // -----------------------------------------------------------------------------
         const FirebaseService = {
-            db: null,
-            auth: null,
-            appIdPath: '',
-            basePaths: {},
-
+            db: null, auth: null, storage: null, appIdPath: '', basePaths: {},
             async init(onAuthReadyCallback) {
                 const firebaseConfig = {
-                   apiKey: "AIzaSyATCd0jgG2Lo5q8K5bB15eNvkakJBb15RU",
-                  authDomain: "ibcgapp.firebaseapp.com",
-                  projectId: "ibcgapp",
-                  storageBucket: "ibcgapp.appspot.com",
-                  messagingSenderId: "548258029551",
-                  appId: "1:548258029551:web:9354e4cc79ce4f25f0201a",
-                  measurementId: "G-RBN8KZPJ5X"
+                    apiKey: "AIzaSyATCd0jgG2Lo5q8K5bB15eNvkakJBb15RU", authDomain: "ibcgapp.firebaseapp.com",
+                    projectId: "ibcgapp", storageBucket: "ibcgapp.appspot.com",
+                    messagingSenderId: "548258029551", appId: "1:548258029551:web:9354e4cc79ce4f25f0201a",
+                    measurementId: "G-RBN8KZPJ5X"
                 };
-
                 const app = initializeApp(firebaseConfig);
                 this.db = getFirestore(app);
                 this.auth = getAuth(app);
-                
-                const appId = firebaseConfig.projectId;
-                this.appIdPath = `artifacts/${appId}`;
-                this.basePaths = {
-                    events:       `public/data/events`,
-                    parroquianos: `public/data/parroquianos`,
-                    news:         `public/data/news`,
-                };
-                
-                onAuthStateChanged(this.auth, (user) => {
-                     onAuthReadyCallback();
-                });
-                
+                this.storage = getStorage(app);
+                this.appIdPath = `artifacts/${firebaseConfig.projectId}`;
+                this.basePaths = { events: `public/data/events`, parroquianos: `public/data/parroquianos`, news: `public/data/news` };
+                onAuthStateChanged(this.auth, (user) => onAuthReadyCallback());
                 await signInAnonymously(this.auth);
             },
-            
             _getCollectionPath(type) {
-                let pathTemplate = this.basePaths[type];
+                const pathTemplate = this.basePaths[type];
                 if (!pathTemplate) throw new Error(`Collection type "${type}" not defined.`);
                 return `${this.appIdPath}/${pathTemplate}`;
             },
-
-            onCollectionSnapshot(type, callback) {
-                const path = this._getCollectionPath(type);
-                if (!path) return () => {};
-                return onSnapshot(collection(this.db, path), (snapshot) => {
-                    const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    callback(data);
-                }, (error) => console.error(`Error en listener de ${type}: `, error));
-            },
-
             async saveDoc(type, id, data) {
                 const path = this._getCollectionPath(type);
                 const collectionRef = collection(this.db, path);
                 if (id) {
                     return updateDoc(doc(collectionRef, id), data);
                 } else {
-                    if(type === 'news' && !data.fechaPublicacion) {
-                        data.fechaPublicacion = new Date().toISOString();
-                    }
+                    if (type === 'news' && !data.fechaPublicacion) data.fechaPublicacion = new Date().toISOString();
                     return addDoc(collectionRef, data);
                 }
             },
-
             async deleteDoc(type, id) {
                 const path = this._getCollectionPath(type);
                 return deleteDoc(doc(this.db, path, id));
+            },
+            async uploadFile(file, path) {
+                if (!file || !path) throw new Error("Se requiere un archivo y una ruta para la subida.");
+                const storageRef = ref(this.storage, `${path}/${Date.now()}_${file.name}`);
+                const snapshot = await uploadBytes(storageRef, file);
+                return await getDownloadURL(snapshot.ref);
             }
         };
 
-        // -----------------------------------------------------------------------------
-        // 3. SERVICIO DEL CLIMA
-        // -----------------------------------------------------------------------------
         const WeatherService = {
             API_KEY: '9a11de307931b3ba88e6af9048b7f3b1',
-            
             async fetch() {
-                const lat = 19.5437;
-                const lon = -96.91;
+                const lat = 19.5437, lon = -96.91;
                 const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${this.API_KEY}&units=metric&lang=es`;
-                
                 try {
                     const response = await fetch(url);
                     const data = await response.json();
                     if (response.status === 401) throw new Error('Invalid API key');
                     if (!response.ok || !data.main) throw new Error(data.message || 'Respuesta inválida de la API');
-                    return {
-                        temp: data.main.temp,
-                        description: data.weather[0].description,
-                        location: data.name
-                    };
+                    return { temp: data.main.temp, description: data.weather[0].description, location: data.name };
                 } catch (error) {
                     console.error("Error al obtener el clima:", error);
                     return { description: error.message === 'Invalid API key' ? 'Clave API inválida' : 'Error de red' };
@@ -818,33 +735,23 @@
             }
         };
         
-        // -----------------------------------------------------------------------------
-        // 4. LÓGICA PRINCIPAL DE LA APLICACIÓN
-        // -----------------------------------------------------------------------------
         const App = {
-            state: {
-                events: [],
-                parroquianos: [],
-                news: [],
-            },
+            state: { isAdmin: false, events: [], parroquianos: [], news: [], currentGalleryImages: [], currentGalleryIndex: 0, },
             currentCalendarDate: new Date(),
-
             async init() {
                 try {
                     UI.elements.appLoading.style.display = 'flex';
+                    this.checkAdminSession();
                     UI.initMobileNav();
                     this.setupEventListeners();
                     UI.updateDateTime();
                     setInterval(() => UI.updateDateTime(), 60000);
-                    
                     await FirebaseService.init(this.onAuthReady.bind(this));
-
                 } catch (error) {
                      console.error("Error fatal durante la inicialización:", error);
                     document.body.innerHTML = `<div class="fixed inset-0 bg-red-100 text-red-800 p-8 flex flex-col justify-center items-center text-center"><h1 class="text-3xl font-bold mb-4">¡Ups! Ocurrió un error crítico.</h1><p class="mb-4">${error.message}</p></div>`;
                 }
             },
-
             onAuthReady() {
                 this.setupDataListeners();
                 this.loadWeather();
@@ -852,243 +759,163 @@
                 UI.elements.appLoading.style.display = 'none';
                 UI.elements.appContainer.classList.add('loaded');
             },
-            
             setupDataListeners() {
-                FirebaseService.onCollectionSnapshot('events', (events) => {
-                    this.state.events = events;
-                    UI.renderTable(UI.elements.agendaTableBody, events, UI.createEventRow, 'No hay eventos programados.');
-                    UI.renderUpcomingEvents(events);
-                    UI.renderCalendar(this.currentCalendarDate, this.state.events, this.state.parroquianos);
-                });
-                FirebaseService.onCollectionSnapshot('parroquianos', (parroquianos) => {
-                    this.state.parroquianos = parroquianos;
-                    UI.renderTable(UI.elements.directorioTableBody, parroquianos, UI.createParroquianoRow, 'No hay registros en el directorio.');
-                    UI.renderBirthdayReminders(parroquianos);
-                    UI.renderCalendar(this.currentCalendarDate, this.state.events, this.state.parroquianos);
-                });
-                FirebaseService.onCollectionSnapshot('news', (newsItems) => {
-                    this.state.news = newsItems;
-                    UI.renderGrid(UI.elements.newsGrid, newsItems, UI.createNewsCard, 'No hay noticias publicadas.');
-                });
+                FirebaseService.onCollectionSnapshot('events', d => { this.state.events = d; UI.renderTable(UI.elements.agendaTableBody, d, UI.createEventRow, 'No hay eventos.'); UI.renderUpcomingEvents(d); UI.renderCalendar(this.currentCalendarDate, d, this.state.parroquianos); });
+                FirebaseService.onCollectionSnapshot('parroquianos', d => { this.state.parroquianos = d; UI.renderTable(UI.elements.directorioTableBody, d, UI.createParroquianoRow, 'No hay registros.'); UI.renderBirthdayReminders(d); UI.renderCalendar(this.currentCalendarDate, this.state.events, d); });
+                FirebaseService.onCollectionSnapshot('news', d => { this.state.news = d; UI.renderGrid(UI.elements.newsGrid, d, UI.createNewsCard, 'No hay noticias.'); });
             },
-            
             toggleSidenav(open, isFinal) {
                 const sidenav = UI.elements.mobileSidenav;
-                
                 if (isFinal) {
                     sidenav.classList.add('is-transitioning');
                     sidenav.style.transform = open ? 'translateX(0)' : 'translateX(-100%)';
-                    if (open) {
-                        UI.elements.mobileSidenavOverlay.classList.add('active');
-                    } else {
-                        UI.elements.mobileSidenavOverlay.classList.remove('active');
-                    }
+                    UI.elements.mobileSidenavOverlay.classList.toggle('active', open);
                 } else {
                     sidenav.classList.remove('is-transitioning');
-                    const transformValue = open ? 0 : -sidenav.offsetWidth;
-                    sidenav.style.transform = `translateX(${transformValue}px)`;
+                    sidenav.style.transform = `translateX(${open ? 0 : -sidenav.offsetWidth}px)`;
                 }
             },
-
             setupEventListeners() {
-                // Navegación de Pestañas (Desktop)
-                UI.elements.tabsContainer.addEventListener('click', (e) => {
-                    const tab = e.target.closest('.nav-tab');
-                    if (tab) UI.showPage(tab.dataset.target);
-                });
-
-                // --- Lógica del Panel Edge ---
-                const sidenav = UI.elements.mobileSidenav;
-                let touchStartX = 0;
-                let touchCurrentX = 0;
-                let isDragging = false;
-                const sidenavWidth = 280;
-
-                const handleDragStart = (clientX) => {
-                    touchStartX = clientX;
-                    isDragging = true;
-                    sidenav.classList.remove('is-transitioning');
-                };
-
-                const handleDragMove = (clientX) => {
-                    if (!isDragging) return;
-                    touchCurrentX = clientX;
-                    const deltaX = touchCurrentX - touchStartX;
-                    const currentTransform = sidenav.classList.contains('active') ? 0 : -sidenavWidth;
-                    let newTransform = Math.min(0, Math.max(-sidenavWidth, currentTransform + deltaX));
-                    sidenav.style.transform = `translateX(${newTransform}px)`;
-                };
-
-                const handleDragEnd = () => {
-                    if (!isDragging) return;
-                    isDragging = false;
-                    const deltaX = touchCurrentX - touchStartX;
-                    const isOpen = sidenav.classList.contains('active');
-                    
-                    // Si se movió más de 50px o más de 1/3 del ancho, cambia el estado
-                    if (Math.abs(deltaX) > 50 || Math.abs(deltaX) > sidenavWidth / 3) {
-                         if (deltaX > 0 && !isOpen) { // Swipe right to open
-                            sidenav.classList.add('active');
-                            this.toggleSidenav(true, true);
-                        } else if (deltaX < 0 && isOpen) { // Swipe left to close
-                            sidenav.classList.remove('active');
-                            this.toggleSidenav(false, true);
-                        } else { // No cambió de estado, volver a la posición original
-                            this.toggleSidenav(isOpen, true);
-                        }
-                    } else { // No se movió lo suficiente, volver a la posición original
-                         this.toggleSidenav(isOpen, true);
-                    }
-                    touchStartX = 0;
-                    touchCurrentX = 0;
-                };
-
-                document.body.addEventListener('touchstart', (e) => {
-                    // Solo iniciar el arrastre si el toque está cerca del borde izquierdo
-                    if (e.touches[0].clientX < 40) {
-                         handleDragStart(e.touches[0].clientX);
-                    }
-                });
-                document.body.addEventListener('touchmove', (e) => handleDragMove(e.touches[0].clientX));
+                UI.elements.tabsContainer.addEventListener('click', e => { const t = e.target.closest('.nav-tab'); if (t) UI.showPage(t.dataset.target); });
+                const sidenav = UI.elements.mobileSidenav; let touchStartX=0,touchCurrentX=0,isDragging=false; const sidenavWidth=280;
+                const handleDragStart = cX => { touchStartX=cX; isDragging=true; sidenav.classList.remove('is-transitioning'); };
+                const handleDragMove = cX => { if (!isDragging) return; touchCurrentX=cX; const dX=touchCurrentX-touchStartX; const cT=sidenav.classList.contains('active')?0:-sidenavWidth; let nT=Math.min(0,Math.max(-sidenavWidth,cT+dX)); sidenav.style.transform=`translateX(${nT}px)`; };
+                const handleDragEnd = () => { if (!isDragging) return; isDragging=false; const dX=touchCurrentX-touchStartX; const isOpen=sidenav.classList.contains('active'); if(Math.abs(dX)>50||Math.abs(dX)>sidenavWidth/3) { if(dX>0&&!isOpen){sidenav.classList.add('active');this.toggleSidenav(true,true);}else if(dX<0&&isOpen){sidenav.classList.remove('active');this.toggleSidenav(false,true);}else{this.toggleSidenav(isOpen,true);}}else{this.toggleSidenav(isOpen,true);} touchStartX=0; touchCurrentX=0; };
+                document.body.addEventListener('touchstart', e => { if (e.touches[0].clientX < 40 && !e.target.closest('.fixed.inset-0:not(.hidden)')) handleDragStart(e.touches[0].clientX); }, { passive: true });
+                document.body.addEventListener('touchmove', e => { if (isDragging) handleDragMove(e.touches[0].clientX); }, { passive: true });
                 document.body.addEventListener('touchend', handleDragEnd);
-
-                UI.elements.edgeHandle.addEventListener('click', () => {
-                    const isOpen = sidenav.classList.toggle('active');
-                    this.toggleSidenav(isOpen, true);
+                UI.elements.edgeHandle.addEventListener('click', () => { const o = sidenav.classList.toggle('active'); this.toggleSidenav(o, true); });
+                UI.elements.closeSidenavBtn.addEventListener('click', () => { sidenav.classList.remove('active'); this.toggleSidenav(false, true); });
+                UI.elements.mobileSidenavOverlay.addEventListener('click', () => { sidenav.classList.remove('active'); this.toggleSidenav(false, true); });
+                UI.elements.mobileNavLinks.addEventListener('click', e => { const l = e.target.closest('.mobile-nav-link'); if (l) { UI.showPage(l.dataset.target); sidenav.classList.remove('active'); this.toggleSidenav(false, true); } });
+                document.getElementById('prev-month-btn').addEventListener('click', () => { this.currentCalendarDate.setMonth(this.currentCalendarDate.getMonth() - 1); UI.renderCalendar(this.currentCalendarDate, this.state.events, this.state.parroquianos); });
+                document.getElementById('next-month-btn').addEventListener('click', () => { this.currentCalendarDate.setMonth(this.currentCalendarDate.getMonth() + 1); UI.renderCalendar(this.currentCalendarDate, this.state.events, this.state.parroquianos); });
+                UI.elements.galleryPrevBtn.addEventListener('click', () => { let n = this.state.currentGalleryIndex-1; if(n<0)n=this.state.currentGalleryImages.length-1; UI.showGalleryImage(n); });
+                UI.elements.galleryNextBtn.addEventListener('click', () => { let n = this.state.currentGalleryIndex+1; if(n>=this.state.currentGalleryImages.length)n=0; UI.showGalleryImage(n); });
+                document.addEventListener('click', e => { const b = e.target.closest('button, .gallery-thumbnail'); if (!b) return; if (b.id==='login-btn')this.openModal('adminLogin'); if(b.id==='logout-btn')this.handleLogout(); if(b.dataset.modalTarget)this.openModal(b.dataset.modalTarget); if(b.matches('.gallery-thumbnail')){UI.showGalleryImage(parseInt(b.dataset.index,10));return;} const a=b.dataset.action; if(a==='close-modal'){const m=b.closest('.fixed.inset-0'); if(m)this.closeModal(m.id);} if(['edit','delete','read-more'].includes(a)){const{type,id}=b.dataset; if(a==='edit')this.handleEdit(type,id); if(a==='delete')this.handleDelete(type,id); if(a==='read-more')this.handleReadMore(type,id);} });
+                Object.values(UI.elements.modals).forEach(m => m.addEventListener('click', e => { if (e.target === m) this.closeModal(m.id); }));
+                document.addEventListener('submit', e => { e.preventDefault(); if (e.target.id === 'admin-login-form') this.handleAdminLoginAttempt(e.target); else if (e.target.matches('form')) this.handleFormSubmit(e.target); });
+                
+                const newsModal = UI.elements.modals.news;
+                newsModal.querySelector('#news-imagenFile').addEventListener('change', e => {
+                    const fileName = e.target.files[0] ? e.target.files[0].name : 'Seleccionar archivo...';
+                    newsModal.querySelector('#main-image-filename').textContent = fileName;
                 });
-                UI.elements.closeSidenavBtn.addEventListener('click', () => {
-                    sidenav.classList.remove('active');
-                    this.toggleSidenav(false, true);
+                newsModal.querySelector('#news-galleryFiles').addEventListener('change', e => {
+                    const fileCount = e.target.files.length;
+                    if (fileCount === 1) newsModal.querySelector('#gallery-images-filenames').textContent = e.target.files[0].name;
+                    else if (fileCount > 1) newsModal.querySelector('#gallery-images-filenames').textContent = `${fileCount} archivos seleccionados`;
+                    else newsModal.querySelector('#gallery-images-filenames').textContent = 'Seleccionar archivos...';
                 });
-                UI.elements.mobileSidenavOverlay.addEventListener('click', () => {
-                     sidenav.classList.remove('active');
-                    this.toggleSidenav(false, true);
-                });
-                UI.elements.mobileNavLinks.addEventListener('click', (e) => {
-                    const link = e.target.closest('.mobile-nav-link');
-                    if (link) {
-                        UI.showPage(link.dataset.target);
-                        sidenav.classList.remove('active');
-                        this.toggleSidenav(false, true);
-                    }
-                });
-
-                // Navegación del Calendario
-                document.getElementById('prev-month-btn').addEventListener('click', () => {
-                    this.currentCalendarDate.setMonth(this.currentCalendarDate.getMonth() - 1);
-                    UI.renderCalendar(this.currentCalendarDate, this.state.events, this.state.parroquianos);
-                });
-                document.getElementById('next-month-btn').addEventListener('click', () => {
-                    this.currentCalendarDate.setMonth(this.currentCalendarDate.getMonth() + 1);
-                    UI.renderCalendar(this.currentCalendarDate, this.state.events, this.state.parroquianos);
-                });
-
-                // Modales
-                document.addEventListener('click', (e) => {
-                    const button = e.target.closest('button');
-                    if (!button) return;
-                    const modalTarget = button.dataset.modalTarget;
-                    if (modalTarget) this.openModal(modalTarget);
-                    const action = button.dataset.action;
-                    if (action === 'close-modal') {
-                        const modal = button.closest('.fixed.inset-0');
-                        if (modal) this.closeModal(modal.id);
-                    }
-                    if (['edit', 'delete', 'read-more'].includes(action)) {
-                        const { type, id } = button.dataset;
-                        if (action === 'edit') this.handleEdit(type, id);
-                        if (action === 'delete') this.handleDelete(type, id);
-                        if (action === 'read-more') this.handleReadMore(type, id);
-                    }
-                });
-                 Object.values(UI.elements.modals).forEach(modal => {
-                    modal.addEventListener('click', (e) => {
-                        if (e.target === modal) this.closeModal(modal.id);
-                    });
-                });
-                document.addEventListener('submit', (e) => {
-                    if (e.target.matches('form')) {
-                        e.preventDefault();
-                        this.handleFormSubmit(e.target);
-                    }
+                
+                const eventModal = UI.elements.modals.event;
+                eventModal.querySelector('#event-imageFile').addEventListener('change', e => {
+                    const fileName = e.target.files[0] ? e.target.files[0].name : 'Seleccionar archivo...';
+                    eventModal.querySelector('#event-image-filename').textContent = fileName;
                 });
             },
-            
-            async loadWeather() {
-                const weatherData = await WeatherService.fetch();
-                UI.updateWeatherUI(weatherData);
+            async loadWeather() { UI.updateWeatherUI(await WeatherService.fetch()); },
+            checkAdminSession() { if(sessionStorage.getItem('isAdmin')==='true')this.state.isAdmin=true; UI.updateAdminUI(this.state.isAdmin); },
+            handleAdminLoginAttempt(form) {
+                const pass = form.querySelector('#admin-password').value;
+                const err = form.querySelector('#login-error-msg');
+                if (pass === 'parroquia2024') { this.state.isAdmin=true; sessionStorage.setItem('isAdmin','true'); UI.updateAdminUI(true); this.closeModal('adminLogin'); form.reset(); err.classList.add('hidden'); }
+                else { err.classList.remove('hidden'); }
             },
-            
-            handleFormSubmit(form) {
+            handleLogout() { this.state.isAdmin=false; sessionStorage.removeItem('isAdmin'); UI.updateAdminUI(false); },
+            async handleFormSubmit(form) {
+                if (!this.state.isAdmin) return;
                 const type = form.dataset.type;
-                const serviceType = type === 'news' ? 'news' : type + 's';
-                const formData = new FormData(form);
-                const data = Object.fromEntries(formData.entries());
-                const id = data.id;
-                delete data.id;
-                FirebaseService.saveDoc(serviceType, id, data)
-                    .then(() => this.closeModal(`${type}-modal`))
-                    .catch(err => console.error(`Error al guardar ${type}:`, err));
+                if (type === 'news') { await this.handleNewsFormSubmit(form); } 
+                else if (type === 'event') { await this.handleEventFormSubmit(form); }
+                else { const serviceType=type+'s'; const data=Object.fromEntries(new FormData(form).entries()); const id=data.id; delete data.id; FirebaseService.saveDoc(serviceType,id,data).then(()=>this.closeModal(`${type}-modal`)).catch(err=>console.error(`Error al guardar ${type}:`,err)); }
             },
-            
+            async handleEventFormSubmit(form) {
+                const submitButton = form.querySelector('button[type="submit"]');
+                submitButton.disabled = true;
+                try {
+                    const id = form.querySelector('[name="id"]').value;
+                    const dataToSave = {
+                        name: form.querySelector('[name="name"]').value,
+                        date: form.querySelector('[name="date"]').value,
+                        time: form.querySelector('[name="time"]').value
+                    };
+                    const imageFile = form.querySelector('[name="imageFile"]').files[0];
+                    if (imageFile) {
+                        dataToSave.imageUrl = await FirebaseService.uploadFile(imageFile, 'event_images');
+                    } else if (id) {
+                        const originalItem = this.state.events.find(i => i.id === id);
+                        if (originalItem && originalItem.imageUrl) {
+                            dataToSave.imageUrl = originalItem.imageUrl;
+                        }
+                    }
+                    await FirebaseService.saveDoc('events', id || null, dataToSave);
+                    this.closeModal('event-modal');
+                } catch (error) {
+                    console.error("Error al guardar evento:", error);
+                } finally {
+                    submitButton.disabled = false;
+                }
+            },
+            async handleNewsFormSubmit(form) {
+                const btn = form.querySelector('button[type="submit"]'), txt = form.querySelector('#save-news-btn-text'), spin = form.querySelector('#save-news-spinner');
+                const mainStatus = form.querySelector('#main-image-status'), galStatus = form.querySelector('#gallery-images-status');
+                btn.disabled=true; txt.textContent='Guardando...'; spin.classList.remove('hidden'); mainStatus.textContent=''; galStatus.textContent='';
+                try {
+                    const formData = new FormData(form), textData = Object.fromEntries(formData.entries()), id=textData.id;
+                    const originalItem = id ? this.state.news.find(i=>i.id===id) : {};
+                    const dataToSave = { ...originalItem, titulo:textData.titulo, resumen:textData.resumen, contenido:textData.contenido };
+                    const mainFile = document.getElementById('news-imagenFile').files[0];
+                    const galleryFiles = document.getElementById('news-galleryFiles').files;
+                    if (mainFile) { mainStatus.textContent='Subiendo...'; dataToSave.imagenUrl = await FirebaseService.uploadFile(mainFile,'news_images'); mainStatus.textContent='Subida.'; }
+                    if (galleryFiles.length>0) { galStatus.textContent=`Subiendo ${galleryFiles.length} imágenes...`; const urls=await Promise.all(Array.from(galleryFiles).map(f=>FirebaseService.uploadFile(f,'news_images'))); dataToSave.galleryUrls=urls; galStatus.textContent='Galería subida.'; }
+                    await FirebaseService.saveDoc('news',id,dataToSave);
+                    this.closeModal('news-modal');
+                } catch (error) { console.error("Error al guardar noticia:", error); mainStatus.textContent='Error al subir.'; }
+                finally { btn.disabled=false; txt.textContent='Guardar Noticia'; spin.classList.add('hidden'); }
+            },
             handleReadMore(type, id) {
-                const item = this.state.news.find(i => i.id === id);
-                if (!item) return;
-                const modal = UI.elements.modals.newsDetail;
-                modal.querySelector('#news-detail-title').textContent = item.titulo;
-                modal.querySelector('#news-detail-date').textContent = new Date(item.fechaPublicacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-                modal.querySelector('#news-detail-image').src = item.imagenUrl || 'https://placehold.co/600x400/eef0f4/4b5563?text=Noticia';
-                modal.querySelector('#news-detail-content').innerHTML = item.contenido.replace(/\n/g, '<br>');
+                if(type!=='news')return; const item=this.state.news.find(i=>i.id===id); if(!item)return;
+                const modal=UI.elements.modals.newsDetail; const{galleryThumbnails,galleryPrevBtn,galleryNextBtn}=UI.elements;
+                modal.querySelector('#news-detail-title').textContent=item.titulo;
+                modal.querySelector('#news-detail-date').textContent=new Date(item.fechaPublicacion).toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'});
+                modal.querySelector('#news-detail-content').innerHTML=item.contenido.replace(/\n/g,'<br>');
+                this.state.currentGalleryImages=[item.imagenUrl, ...(item.galleryUrls||[])].filter(Boolean); this.state.currentGalleryIndex=0;
+                galleryThumbnails.innerHTML='';
+                if(this.state.currentGalleryImages.length > 0){ this.state.currentGalleryImages.forEach((url,index)=>{galleryThumbnails.insertAdjacentHTML('beforeend',`<img src="${url}" data-index="${index}" class="gallery-thumbnail ${index===0?'active':''}">`);}); UI.showGalleryImage(0);}else{UI.elements.newsDetailImage.src='https://placehold.co/800x600/eef0f4/4b5563?text=Sin+Imagen';}
+                const showBtns = this.state.currentGalleryImages.length > 1;
+                galleryPrevBtn.classList.toggle('hidden',!showBtns); galleryNextBtn.classList.toggle('hidden',!showBtns);
                 this.openModal('newsDetail');
             },
-
-            handleEdit(type, id) {
-                const collectionName = type === 'news' ? 'news' : type + 's';
-                const item = this.state[collectionName].find(i => i.id === id);
-                this.openModal(`${type}-modal`, item);
-            },
-            
+            handleEdit(type, id) { if(!this.state.isAdmin)return; const colName=type==='news'?'news':type+'s'; const item=this.state[colName].find(i=>i.id===id); this.openModal(`${type}-modal`,item); },
             handleDelete(type, id) {
-                const modal = UI.elements.modals.confirm;
-                modal.querySelector('#confirm-message').textContent = `¿Estás seguro de que quieres eliminar este registro?`;
+                if(!this.state.isAdmin)return;
+                const modal=UI.elements.modals.confirm; modal.querySelector('#confirm-message').textContent=`¿Seguro de eliminar este registro?`;
                 this.openModal('confirm');
                 const serviceType = type === 'news' ? 'news' : type + 's';
-                UI.elements.confirmDeleteBtn.onclick = () => {
-                    FirebaseService.deleteDoc(serviceType, id)
-                        .then(() => this.closeModal('confirm'))
-                        .catch(err => console.error(`Error al eliminar ${type}:`, err));
-                };
+                UI.elements.confirmDeleteBtn.onclick = () => { FirebaseService.deleteDoc(serviceType, id).then(()=>this.closeModal('confirm')).catch(err=>console.error(`Error al eliminar ${type}:`,err)); };
             },
-
             openModal(modalId, data = null) {
-                const modal = UI.elements.modals[modalId] || document.getElementById(modalId);
-                if (!modal) return;
+                const modal = UI.elements.modals[modalId] || document.getElementById(modalId); if (!modal) return;
                 const form = modal.querySelector('form');
                 if (form) {
                     form.reset();
-                    const titleElement = modal.querySelector('h2');
-                    if (titleElement) {
-                         titleElement.textContent = data ? `Editar ${form.dataset.type.charAt(0).toUpperCase() + form.dataset.type.slice(1)}` : `Agregar ${form.dataset.type.charAt(0).toUpperCase() + form.dataset.type.slice(1)}`;
-                    }
-                    if(data) { 
-                        Object.keys(data).forEach(key => {
-                            const input = form.querySelector(`[name="${key}"]`);
-                            if (input) input.value = data[key];
-                        });
+                    if(modalId==='news-modal'){['main-image-preview','gallery-images-preview'].forEach(id=>document.getElementById(id).innerHTML='');['main-image-status','gallery-images-status','main-image-filename','gallery-images-filenames'].forEach(id=>document.getElementById(id).textContent= id.includes('filename') ? 'Seleccionar archivo...' : '');}
+                    if(modalId==='event-modal'){document.getElementById('event-image-preview').innerHTML=''; document.getElementById('event-image-filename').textContent='Seleccionar archivo...';}
+                    
+                    const titleEl=modal.querySelector('h2'); if(modalId!=='adminLogin'){const typeName=form.dataset.type==='news'?'Noticia':form.dataset.type.charAt(0).toUpperCase()+form.dataset.type.slice(1); if(titleEl)titleEl.textContent=data?`Editar ${typeName}`:`Agregar ${typeName}`;}
+                    if(data){
+                        Object.keys(data).forEach(key=>{const input=form.querySelector(`[name="${key}"]`);if(input)input.value=data[key];});
+                        if(modalId==='news-modal'&&data){if(data.imagenUrl){document.getElementById('main-image-preview').innerHTML=`<img src="${data.imagenUrl}" class="h-20 w-20 object-cover rounded-lg"><p class="text-xs text-gray-500 mt-1">Imagen actual. Reemplazar seleccionando un nuevo archivo.</p>`;} if(data.galleryUrls&&data.galleryUrls.length>0){let p=data.galleryUrls.map(url=>`<img src="${url}" class="h-20 w-20 object-cover rounded-lg">`).join(''); document.getElementById('gallery-images-preview').innerHTML=`${p}<p class="w-full text-xs text-gray-500 mt-1">Galería actual. Reemplazar seleccionando nuevos archivos.</p>`;}}
+                        if(modalId==='event-modal'&&data){if(data.imageUrl){document.getElementById('event-image-preview').innerHTML=`<img src="${data.imageUrl}" class="h-20 w-20 object-cover rounded-lg"><p class="text-xs text-gray-500 mt-1">Imagen actual. Reemplazar seleccionando un nuevo archivo.</p>`;}}
                     }
                 }
                 modal.classList.remove('hidden');
             },
-
-            closeModal(modalId) {
-                const modal = UI.elements.modals[modalId] || document.getElementById(modalId);
-                if (modal) modal.classList.add('hidden');
-            },
+            closeModal(modalId) { const modal = UI.elements.modals[modalId] || document.getElementById(modalId); if (modal) modal.classList.add('hidden'); },
         };
 
-        // --- PUNTO DE ENTRADA DE LA APLICACIÓN ---
         App.init();
-
     </script>
 </body>
 </html>
