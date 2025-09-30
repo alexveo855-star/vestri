@@ -707,6 +707,7 @@
                 if (id) {
                     await updateDoc(doc(this.db, collectionPath, id), data);
                 } else {
+                    if (type === 'news' && !data.fechaPublicacion) data.fechaPublicacion = new Date().toISOString();
                     await addDoc(collection(this.db, collectionPath), data);
                 }
             },
