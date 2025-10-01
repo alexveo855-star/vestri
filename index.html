@@ -408,6 +408,126 @@
           transform: translateY(-50%);
         }
 
+        /* --- Estilos del Widget de Clima --- */
+        .weather-widget {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          height: 200px;
+          width: 100%;
+          border-radius: 20px;
+          overflow: hidden;
+          box-shadow: rgba(0, 0, 0, 0.15) 2px 3px 4px;
+        }
+
+        .weather-widget .info-section {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          height: 100%;
+          color: white;
+        }
+
+        .weather-widget .left-side {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          height: 100%;
+          z-index: 1;
+          padding-left: 18px;
+        }
+
+        .weather-widget .weather {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 5px;
+          font-size: 0.9rem;
+        }
+
+        .weather-widget .weather div:nth-child(1) {
+          width: 30px;
+          height: auto;
+        }
+
+        .weather-widget .temperature {
+          font-size: 3rem;
+          font-weight: 600;
+        }
+
+        .weather-widget .right-side {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          justify-content: space-around;
+          height: 100%;
+          padding-right: 18px;
+          z-index: 1;
+        }
+
+        .weather-widget .right-side > div {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+        }
+
+        .weather-widget .hour {
+          font-size: 2.25rem;
+          font-weight: 600;
+          line-height: 1em;
+        }
+
+        .weather-widget .date {
+          font-size: 1rem;
+        }
+         .weather-widget .city {
+            font-size: 0.9rem;
+         }
+
+        .weather-widget .background-design {
+          position: absolute;
+          height: 100%;
+          width: 100%;
+          background-color: #ec7263;
+          overflow: hidden;
+        }
+
+        .weather-widget .circle {
+          background-color: #efc745;
+        }
+
+        .weather-widget .circle:nth-child(1) {
+          position: absolute;
+          top: -80%;
+          right: -50%;
+          width: 300px;
+          height: 300px;
+          opacity: 0.4;
+          border-radius: 50%;
+        }
+
+        .weather-widget .circle:nth-child(2) {
+          position: absolute;
+          top: -70%;
+          right: -30%;
+          width: 210px;
+          height: 210px;
+          opacity: 0.4;
+          border-radius: 50%;
+        }
+
+        .weather-widget .circle:nth-child(3) {
+          position: absolute;
+          top: -35%;
+          right: -8%;
+          width: 100px;
+          height: 100px;
+          opacity: 1;
+          border-radius: 50%;
+        }
+
         /* --- ESTILOS DEL TEMA OSCURO --- */
         body.dark-theme {
             background-color: #1f2937;
@@ -480,8 +600,15 @@
             color: #60a5fa;
         }
         
-
-        body.dark-theme #current-date { color: #60a5fa; }
+        body.dark-theme .weather-widget {
+            box-shadow: none;
+        }
+        body.dark-theme .weather-widget .background-design {
+            background-color: #3b82f6;
+        }
+        body.dark-theme .weather-widget .circle {
+            background-color: #60a5fa;
+        }
         
         body.dark-theme .calendar-cell { background: #374151; }
         body.dark-theme .calendar-cell.is-today { 
@@ -538,8 +665,8 @@
     <div id="app-container" class="container mx-auto p-4 sm:p-6 lg:p-8">
         <header class="flex flex-col sm:flex-row justify-between sm:items-center mb-8 gap-4">
             <div class="text-center sm:text-left">
-                <h1 class="text-3xl sm:text-4xl font-bold text-gray-700">Portal Parroquial</h1>
-                <p class="text-gray-500 mt-2">Un espacio para toda la comunidad.</p>
+                <h1 class="text-3xl sm:text-4xl font-bold text-gray-700">Comunidad de Gracia</h1>
+                <p class="text-gray-500 mt-2">Mi espacio Digital</p>
             </div>
              <div class="flex items-center justify-center sm:justify-end shrink-0 gap-4">
                  <label class="theme-switch">
@@ -584,22 +711,33 @@
                 <!-- Páginas de Contenido -->
                 <div id="page-tablero" class="page active">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="md:col-span-1 neumorphic-card flex flex-col p-6">
-                            <h2 class="text-xl font-bold mb-4">Hoy</h2>
-                            <div class="flex items-center justify-between mb-4">
-                                <div>
-                                    <p id="current-date" class="text-3xl font-bold text-blue-600"></p>
-                                    <p id="current-time" class="text-lg"></p>
-                                </div>
-                                <div class="text-right">
-                                    <p id="weather-temp" class="text-3xl font-bold">--°C</p>
-                                    <p id="weather-desc" class="text-sm">Cargando...</p>
-                                </div>
+                        <!-- Tarjeta de Hoy (Clima y Hora) -->
+                        <div class="md:col-span-1">
+                            <div class="weather-widget">
+                                <section class="info-section">
+                                    <div class="background-design">
+                                        <div class="circle"></div>
+                                        <div class="circle"></div>
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="left-side">
+                                        <div class="weather">
+                                            <div>
+                                                <svg id="weather-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g><path d="M12 4.5V9.5M12 14.5V19.5M19.5 12H14.5M9.5 12H4.5M17.6066 6.3934L15.5 8.5M8.5 15.5L6.3934 17.6066M17.6066 17.6066L15.5 15.5M8.5 8.5L6.3934 6.3934" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
+                                            </div>
+                                            <div id="weather-desc">Cargando...</div>
+                                        </div>
+                                        <div id="weather-temp" class="temperature">--°</div>
+                                    </div>
+                                    <div class="right-side">
+                                        <div>
+                                            <div id="current-time" class="hour">--:--</div>
+                                            <div id="current-date" class="date">-- --/--</div>
+                                        </div>
+                                        <div id="weather-location" class="city">Cargando...</div>
+                                    </div>
+                                </section>
                             </div>
-                             <div class="text-sm text-gray-400 flex items-center justify-end gap-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M9.69 18.933l.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.12.406-.28.653-.478l.048-.041a11.956 11.956 0 002.55-2.55c.33-.445.626-.902.87-1.371.243-.47.44-1.003.58-1.583a7.996 7.996 0 00.12-2.318C15.02 5.09 12.833 3 10 3S4.98 5.09 4.98 8.132a7.996 7.996 0 00.12 2.318c.14.58.337 1.113.58 1.583.244.469.54.926.87 1.371a11.956 11.956 0 002.55 2.55l.048.041c.247.198.467.358.653.478a5.741 5.741 0 00.281.14l.018.008.006.003zM10 11.25a3.125 3.125 0 100-6.25 3.125 3.125 0 000 6.25z" clip-rule="evenodd" /></svg>
-                                <span id="weather-location"></span>
-                             </div>
                         </div>
                         <div class="md:col-span-2 space-y-6">
                             <div id="birthday-card" class="neumorphic-card p-6" style="display: none;">
@@ -1071,8 +1209,12 @@
             },
             updateDateTime() {
                 const now = new Date();
-                this.elements.currentDate.textContent = now.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
-                this.elements.currentTime.textContent = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                const days = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
+                const dayName = days[now.getDay()];
+                const dayNum = String(now.getDate()).padStart(2, '0');
+                const monthNum = String(now.getMonth() + 1).padStart(2, '0');
+                if(this.elements.currentDate) this.elements.currentDate.textContent = `${dayName} ${dayNum}/${monthNum}`;
+                if(this.elements.currentTime) this.elements.currentTime.textContent = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
             },
              updateLockscreenTime() {
                 const now = new Date();
@@ -1085,11 +1227,11 @@
             },
             updateWeatherUI(data) {
                 if (data.temp !== undefined) {
-                    this.elements.weatherTemp.textContent = `${Math.round(data.temp)}°C`;
+                    this.elements.weatherTemp.textContent = `${Math.round(data.temp)}°`;
                     this.elements.weatherDesc.textContent = data.description.charAt(0).toUpperCase() + data.description.slice(1);
                     this.elements.weatherLocation.textContent = data.location;
                 } else {
-                    this.elements.weatherTemp.textContent = '--°C';
+                    this.elements.weatherTemp.textContent = '--°';
                     this.elements.weatherDesc.textContent = data.description;
                     this.elements.weatherLocation.textContent = data.location || '';
                 }
