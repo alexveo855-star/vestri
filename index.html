@@ -30,6 +30,9 @@
         .admin-mode .admin-only {
             display: inline-flex !important;
         }
+         .admin-mode .admin-only-block {
+            display: block !important;
+        }
         .admin-mode .admin-only-table-cell {
             display: table-cell !important;
         }
@@ -108,35 +111,6 @@
         .neumorphic-input:focus { outline: none; }
         textarea.neumorphic-input { resize: none; }
         
-        /* Input de Archivo Personalizado */
-        .custom-file-input-wrapper {
-            position: relative;
-            display: block;
-            cursor: pointer;
-        }
-        .custom-file-input {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-        .neumorphic-file-input {
-            background: #eef0f4;
-            border: none;
-            border-radius: 10px;
-            box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
-            display: flex;
-            align-items: center;
-            width: 100%;
-        }
-        .truncate {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
         /* Estilos del Calendario */
         .calendar-cell {
             min-height: 100px; padding: 0.25rem; border-radius: 10px; background: #eef0f4;
@@ -187,6 +161,19 @@
         .gallery-thumbnail.active { opacity: 1; border-color: #3b82f6; box-shadow: 0 0 0 3px #eef0f4; }
         #news-gallery-thumbnails { -ms-overflow-style: none; scrollbar-width: none; }
         #news-gallery-thumbnails::-webkit-scrollbar { display: none; }
+
+        /* Estilos de Acordeón */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+        .accordion-icon {
+            transition: transform 0.3s ease-in-out;
+        }
+        .accordion-toggle.active .accordion-icon {
+            transform: rotate(180deg);
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -221,7 +208,7 @@
                 <div class="nav-tab" data-target="page-directorio"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 xl:w-6 xl:h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-4.67c.12-.24.232-.487.335-.737m-3.058 3.07A3.375 3.375 0 008.25 15c0-1.01.39-1.928 1.04-2.625M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" /></svg><span>Directorio</span></div>
                 <div class="nav-tab" data-target="page-noticias"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 xl:w-6 xl:h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" /></svg><span>Noticias</span></div>
                 <div class="nav-tab" data-target="page-manuales"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 xl:w-6 xl:h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg><span>Manuales</span></div>
-                <div class="nav-tab" data-target="page-archivos"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 xl:w-6 xl:h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" /></svg><span>Archivos</span></div>
+                <div class="nav-tab" data-target="page-recursos"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 xl:w-6 xl:h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" /></svg><span>Recursos</span></div>
                 <div class="nav-tab" data-target="page-calendario"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 xl:w-6 xl:h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0h18M-4.5 12h22.5" /></svg><span>Calendario</span></div>
             </div>
         </nav>
@@ -287,8 +274,24 @@
                         <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
                     </div>
                 </div>
-                <div id="page-manuales" class="page"><div class="neumorphic-card p-8 text-center">Contenido de Manuales...</div></div>
-                <div id="page-archivos" class="page"><div class="neumorphic-card p-8 text-center">Contenido de Archivos...</div></div>
+                <div id="page-manuales" class="page">
+                    <div class="neumorphic-card p-6">
+                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                            <h2 class="text-2xl font-bold">Manuales y Guías</h2>
+                            <button data-modal-target="bloque-manual-modal" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
+                        </div>
+                        <div id="manuales-container" class="space-y-4"></div>
+                    </div>
+                </div>
+                <div id="page-recursos" class="page">
+                    <div class="neumorphic-card p-6">
+                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                            <h2 class="text-2xl font-bold">Recursos y Documentos</h2>
+                            <button data-modal-target="bloque-archivo-modal" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
+                        </div>
+                        <div id="archivos-container" class="space-y-4"></div>
+                    </div>
+                </div>
                 <div id="page-calendario" class="page">
                     <div class="neumorphic-card p-6">
                         <div id="calendar-header" class="flex justify-between items-center mb-6">
@@ -324,15 +327,8 @@
                 <div class="mb-4"><label for="event-date" class="block text-sm font-medium mb-1">Fecha</label><input type="date" id="event-date" name="date" class="neumorphic-input" required></div>
                 <div class="mb-4"><label for="event-time" class="block text-sm font-medium mb-1">Hora</label><input type="time" id="event-time" name="time" class="neumorphic-input" required></div>
                 <div class="mb-6">
-                    <label class="block text-sm font-medium mb-1">Imagen del Evento (Opcional)</label>
-                    <div class="neumorphic-file-input custom-file-input-wrapper">
-                        <div class="flex items-center gap-2 p-3 w-full pointer-events-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 flex-shrink-0"><path d="M9.25 13.25a.75.75 0 001.5 0V4.636l2.158 2.158a.75.75 0 001.06-1.06l-3.5-3.5a.75.75 0 00-1.06 0l-3.5 3.5a.75.75 0 101.06 1.06L9.25 4.636v8.614z"></path><path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z"></path></svg>
-                            <span id="event-image-filename" class="truncate">Seleccionar archivo...</span>
-                        </div>
-                        <input type="file" id="event-imageFile" name="imageFile" class="custom-file-input" accept="image/*">
-                    </div>
-                    <div id="event-image-preview" class="mt-2"></div>
+                    <label for="event-imageUrl" class="block text-sm font-medium mb-1">URL de la Imagen (Opcional)</label>
+                    <input type="url" id="event-imageUrl" name="imageUrl" class="neumorphic-input" placeholder="https://ejemplo.com/imagen.jpg">
                 </div>
                 <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
             </form>
@@ -368,42 +364,20 @@
                 <input type="hidden" name="id">
                 <div class="grid grid-cols-1 gap-4 max-h-[70vh] overflow-y-auto pr-2">
                     <div><label for="news-titulo" class="block text-sm font-medium mb-1">Título</label><input type="text" id="news-titulo" name="titulo" class="neumorphic-input" required></div>
-                    
                     <div>
-                        <label class="block text-sm font-medium mb-1">Imagen Principal</label>
-                        <div class="neumorphic-file-input custom-file-input-wrapper">
-                            <div class="flex items-center gap-2 p-3 w-full pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 flex-shrink-0"><path d="M9.25 13.25a.75.75 0 001.5 0V4.636l2.158 2.158a.75.75 0 001.06-1.06l-3.5-3.5a.75.75 0 00-1.06 0l-3.5 3.5a.75.75 0 101.06 1.06L9.25 4.636v8.614z"></path><path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z"></path></svg>
-                                <span id="main-image-filename" class="truncate">Seleccionar archivo...</span>
-                            </div>
-                            <input type="file" id="news-imagenFile" name="imagenFile" class="custom-file-input" accept="image/*">
-                        </div>
-                        <div id="main-image-preview" class="mt-2"></div>
-                        <div id="main-image-status" class="text-sm text-gray-500 mt-1"></div>
+                        <label for="news-imagenUrl" class="block text-sm font-medium mb-1">URL de la Imagen Principal</label>
+                        <input type="url" id="news-imagenUrl" name="imagenUrl" class="neumorphic-input" placeholder="https://ejemplo.com/imagen.jpg">
                     </div>
-
                     <div><label for="news-resumen" class="block text-sm font-medium mb-1">Resumen</label><textarea id="news-resumen" name="resumen" rows="3" class="neumorphic-input" required></textarea></div>
                     <div><label for="news-contenido" class="block text-sm font-medium mb-1">Contenido Completo</label><textarea id="news-contenido" name="contenido" rows="6" class="neumorphic-input" required></textarea></div>
-                    
                     <div>
-                        <label class="block text-sm font-medium mb-1">Imágenes de Galería (reemplaza existentes)</label>
-                         <div class="neumorphic-file-input custom-file-input-wrapper">
-                            <div class="flex items-center gap-2 p-3 w-full pointer-events-none">
-                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 flex-shrink-0"><path d="M9.25 13.25a.75.75 0 001.5 0V4.636l2.158 2.158a.75.75 0 001.06-1.06l-3.5-3.5a.75.75 0 00-1.06 0l-3.5 3.5a.75.75 0 101.06 1.06L9.25 4.636v8.614z"></path><path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z"></path></svg>
-                               <span id="gallery-images-filenames" class="truncate">Seleccionar archivos...</span>
-                            </div>
-                            <input type="file" id="news-galleryFiles" name="galleryFiles" class="custom-file-input" accept="image/*" multiple>
-                        </div>
-                        <div id="gallery-images-preview" class="mt-2 flex flex-wrap gap-2"></div>
-                        <div id="gallery-images-status" class="text-sm text-gray-500 mt-1"></div>
+                        <label for="news-galleryUrls" class="block text-sm font-medium mb-1">URLs de la Galería (una por línea)</label>
+                        <textarea id="news-galleryUrls" name="galleryUrls" rows="4" class="neumorphic-input" placeholder="https://ejemplo.com/imagen1.jpg\nhttps://ejemplo.com/imagen2.jpg"></textarea>
                     </div>
                 </div>
                 <div class="flex justify-end gap-4 mt-6">
                     <button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button>
-                    <button type="submit" class="neumorphic-btn primary">
-                        <span id="save-news-btn-text">Guardar Noticia</span>
-                        <svg id="save-news-spinner" class="animate-spin h-5 w-5 text-gray-600 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                    </button>
+                    <button type="submit" class="neumorphic-btn primary">Guardar Noticia</button>
                 </div>
             </form>
         </div>
@@ -424,6 +398,50 @@
             <div class="flex justify-end gap-4 mt-6 flex-shrink-0"><button type="button" data-action="close-modal" class="neumorphic-btn">Cerrar</button></div>
         </div>
     </div>
+    <div id="bloque-manual-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="bloque-manual-form" data-type="bloqueManual">
+                <input type="hidden" name="id">
+                <div class="mb-6"><label for="bloque-manual-nombre" class="block text-sm font-medium mb-1">Nombre del Bloque</label><input type="text" id="bloque-manual-nombre" name="nombre" class="neumorphic-input" required></div>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+     <div id="bloque-archivo-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="bloque-archivo-form" data-type="bloqueArchivo">
+                <input type="hidden" name="id">
+                <div class="mb-6"><label for="bloque-archivo-nombre" class="block text-sm font-medium mb-1">Nombre del Bloque</label><input type="text" id="bloque-archivo-nombre" name="nombre" class="neumorphic-input" required></div>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+    <div id="manual-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="manual-form" data-type="manual">
+                <input type="hidden" name="id">
+                <input type="hidden" name="blockId">
+                <div class="mb-4"><label for="manual-nombre" class="block text-sm font-medium mb-1">Nombre del Manual</label><input type="text" id="manual-nombre" name="nombre" class="neumorphic-input" required></div>
+                <div class="mb-6"><label for="manual-url" class="block text-sm font-medium mb-1">URL del Manual</label><input type="url" id="manual-url" name="url" class="neumorphic-input" required placeholder="https://ejemplo.com/documento.pdf"></div>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+    <div id="archivo-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="archivo-form" data-type="archivo">
+                <input type="hidden" name="id">
+                <input type="hidden" name="blockId">
+                <div class="mb-4"><label for="archivo-nombre" class="block text-sm font-medium mb-1">Nombre del Archivo</label><input type="text" id="archivo-nombre" name="nombre" class="neumorphic-input" required></div>
+                <div class="mb-6"><label for="archivo-url" class="block text-sm font-medium mb-1">URL del Archivo</label><input type="url" id="archivo-url" name="url" class="neumorphic-input" required placeholder="https://ejemplo.com/documento.pdf"></div>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
     <div id="confirm-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
         <div class="neumorphic-card p-8 w-full max-w-sm">
             <h2 class="text-xl font-bold mb-4">Confirmar Eliminación</h2>
@@ -436,7 +454,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
 
         const UI = {
             elements: {
@@ -461,6 +478,8 @@
                 agendaTableBody: document.getElementById('agenda-table-body'),
                 directorioTableBody: document.getElementById('directorio-table-body'),
                 newsGrid: document.getElementById('news-grid'),
+                manualesContainer: document.getElementById('manuales-container'),
+                archivosContainer: document.getElementById('archivos-container'),
                 monthYearHeader: document.getElementById('month-year-header'),
                 calendarGrid: document.getElementById('calendar-grid'),
                 newsDetailImage: document.getElementById('news-detail-image'),
@@ -473,6 +492,10 @@
                     parroquiano: document.getElementById('parroquiano-modal'),
                     news: document.getElementById('news-modal'),
                     newsDetail: document.getElementById('news-detail-modal'),
+                    bloqueManual: document.getElementById('bloque-manual-modal'),
+                    manual: document.getElementById('manual-modal'),
+                    bloqueArchivo: document.getElementById('bloque-archivo-modal'),
+                    archivo: document.getElementById('archivo-modal'),
                     confirm: document.getElementById('confirm-modal'),
                 },
                 confirmMessage: document.getElementById('confirm-message'),
@@ -556,6 +579,47 @@
                             </div>
                         </td>
                     </tr>`;
+            },
+             renderAccordionBlocks(container, blocks, emptyMessage, typeConfig) {
+                container.innerHTML = '';
+                if (blocks.length === 0) {
+                    container.innerHTML = `<p class="text-center text-gray-500">${emptyMessage}</p>`;
+                    return;
+                }
+                const sortedBlocks = [...blocks].sort((a, b) => (a.nombre || '').localeCompare(b.nombre || ''));
+                sortedBlocks.forEach(block => {
+                    const items = block.items || [];
+                    const itemsHtml = items.length > 0 ? items.map(item => `
+                        <li class="flex justify-between items-center p-3 rounded-lg neumorphic-inset">
+                            <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="flex-grow truncate hover:text-blue-600 flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 flex-shrink-0"><path d="M12.232 4.232a2.5 2.5 0 013.536 3.536l-1.225 1.224a.75.75 0 001.061 1.06l1.224-1.224a4 4 0 00-5.656-5.656l-3 3a4 4 0 00.225 5.865.75.75 0 00.977-1.138 2.5 2.5 0 01-.142-3.665l3-3z" /><path d="M8.603 14.397a2.5 2.5 0 01-3.536-3.536l1.225-1.224a.75.75 0 00-1.061-1.06l-1.224 1.224a4 4 0 005.656 5.656l3-3a4 4 0 00-.225-5.865.75.75 0 00-.977 1.138 2.5 2.5 0 01.142 3.665l-3 3z" /></svg>
+                                <span class="truncate">${item.nombre}</span>
+                            </a>
+                            <div class="admin-only flex-shrink-0 ml-4" style="gap: 0.5rem;">
+                                <button data-action="edit" data-type="${typeConfig.item}" data-block-id="${block.id}" data-item-id="${item.id}" class="neumorphic-btn btn-sm">Editar</button>
+                                <button data-action="delete" data-type="${typeConfig.item}" data-block-id="${block.id}" data-item-id="${item.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
+                            </div>
+                        </li>
+                    `).join('') : `<li class="text-sm text-gray-500 p-2">No hay ${typeConfig.plural} en este bloque.</li>`;
+
+                    container.insertAdjacentHTML('beforeend', `
+                        <div class="neumorphic-card overflow-hidden">
+                            <div class="flex justify-between items-center p-4 cursor-pointer accordion-toggle">
+                                <h3 class="text-xl font-bold">${block.nombre}</h3>
+                                <div class="flex items-center gap-4">
+                                    <div class="admin-only" style="gap: 0.5rem;">
+                                        <button data-action="add-${typeConfig.item}" data-modal-target="${typeConfig.item}-modal" data-block-id="${block.id}" class="neumorphic-btn primary btn-sm">Añadir</button>
+                                        <button data-action="edit" data-type="${typeConfig.block}" data-id="${block.id}" class="neumorphic-btn btn-sm">Editar</button>
+                                        <button data-action="delete" data-type="${typeConfig.block}" data-id="${block.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="accordion-icon w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                                </div>
+                            </div>
+                            <div class="accordion-content">
+                                <ul class="p-4 pt-0 space-y-3">${itemsHtml}</ul>
+                            </div>
+                        </div>`);
+                });
             },
             renderCalendar(date, events, parroquianos) {
                 const year = date.getFullYear();
@@ -673,7 +737,7 @@
         };
 
         const FirebaseService = {
-            db: null, auth: null, storage: null, appIdPath: '', basePaths: {},
+            db: null, auth: null, appIdPath: '', basePaths: {},
             async init(onAuthReadyCallback) {
                 const firebaseConfig = {
                     apiKey: "AIzaSyATCd0jgG2Lo5q8K5bB15eNvkakJBb15RU", authDomain: "ibcgapp.firebaseapp.com",
@@ -684,9 +748,8 @@
                 const app = initializeApp(firebaseConfig);
                 this.db = getFirestore(app);
                 this.auth = getAuth(app);
-                this.storage = getStorage(app);
                 this.appIdPath = `artifacts/${firebaseConfig.projectId}`;
-                this.basePaths = { events: `public/data/events`, parroquianos: `public/data/parroquianos`, news: `public/data/news` };
+                this.basePaths = { events: `public/data/events`, parroquianos: `public/data/parroquianos`, news: `public/data/news`, manuales: `public/data/manuales`, archivos: `public/data/archivos` };
                 onAuthStateChanged(this.auth, (user) => onAuthReadyCallback());
                 await signInAnonymously(this.auth);
             },
@@ -714,12 +777,6 @@
             async deleteDoc(type, id) {
                 const path = this._getCollectionPath(type);
                 return deleteDoc(doc(this.db, path, id));
-            },
-            async uploadFile(file, path) {
-                if (!file || !path) throw new Error("Se requiere un archivo y una ruta para la subida.");
-                const storageRef = ref(this.storage, `${path}/${Date.now()}_${file.name}`);
-                const snapshot = await uploadBytes(storageRef, file);
-                return await getDownloadURL(snapshot.ref);
             }
         };
 
@@ -742,7 +799,7 @@
         };
         
         const App = {
-            state: { isAdmin: false, events: [], parroquianos: [], news: [], currentGalleryImages: [], currentGalleryIndex: 0, },
+            state: { isAdmin: false, events: [], parroquianos: [], news: [], manuales: [], archivos: [], currentGalleryImages: [], currentGalleryIndex: 0, },
             currentCalendarDate: new Date(),
             async init() {
                 try {
@@ -769,6 +826,8 @@
                 FirebaseService.onCollectionSnapshot('events', d => { this.state.events = d; UI.renderTable(UI.elements.agendaTableBody, d, UI.createEventRow, 'No hay eventos.'); UI.renderUpcomingEvents(d); UI.renderCalendar(this.currentCalendarDate, d, this.state.parroquianos); });
                 FirebaseService.onCollectionSnapshot('parroquianos', d => { this.state.parroquianos = d; UI.renderTable(UI.elements.directorioTableBody, d, UI.createParroquianoRow, 'No hay registros.'); UI.renderBirthdayReminders(d); UI.renderCalendar(this.currentCalendarDate, this.state.events, d); });
                 FirebaseService.onCollectionSnapshot('news', d => { this.state.news = d; UI.renderGrid(UI.elements.newsGrid, d, UI.createNewsCard, 'No hay noticias.'); });
+                FirebaseService.onCollectionSnapshot('manuales', d => { this.state.manuales = d; UI.renderAccordionBlocks(UI.elements.manualesContainer, d, 'No hay manuales disponibles.', {plural: 'manuales', block: 'bloqueManual', item: 'manual'}); });
+                FirebaseService.onCollectionSnapshot('archivos', d => { this.state.archivos = d; UI.renderAccordionBlocks(UI.elements.archivosContainer, d, 'No hay archivos disponibles.', {plural: 'archivos', block: 'bloqueArchivo', item: 'archivo'}); });
             },
             toggleSidenav(open, isFinal) {
                 const sidenav = UI.elements.mobileSidenav;
@@ -798,27 +857,33 @@
                 document.getElementById('next-month-btn').addEventListener('click', () => { this.currentCalendarDate.setMonth(this.currentCalendarDate.getMonth() + 1); UI.renderCalendar(this.currentCalendarDate, this.state.events, this.state.parroquianos); });
                 UI.elements.galleryPrevBtn.addEventListener('click', () => { let n = this.state.currentGalleryIndex-1; if(n<0)n=this.state.currentGalleryImages.length-1; UI.showGalleryImage(n); });
                 UI.elements.galleryNextBtn.addEventListener('click', () => { let n = this.state.currentGalleryIndex+1; if(n>=this.state.currentGalleryImages.length)n=0; UI.showGalleryImage(n); });
-                document.addEventListener('click', e => { const b = e.target.closest('button, .gallery-thumbnail'); if (!b) return; if (b.id==='login-btn')this.openModal('adminLogin'); if(b.id==='logout-btn')this.handleLogout(); if(b.dataset.modalTarget)this.openModal(b.dataset.modalTarget); if(b.matches('.gallery-thumbnail')){UI.showGalleryImage(parseInt(b.dataset.index,10));return;} const a=b.dataset.action; if(a==='close-modal'){const m=b.closest('.fixed.inset-0'); if(m)this.closeModal(m.id);} if(['edit','delete','read-more'].includes(a)){const{type,id}=b.dataset; if(a==='edit')this.handleEdit(type,id); if(a==='delete')this.handleDelete(type,id); if(a==='read-more')this.handleReadMore(type,id);} });
+                document.addEventListener('click', e => {
+                    const b = e.target.closest('button, .gallery-thumbnail, .accordion-toggle'); if (!b) return;
+                    if (b.matches('.accordion-toggle')) {
+                        b.classList.toggle('active');
+                        const content = b.nextElementSibling;
+                        if (content.style.maxHeight) {
+                            content.style.maxHeight = null;
+                        } else {
+                            content.style.maxHeight = content.scrollHeight + "px";
+                        }
+                        return;
+                    }
+                    if (b.id==='login-btn')this.openModal('adminLogin');
+                    if(b.id==='logout-btn')this.handleLogout();
+                    if(b.dataset.modalTarget) {
+                        const blockId = b.dataset.blockId;
+                        this.openModal(b.dataset.modalTarget, null, blockId);
+                    }
+                    if(b.matches('.gallery-thumbnail')){UI.showGalleryImage(parseInt(b.dataset.index,10));return;}
+                    const a=b.dataset.action;
+                    if(a==='close-modal'){const m=b.closest('.fixed.inset-0'); if(m)this.closeModal(m.id);}
+                    if(a==='add-manual') { this.openModal('manual-modal', null, b.dataset.blockId); }
+                    if(a==='add-archivo') { this.openModal('archivo-modal', null, b.dataset.blockId); }
+                    if(['edit','delete','read-more'].includes(a)){const{type,id,blockId,itemId}=b.dataset; if(a==='edit')this.handleEdit(type,id,blockId,itemId); if(a==='delete')this.handleDelete(type,id,blockId,itemId); if(a==='read-more')this.handleReadMore(type,id);}
+                });
                 Object.values(UI.elements.modals).forEach(m => m.addEventListener('click', e => { if (e.target === m) this.closeModal(m.id); }));
                 document.addEventListener('submit', e => { e.preventDefault(); if (e.target.id === 'admin-login-form') this.handleAdminLoginAttempt(e.target); else if (e.target.matches('form')) this.handleFormSubmit(e.target); });
-                
-                const newsModal = UI.elements.modals.news;
-                newsModal.querySelector('#news-imagenFile').addEventListener('change', e => {
-                    const fileName = e.target.files[0] ? e.target.files[0].name : 'Seleccionar archivo...';
-                    newsModal.querySelector('#main-image-filename').textContent = fileName;
-                });
-                newsModal.querySelector('#news-galleryFiles').addEventListener('change', e => {
-                    const fileCount = e.target.files.length;
-                    if (fileCount === 1) newsModal.querySelector('#gallery-images-filenames').textContent = e.target.files[0].name;
-                    else if (fileCount > 1) newsModal.querySelector('#gallery-images-filenames').textContent = `${fileCount} archivos seleccionados`;
-                    else newsModal.querySelector('#gallery-images-filenames').textContent = 'Seleccionar archivos...';
-                });
-                
-                const eventModal = UI.elements.modals.event;
-                eventModal.querySelector('#event-imageFile').addEventListener('change', e => {
-                    const fileName = e.target.files[0] ? e.target.files[0].name : 'Seleccionar archivo...';
-                    eventModal.querySelector('#event-image-filename').textContent = fileName;
-                });
             },
             async loadWeather() { UI.updateWeatherUI(await WeatherService.fetch()); },
             checkAdminSession() { if(sessionStorage.getItem('isAdmin')==='true')this.state.isAdmin=true; UI.updateAdminUI(this.state.isAdmin); },
@@ -831,54 +896,59 @@
             handleLogout() { this.state.isAdmin=false; sessionStorage.removeItem('isAdmin'); UI.updateAdminUI(false); },
             async handleFormSubmit(form) {
                 if (!this.state.isAdmin) return;
-                const type = form.dataset.type;
-                if (type === 'news') { await this.handleNewsFormSubmit(form); } 
-                else if (type === 'event') { await this.handleEventFormSubmit(form); }
-                else { const serviceType=type+'s'; const data=Object.fromEntries(new FormData(form).entries()); const id=data.id; delete data.id; FirebaseService.saveDoc(serviceType,id,data).then(()=>this.closeModal(`${type}-modal`)).catch(err=>console.error(`Error al guardar ${type}:`,err)); }
-            },
-            async handleEventFormSubmit(form) {
                 const submitButton = form.querySelector('button[type="submit"]');
-                submitButton.disabled = true;
+                if (submitButton) submitButton.disabled = true;
+
                 try {
-                    const id = form.querySelector('[name="id"]').value;
-                    const dataToSave = {
-                        name: form.querySelector('[name="name"]').value,
-                        date: form.querySelector('[name="date"]').value,
-                        time: form.querySelector('[name="time"]').value
+                    const type = form.dataset.type;
+                    const data = Object.fromEntries(new FormData(form).entries());
+                    const id = data.id;
+                    delete data.id;
+                    
+                    const blockTypes = {
+                        bloqueManual: 'manuales',
+                        bloqueArchivo: 'archivos'
                     };
-                    const imageFile = form.querySelector('[name="imageFile"]').files[0];
-                    if (imageFile) {
-                        dataToSave.imageUrl = await FirebaseService.uploadFile(imageFile, 'event_images');
-                    } else if (id) {
-                        const originalItem = this.state.events.find(i => i.id === id);
-                        if (originalItem && originalItem.imageUrl) {
-                            dataToSave.imageUrl = originalItem.imageUrl;
+                    const itemTypes = {
+                        manual: { collection: 'manuales', state: 'manuales' },
+                        archivo: { collection: 'archivos', state: 'archivos' }
+                    };
+
+                    if (blockTypes[type]) {
+                        if (!id) data.items = [];
+                        await FirebaseService.saveDoc(blockTypes[type], id, data);
+                        this.closeModal(`${type}-modal`);
+                    } else if (itemTypes[type]) {
+                        const config = itemTypes[type];
+                        const { blockId, ...itemData } = data;
+                        const block = this.state[config.state].find(b => b.id === blockId);
+                        if (!block) throw new Error("Block not found");
+
+                        const items = block.items || [];
+                        if (itemData.id) {
+                            const index = items.findIndex(item => item.id === itemData.id);
+                            if (index > -1) items[index] = { ...items[index], ...itemData };
+                        } else {
+                             itemData.id = crypto.randomUUID();
+                             items.push(itemData);
                         }
+                        await FirebaseService.saveDoc(config.collection, blockId, { items });
+                        this.closeModal(`${type}-modal`);
+
+                    } else if (type === 'news') {
+                         if (data.galleryUrls) data.galleryUrls = data.galleryUrls.split('\n').map(url => url.trim()).filter(Boolean); else data.galleryUrls = [];
+                        await FirebaseService.saveDoc('news', id, data);
+                        this.closeModal('news-modal');
+                    } else {
+                        const serviceType = type + 's';
+                        await FirebaseService.saveDoc(serviceType, id, data);
+                        this.closeModal(`${type}-modal`);
                     }
-                    await FirebaseService.saveDoc('events', id || null, dataToSave);
-                    this.closeModal('event-modal');
-                } catch (error) {
-                    console.error("Error al guardar evento:", error);
+                } catch (err) {
+                    console.error(`Error al guardar:`, err);
                 } finally {
-                    submitButton.disabled = false;
+                    if (submitButton) submitButton.disabled = false;
                 }
-            },
-            async handleNewsFormSubmit(form) {
-                const btn = form.querySelector('button[type="submit"]'), txt = form.querySelector('#save-news-btn-text'), spin = form.querySelector('#save-news-spinner');
-                const mainStatus = form.querySelector('#main-image-status'), galStatus = form.querySelector('#gallery-images-status');
-                btn.disabled=true; txt.textContent='Guardando...'; spin.classList.remove('hidden'); mainStatus.textContent=''; galStatus.textContent='';
-                try {
-                    const formData = new FormData(form), textData = Object.fromEntries(formData.entries()), id=textData.id;
-                    const originalItem = id ? this.state.news.find(i=>i.id===id) : {};
-                    const dataToSave = { ...originalItem, titulo:textData.titulo, resumen:textData.resumen, contenido:textData.contenido };
-                    const mainFile = document.getElementById('news-imagenFile').files[0];
-                    const galleryFiles = document.getElementById('news-galleryFiles').files;
-                    if (mainFile) { mainStatus.textContent='Subiendo...'; dataToSave.imagenUrl = await FirebaseService.uploadFile(mainFile,'news_images'); mainStatus.textContent='Subida.'; }
-                    if (galleryFiles.length>0) { galStatus.textContent=`Subiendo ${galleryFiles.length} imágenes...`; const urls=await Promise.all(Array.from(galleryFiles).map(f=>FirebaseService.uploadFile(f,'news_images'))); dataToSave.galleryUrls=urls; galStatus.textContent='Galería subida.'; }
-                    await FirebaseService.saveDoc('news',id,dataToSave);
-                    this.closeModal('news-modal');
-                } catch (error) { console.error("Error al guardar noticia:", error); mainStatus.textContent='Error al subir.'; }
-                finally { btn.disabled=false; txt.textContent='Guardar Noticia'; spin.classList.add('hidden'); }
             },
             handleReadMore(type, id) {
                 if(type!=='news')return; const item=this.state.news.find(i=>i.id===id); if(!item)return;
@@ -893,36 +963,102 @@
                 galleryPrevBtn.classList.toggle('hidden',!showBtns); galleryNextBtn.classList.toggle('hidden',!showBtns);
                 this.openModal('newsDetail');
             },
-            handleEdit(type, id) { if(!this.state.isAdmin)return; const colName=type==='news'?'news':type+'s'; const item=this.state[colName].find(i=>i.id===id); this.openModal(`${type}-modal`,item); },
-            handleDelete(type, id) {
-                if(!this.state.isAdmin)return;
-                const modal=UI.elements.modals.confirm; modal.querySelector('#confirm-message').textContent=`¿Seguro de eliminar este registro?`;
-                this.openModal('confirm');
-                const serviceType = type === 'news' ? 'news' : type + 's';
-                UI.elements.confirmDeleteBtn.onclick = () => { FirebaseService.deleteDoc(serviceType, id).then(()=>this.closeModal('confirm')).catch(err=>console.error(`Error al eliminar ${type}:`,err)); };
+            handleEdit(type, id, blockId, itemId) {
+                if(!this.state.isAdmin) return;
+                const itemTypes = {
+                    manual: { state: 'manuales', modal: 'manual-modal' },
+                    archivo: { state: 'archivos', modal: 'archivo-modal' }
+                };
+                const blockTypes = {
+                    bloqueManual: { state: 'manuales', modal: 'bloque-manual-modal' },
+                    bloqueArchivo: { state: 'archivos', modal: 'bloque-archivo-modal' },
+                }
+
+                if (itemTypes[type]) {
+                    const config = itemTypes[type];
+                    const block = this.state[config.state].find(b => b.id === blockId);
+                    const item = block?.items.find(i => i.id === itemId);
+                    if (item) this.openModal(config.modal, { ...item, blockId });
+                } else {
+                    const collectionName = blockTypes[type]?.state || (type === 'news' ? 'news' : type + 's');
+                    const modalId = blockTypes[type]?.modal || `${type}-modal`;
+                    const item = this.state[collectionName].find(i => i.id === id);
+                    if (item) this.openModal(modalId, item);
+                }
             },
-            openModal(modalId, data = null) {
-                const modal = UI.elements.modals[modalId] || document.getElementById(modalId); if (!modal) return;
+            handleDelete(type, id, blockId, itemId) {
+                if (!this.state.isAdmin) return;
+                const modal = UI.elements.modals.confirm;
+                modal.querySelector('#confirm-message').textContent = `¿Seguro de eliminar este registro?`;
+                this.openModal('confirm');
+
+                UI.elements.confirmDeleteBtn.onclick = async () => {
+                    try {
+                         const itemTypes = {
+                            manual: { collection: 'manuales', state: 'manuales' },
+                            archivo: { collection: 'archivos', state: 'archivos' }
+                        };
+                        const blockTypes = {
+                            bloqueManual: 'manuales',
+                            bloqueArchivo: 'archivos'
+                        };
+
+                        if (itemTypes[type]) {
+                            const config = itemTypes[type];
+                            const block = this.state[config.state].find(b => b.id === blockId);
+                            if (block) {
+                                const items = (block.items || []).filter(item => item.id !== itemId);
+                                await FirebaseService.saveDoc(config.collection, blockId, { items });
+                            }
+                        } else {
+                            const serviceType = blockTypes[type] || (type === 'news' ? 'news' : type + 's');
+                            await FirebaseService.deleteDoc(serviceType, id);
+                        }
+                        this.closeModal('confirm');
+                    } catch (err) {
+                        console.error(`Error al eliminar ${type}:`, err);
+                    }
+                };
+            },
+            openModal(modalId, data = null, blockId = null) {
+                const modal = UI.elements.modals[modalId.replace('-modal','')] || document.getElementById(modalId);
+                if (!modal) return;
                 const form = modal.querySelector('form');
                 if (form) {
                     form.reset();
-                    if(modalId==='news-modal'){['main-image-preview','gallery-images-preview'].forEach(id=>document.getElementById(id).innerHTML='');['main-image-status','gallery-images-status','main-image-filename','gallery-images-filenames'].forEach(id=>document.getElementById(id).textContent= id.includes('filename') ? 'Seleccionar archivo...' : '');}
-                    if(modalId==='event-modal'){document.getElementById('event-image-preview').innerHTML=''; document.getElementById('event-image-filename').textContent='Seleccionar archivo...';}
-                    
-                    const titleEl=
-                    modal.querySelector('h2'); if(modalId!=='adminLogin'){const typeName=form.dataset.type==='news'?'Noticia':form.dataset.type.charAt(0).toUpperCase()+form.dataset.type.slice(1); if(titleEl)titleEl.textContent=data?`Editar ${typeName}`:`Agregar ${typeName}`;}
-                    if(data){
-                        Object.keys(data).forEach(key=>{const input=form.querySelector(`[name="${key}"]`);if(input)input.value=data[key];});
-                        if(modalId==='news-modal'&&data){if(data.imagenUrl){document.getElementById('main-image-preview').innerHTML=`<img src="${data.imagenUrl}" class="h-20 w-20 object-cover rounded-lg"><p class="text-xs text-gray-500 mt-1">Imagen actual. Reemplazar seleccionando un nuevo archivo.</p>`;} if(data.galleryUrls&&data.galleryUrls.length>0){let p=data.galleryUrls.map(url=>`<img src="${url}" class="h-20 w-20 object-cover rounded-lg">`).join(''); document.getElementById('gallery-images-preview').innerHTML=`${p}<p class="w-full text-xs text-gray-500 mt-1">Galería actual. Reemplazar seleccionando nuevos archivos.</p>`;}}
-                        if(modalId==='event-modal'&&data){if(data.imageUrl){document.getElementById('event-image-preview').innerHTML=`<img src="${data.imageUrl}" class="h-20 w-20 object-cover rounded-lg"><p class="text-xs text-gray-500 mt-1">Imagen actual. Reemplazar seleccionando un nuevo archivo.</p>`;}}
+                    const titleEl = modal.querySelector('h2'); 
+                    const type = form.dataset.type;
+                    let typeName = {
+                        'bloqueManual': 'Bloque de Manual', 'manual': 'Manual',
+                        'bloqueArchivo': 'Bloque de Archivo', 'archivo': 'Archivo',
+                        'news': 'Noticia', 'event': 'Evento', 'parroquiano': 'Parroquiano'
+                    }[type] || type;
+
+                    if (modalId !== 'admin-login-modal') {
+                        if (titleEl) titleEl.textContent = data ? `Editar ${typeName}` : `Agregar ${typeName}`;
+                    }
+
+                    if (data) {
+                        Object.keys(data).forEach(key => {
+                            const input = form.querySelector(`[name="${key}"]`);
+                            if (input) {
+                                if (key === 'galleryUrls' && Array.isArray(data[key])) input.value = data[key].join('\n');
+                                else input.value = data[key];
+                            }
+                        });
+                    }
+                    if (blockId) {
+                         const blockIdInput = form.querySelector('input[name="blockId"]');
+                         if (blockIdInput) blockIdInput.value = blockId;
                     }
                 }
                 modal.classList.remove('hidden');
             },
-            closeModal(modalId) { const modal = UI.elements.modals[modalId] || document.getElementById(modalId); if (modal) modal.classList.add('hidden'); },
+            closeModal(modalId) { const modal = UI.elements.modals[modalId.replace('-modal','')] || document.getElementById(modalId); if (modal) modal.classList.add('hidden'); },
         };
 
         App.init();
     </script>
 </body>
 </html>
+
