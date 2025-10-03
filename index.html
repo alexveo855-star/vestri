@@ -17,6 +17,7 @@
         }
         .fade-out {
             opacity: 0;
+            pointer-events: none;
         }
         #app-loading {
             position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
@@ -40,6 +41,10 @@
         .admin-mode .admin-only-table-cell {
             display: table-cell !important;
         }
+        
+        .super-admin-only { display: none !important; }
+        .super-admin-mode .super-admin-only { display: flex !important; }
+        .super-admin-mode .super-admin-only-table-cell { display: table-cell !important; }
 
         /* Tarjeta Neumorfista (Extruida) */
         .neumorphic-card {
@@ -210,7 +215,7 @@
         /* --- Pantalla de Bloqueo --- */
         #app-lockscreen {
              background-color: #eef0f4;
-             transition: background-color 0.5s ease;
+             transition: background-color 0.5s ease, opacity 0.5s ease-in-out;
         }
 
         /* --- Estilos del Interruptor de Desbloqueo --- */
@@ -218,6 +223,11 @@
             display: inline-block;
             width: 120px;
             height: 60px;
+            transition: opacity 0.3s ease;
+        }
+        .unlock-switch-label.disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
         }
         .unlock-switch-track {
             position: relative;
@@ -527,7 +537,158 @@
           opacity: 1;
           border-radius: 50%;
         }
+        
+        /* --- ESTILOS MODAL AUTH (UIVERSE.IO) --- */
+        #user-auth-modal .content {
+          width: 330px;
+          padding: 40px 30px;
+          background: #dde1e7;
+          border-radius: 10px;
+          box-shadow: -3px -3px 7px #ffffff73,
+                      2px 2px 5px rgba(94,104,121,0.288);
+        }
+        
+        #user-auth-modal .auth-tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 25px;
+            border-radius: 25px;
+            background: #dde1e7;
+            box-shadow: inset 2px 2px 5px #BABECC, inset -5px -5px 10px #ffffff73;
+        }
+        #user-auth-modal .auth-tab {
+            width: 50%;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            color: #595959;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        #user-auth-modal .auth-tab.active {
+            color: #3498db;
+            background: #dde1e7;
+            box-shadow: 2px 2px 5px #BABECC, -5px -5px 10px #ffffff73;
+        }
 
+        #user-auth-modal .text {
+          font-size: 33px;
+          font-weight: 600;
+          margin-bottom: 35px;
+          color: #595959;
+          text-align: center;
+        }
+
+        #user-auth-modal .field {
+          height: 50px;
+          width: 100%;
+          display: flex;
+          position: relative;
+          margin-top: 20px;
+        }
+        #user-auth-modal form .field:first-of-type {
+            margin-top: 0;
+        }
+
+        #user-auth-modal .field .input {
+          height: 100%;
+          width: 100%;
+          padding-left: 45px;
+          outline: none;
+          border: none;
+          font-size: 18px;
+          background: #dde1e7;
+          color: #595959;
+          border-radius: 25px;
+          box-shadow: inset 2px 2px 5px #BABECC,
+                      inset -5px -5px 10px #ffffff73;
+        }
+
+        #user-auth-modal .field .input:focus {
+          box-shadow: inset 1px 1px 2px #BABECC,
+                      inset -1px -1px 2px #ffffff73;
+        }
+        #user-auth-modal .field .input:focus ~ .label {
+            opacity: 0;
+        }
+
+        #user-auth-modal .field .span {
+          position: absolute;
+          color: #595959;
+          width: 50px;
+          line-height: 55px;
+        }
+
+        #user-auth-modal .field .label {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          left: 45px;
+          pointer-events: none;
+          color: #666666;
+          transition: opacity 0.2s ease;
+        }
+
+        #user-auth-modal .field .input:valid ~ .label {
+          opacity: 0;
+        }
+
+        #user-auth-modal .forgot-pass {
+          text-align: left;
+          margin: 10px 0 10px 5px;
+        }
+
+        #user-auth-modal .forgot-pass a {
+          font-size: 16px;
+          color: #666666;
+          text-decoration: none;
+        }
+
+        #user-auth-modal .forgot-pass:hover a {
+          text-decoration: underline;
+        }
+
+        #user-auth-modal .button {
+          margin: 15px 0;
+          width: 100%;
+          height: 50px;
+          font-size: 18px;
+          line-height: 50px;
+          font-weight: 600;
+          background: #dde1e7;
+          border-radius: 25px;
+          border: none;
+          outline: none;
+          cursor: pointer;
+          color: #595959;
+          box-shadow: 2px 2px 5px #BABECC,
+                      -5px -5px 10px #ffffff73;
+        }
+
+        #user-auth-modal .button:focus {
+          color: #3498db;
+          box-shadow: inset 2px 2px 5px #BABECC,
+                     inset -5px -5px 10px #ffffff73;
+        }
+
+        #user-auth-modal .sign-up {
+          margin: 10px 0;
+          color: #595959;
+          font-size: 16px;
+        }
+
+        #user-auth-modal .sign-up a {
+          color: #3498db;
+          text-decoration: none;
+        }
+
+        #user-auth-modal .sign-up a:hover {
+          text-decoration: underline;
+        }
+        
         /* --- ESTILOS DEL TEMA OSCURO --- */
         body.dark-theme {
             background-color: #1f2937;
@@ -625,12 +786,60 @@
         body.dark-theme #lockscreen-time, body.dark-theme #lockscreen-date, body.dark-theme #app-lockscreen p {
             color: #d1d5db;
         }
+        body.dark-theme #lockscreen-message { color: #f87171; }
+        
+        body.dark-theme #user-auth-modal .content {
+            background: #374151;
+            box-shadow: -3px -3px 7px #4b5563, 2px 2px 5px #111827;
+        }
+        body.dark-theme #user-auth-modal .text {
+            color: #f9fafb;
+        }
+        body.dark-theme #user-auth-modal .field .input {
+            background: #374151;
+            color: #d1d5db;
+            box-shadow: inset 2px 2px 5px #111827, inset -5px -5px 10px #4b5563;
+        }
+        body.dark-theme #user-auth-modal .field .input:focus {
+          box-shadow: inset 1px 1px 2px #111827, inset -1px -1px 2px #4b5563;
+        }
+        body.dark-theme #user-auth-modal .field .span,
+        body.dark-theme #user-auth-modal .field .label {
+            color: #9ca3af;
+        }
+        body.dark-theme #user-auth-modal .forgot-pass a {
+            color: #9ca3af;
+        }
+        body.dark-theme #user-auth-modal .button {
+            background: #374151;
+            color: #d1d5db;
+            box-shadow: 2px 2px 5px #111827, -5px -5px 10px #4b5563;
+        }
+        body.dark-theme #user-auth-modal .button:focus {
+            color: #60a5fa;
+            box-shadow: inset 2px 2px 5px #111827, inset -5px -5px 10px #4b5563;
+        }
+        body.dark-theme #user-auth-modal .sign-up {
+            color: #9ca3af;
+        }
+        body.dark-theme #user-auth-modal .auth-tabs {
+            background: #374151;
+            box-shadow: inset 2px 2px 5px #111827, inset -5px -5px 10px #4b5563;
+        }
+        body.dark-theme #user-auth-modal .auth-tab {
+            color: #d1d5db;
+        }
+        body.dark-theme #user-auth-modal .auth-tab.active {
+            color: #60a5fa;
+            background: #374151;
+            box-shadow: 2px 2px 5px #111827, -5px -5px 10px #4b5563;
+        }
     </style>
 </head>
 <body class="antialiased">
 
     <!-- Pantalla de Bloqueo -->
-    <div id="app-lockscreen" class="fixed inset-0 z-[101] flex flex-col items-center justify-center transition-opacity duration-1000 ease-in-out">
+    <div id="app-lockscreen" class="fixed inset-0 z-[101] flex flex-col items-center justify-center transition-opacity duration-500 ease-in-out">
         <div class="text-center">
             <p id="lockscreen-time" class="text-6xl sm:text-7xl font-bold text-gray-700"></p>
             <p id="lockscreen-date" class="text-lg sm:text-xl text-gray-500"></p>
@@ -638,12 +847,20 @@
 
         <div class="mt-16 text-center">
             <label for="unlock-switch" class="unlock-switch-label cursor-pointer">
-                <input type="checkbox" id="unlock-switch" class="hidden">
+                <input type="checkbox" id="unlock-switch" class="hidden" disabled>
                 <div class="unlock-switch-track neumorphic-inset">
                     <div class="unlock-switch-thumb neumorphic-card"></div>
                 </div>
             </label>
-            <p class="mt-6 text-gray-500 font-medium">Toca para desbloquear</p>
+            <p class="mt-6 text-gray-500 font-medium">Desliza para desbloquear</p>
+            <p id="lockscreen-message" class="text-red-500 text-sm mt-2 hidden">Debes iniciar sesión para desbloquear.</p>
+        </div>
+
+        <div class="mt-8">
+            <button data-modal-target="user-auth-modal" class="neumorphic-btn primary">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
+                <span>Registrarse o Iniciar Sesión</span>
+            </button>
         </div>
     </div>
 
@@ -653,7 +870,7 @@
         <div id="mobile-sidenav">
             <div class="flex justify-between items-center mb-8">
                 <h2 class="text-xl font-bold text-gray-700">Menú</h2>
-                <button id="close-sidenav-btn" class="neumorphic-btn p-2"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
+                <button data-action="close-sidenav" class="neumorphic-btn p-2"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
             </div>
             <nav id="mobile-nav-links" class="flex flex-col gap-3"></nav>
         </div>
@@ -703,6 +920,7 @@
                 <div class="nav-tab" data-target="page-manuales" title="Manuales"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg></div>
                 <div class="nav-tab" data-target="page-recursos" title="Recursos"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" /></svg></div>
                 <div class="nav-tab" data-target="page-calendario" title="Calendario"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0h18M-4.5 12h22.5" /></svg></div>
+                <div class="nav-tab super-admin-only" data-target="page-user-management" title="Usuarios"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-4.67c.12-.24.232-.487.335-.737m-3.058 3.07A3.375 3.375 0 008.25 15c0-1.01.39-1.928 1.04-2.625M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5" /></svg></div>
             </div>
         </nav>
 
@@ -755,25 +973,25 @@
                     <div class="neumorphic-card p-6">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Eventos</h2>
-                            <button data-modal-target="event-modal" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Evento</span></button>
+                            <button data-modal-target="event-modal" data-permission="agenda" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Evento</span></button>
                         </div>
-                        <div class="overflow-x-auto"><table class="w-full text-left"><thead class="border-b border-gray-300"><tr><th class="p-3 font-semibold">Fecha</th><th class="p-3 font-semibold hidden sm:table-cell">Hora</th><th class="p-3 font-semibold">Nombre del Evento</th><th class="p-3 font-semibold admin-only-table-cell">Acciones</th></tr></thead><tbody id="agenda-table-body"></tbody></table></div>
+                        <div class="overflow-x-auto"><table class="w-full text-left"><thead class="border-b border-gray-300"><tr><th class="p-3 font-semibold">Fecha</th><th class="p-3 font-semibold hidden sm:table-cell">Hora</th><th class="p-3 font-semibold">Nombre del Evento</th><th class="p-3 font-semibold admin-only-table-cell" data-permission="agenda">Acciones</th></tr></thead><tbody id="agenda-table-body"></tbody></table></div>
                     </div>
                 </div>
                 <div id="page-directorio" class="page">
                     <div class="neumorphic-card p-6">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Directorio</h2>
-                            <button data-modal-target="parroquiano-modal" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M11 5a3 3 0 11-6 0 3 3 0 016 0zM12.73 10.21a5.002 5.002 0 016.536 6.536l.243.243a1 1 0 11-1.414 1.414l-.243-.243a5.002 5.002 0 01-7.95-7.95l-1.01-1.01A5.002 5.002 0 012.27 12.27l-1.01 1.01a1 1 0 11-1.414-1.414l1.01-1.01a5.002 5.002 0 017.95 7.95l.243.243a1 1 0 011.414 1.414l-.243-.243a5.002 5.002 0 01-6.536-6.536l1.01 1.01z" /></svg><span>Agregar Parroquiano</span></button>
+                            <button data-modal-target="parroquiano-modal" data-permission="directorio" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M11 5a3 3 0 11-6 0 3 3 0 016 0zM12.73 10.21a5.002 5.002 0 016.536 6.536l.243.243a1 1 0 11-1.414 1.414l-.243-.243a5.002 5.002 0 01-7.95-7.95l-1.01-1.01A5.002 5.002 0 012.27 12.27l-1.01 1.01a1 1 0 11-1.414-1.414l1.01-1.01a5.002 5.002 0 017.95 7.95l.243.243a1 1 0 011.414 1.414l-.243-.243a5.002 5.002 0 01-6.536-6.536l1.01 1.01z" /></svg><span>Agregar Parroquiano</span></button>
                         </div>
-                        <div class="overflow-x-auto"><table class="w-full text-left"><thead class="border-b border-gray-300"><tr><th class="p-3 font-semibold">Nombre</th><th class="p-3 font-semibold hidden md:table-cell">Teléfono</th><th class="p-3 font-semibold hidden lg:table-cell">Contacto Emergencia</th><th class="p-3 font-semibold admin-only-table-cell">Acciones</th></tr></thead><tbody id="directorio-table-body"></tbody></table></div>
+                        <div class="overflow-x-auto"><table class="w-full text-left"><thead class="border-b border-gray-300"><tr><th class="p-3 font-semibold">Nombre</th><th class="p-3 font-semibold hidden md:table-cell">Teléfono</th><th class="p-3 font-semibold hidden lg:table-cell">Contacto Emergencia</th><th class="p-3 font-semibold admin-only-table-cell" data-permission="directorio">Acciones</th></tr></thead><tbody id="directorio-table-body"></tbody></table></div>
                     </div>
                 </div>
                 <div id="page-noticias" class="page">
                     <div class="neumorphic-card p-6">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Noticias Parroquiales</h2>
-                            <button data-modal-target="news-modal" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Noticia</span></button>
+                            <button data-modal-target="news-modal" data-permission="noticias" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Noticia</span></button>
                         </div>
                         <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
                     </div>
@@ -782,7 +1000,7 @@
                     <div class="neumorphic-card p-6">
                          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Manuales y Guías</h2>
-                            <button data-modal-target="bloque-manual-modal" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
+                            <button data-modal-target="bloque-manual-modal" data-permission="manuales" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
                         </div>
                         <div id="manuales-container" class="space-y-4"></div>
                     </div>
@@ -791,7 +1009,7 @@
                     <div class="neumorphic-card p-6">
                          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Recursos y Documentos</h2>
-                            <button data-modal-target="bloque-archivo-modal" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
+                            <button data-modal-target="bloque-archivo-modal" data-permission="recursos" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
                         </div>
                         <div id="archivos-container" class="space-y-4"></div>
                     </div>
@@ -807,21 +1025,82 @@
                         <div id="calendar-grid" class="grid grid-cols-7 gap-1 sm:gap-2"></div>
                     </div>
                 </div>
+                <div id="page-user-management" class="page">
+                    <div class="neumorphic-card p-6">
+                        <h2 class="text-2xl font-bold mb-6">Gestión de Usuarios</h2>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="border-b border-gray-300">
+                                    <tr>
+                                        <th class="p-3 font-semibold">Nombre</th>
+                                        <th class="p-3 font-semibold">Correo</th>
+                                        <th class="p-3 font-semibold">Rol</th>
+                                        <th class="p-3 font-semibold">Permisos</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="user-management-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
 
     <!-- Modales -->
-    <div id="admin-login-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-8 w-full max-w-sm">
-            <h2 class="text-2xl font-bold mb-6">Acceso de Administrador</h2>
-            <form id="admin-login-form">
-                <div class="mb-4"><label for="admin-password" class="block text-sm font-medium mb-1">Contraseña</label><input type="password" id="admin-password" name="password" class="neumorphic-input" required></div>
-                <p id="login-error-msg" class="text-red-500 text-sm mb-4 hidden">Contraseña incorrecta.</p>
-                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Ingresar</button></div>
-            </form>
+     <div id="user-auth-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 backdrop-blur-sm flex items-center justify-center hidden z-[110] p-4">
+        <div class="content relative">
+             <button data-action="close-modal" class="absolute -top-6 -right-3 text-white hover:text-gray-300">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            
+            <div class="auth-tabs">
+                <button id="show-login-btn" class="auth-tab active">Iniciar Sesión</button>
+                <button id="show-register-btn" class="auth-tab">Registrarse</button>
+            </div>
+
+            <!-- Vista de Login -->
+            <div id="login-view">
+                <form id="login-form" action="#" class="mt-8">
+                    <div class="field">
+                       <input required type="email" id="login-email" class="input">
+                       <span class="span"><svg class="" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" y="0" x="0" height="20" width="50" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg"><g><path class="" data-original="#000000" fill="#595959" d="m467 61h-422c-24.813 0-45 20.187-45 45v300c0 24.813 20.187 45 45 45h422c24.813 0 45-20.187 45-45v-300c0-24.813-20.187-45-45-45zm-21.086 42.229 18.172 15.143-207.086 172.583-207.086-172.583 18.172-15.143 188.914 157.417zm-403.914 329.771v-274.526l183.58 152.958c2.582 2.152 5.53 3.229 8.48 3.229s5.898-1.077 8.48-3.229l183.58-152.958v274.526z"></path></g></svg></span>
+                       <label class="label">Correo Electrónico</label>
+                    </div>
+                    <div class="field">
+                       <input required type="password" id="login-password" class="input">
+                       <span class="span"><svg class="" xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" y="0" x="0" height="20" width="50" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg"><g><path class="" data-original="#000000" fill="#595959" d="M336 192h-16v-64C320 57.406 262.594 0 192 0S64 57.406 64 128v64H48c-26.453 0-48 21.523-48 48v224c0 26.477 21.547 48 48 48h288c26.453 0 48-21.523 48-48V240c0-26.477-21.547-48-48-48zm-229.332-64c0-47.063 38.27-85.332 85.332-85.332s85.332 38.27 85.332 85.332v64H106.668zm0 0"></path></g></svg></span>
+                       <label class="label">Contraseña</label>
+                    </div>
+                    <p id="login-error-msg" class="text-red-500 text-sm my-4 text-center hidden">Credenciales incorrectas.</p>
+                    <button class="button" type="submit">Ingresar</button>
+                </form>
+            </div>
+            <!-- Vista de Registro -->
+            <div id="register-view" class="hidden">
+                <form id="register-form" action="#" class="mt-8">
+                    <div class="field">
+                       <input required type="text" id="register-name" class="input">
+                       <span class="span"><svg class="" xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" y="0" x="0" height="20" width="50" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg"><g><path class="" data-original="#000000" fill="#595959" d="M256 0c-74.439 0-135 60.561-135 135s60.561 135 135 135 135-60.561 135-135S330.439 0 256 0zM423.966 358.195C387.006 320.667 338.009 300 286 300h-60c-52.008 0-101.006 20.667-137.966 58.195C51.255 395.539 31 444.833 31 497c0 8.284 6.716 15 15 15h420c8.284 0 15-6.716 15-15 0-52.167-20.255-101.461-57.034-138.805z"></path></g></svg></span>
+                       <label class="label">Nombre Completo</label>
+                    </div>
+                    <div class="field">
+                       <input required type="email" id="register-email" class="input">
+                       <span class="span"><svg class="" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" y="0" x="0" height="20" width="50" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg"><g><path class="" data-original="#000000" fill="#595959" d="m467 61h-422c-24.813 0-45 20.187-45 45v300c0 24.813 20.187 45 45 45h422c24.813 0 45-20.187 45-45v-300c0-24.813-20.187-45-45-45zm-21.086 42.229 18.172 15.143-207.086 172.583-207.086-172.583 18.172-15.143 188.914 157.417zm-403.914 329.771v-274.526l183.58 152.958c2.582 2.152 5.53 3.229 8.48 3.229s5.898-1.077 8.48-3.229l183.58-152.958v274.526z"></path></g></svg></span>
+                       <label class="label">Correo</label>
+                    </div>
+                    <div class="field">
+                       <input required type="password" id="register-password" class="input">
+                       <span class="span"><svg class="" xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" y="0" x="0" height="20" width="50" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg"><g><path class="" data-original="#000000" fill="#595959" d="M336 192h-16v-64C320 57.406 262.594 0 192 0S64 57.406 64 128v64H48c-26.453 0-48 21.523-48 48v224c0 26.477 21.547 48 48 48h288c26.453 0 48-21.523 48-48V240c0-26.477-21.547-48-48-48zm-229.332-64c0-47.063 38.27-85.332 85.332-85.332s85.332 38.27 85.332 85.332v64H106.668zm0 0"></path></g></svg></span>
+                       <label class="label">Contraseña</label>
+                    </div>
+                    <p id="register-error-msg" class="text-red-500 text-sm my-4 text-center hidden"></p>
+                    <button class="button" type="submit">Crear Cuenta</button>
+                </form>
+            </div>
         </div>
     </div>
+    
     <div id="event-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
         <div class="neumorphic-card p-8 w-full max-w-md">
             <h2 class="text-2xl font-bold mb-6"></h2>
@@ -956,8 +1235,10 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, addDoc, doc, setDoc, getDoc, updateDoc, deleteDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // ... (resto de UI y FirebaseService)
 
         const UI = {
             elements: {
@@ -969,12 +1250,15 @@
                 edgeHandle: document.getElementById('edge-handle'),
                 mobileSidenav: document.getElementById('mobile-sidenav'),
                 mobileSidenavOverlay: document.getElementById('mobile-sidenav-overlay'),
-                closeSidenavBtn: document.getElementById('close-sidenav-btn'),
                 mobileNavLinks: document.getElementById('mobile-nav-links'),
-                currentDate: document.getElementById('current-date'),
-                currentTime: document.getElementById('current-time'),
+                lockscreen: document.getElementById('app-lockscreen'),
                 lockscreenTime: document.getElementById('lockscreen-time'),
                 lockscreenDate: document.getElementById('lockscreen-date'),
+                lockscreenMessage: document.getElementById('lockscreen-message'),
+                unlockSwitch: document.getElementById('unlock-switch'),
+                unlockSwitchLabel: document.querySelector('.unlock-switch-label'),
+                currentDate: document.getElementById('current-date'),
+                currentTime: document.getElementById('current-time'),
                 weatherTemp: document.getElementById('weather-temp'),
                 weatherDesc: document.getElementById('weather-desc'),
                 weatherLocation: document.getElementById('weather-location'),
@@ -988,12 +1272,11 @@
                 archivosContainer: document.getElementById('archivos-container'),
                 monthYearHeader: document.getElementById('month-year-header'),
                 calendarGrid: document.getElementById('calendar-grid'),
+                userManagementTableBody: document.getElementById('user-management-table-body'),
                 newsDetailImage: document.getElementById('news-detail-image'),
                 galleryThumbnails: document.getElementById('news-gallery-thumbnails'),
-                galleryPrevBtn: document.getElementById('gallery-prev-btn'),
-                galleryNextBtn: document.getElementById('gallery-next-btn'),
                 modals: {
-                    adminLogin: document.getElementById('admin-login-modal'),
+                    userAuth: document.getElementById('user-auth-modal'),
                     event: document.getElementById('event-modal'),
                     parroquiano: document.getElementById('parroquiano-modal'),
                     news: document.getElementById('news-modal'),
@@ -1008,9 +1291,9 @@
                 confirmDeleteBtn: document.getElementById('confirm-delete-btn'),
             },
             initMobileNav() {
-                const navTabs = this.elements.tabsContainer.querySelectorAll('.nav-tab');
                 let linksHtml = '';
-                navTabs.forEach(tab => {
+                document.querySelectorAll('#tabs-container .nav-tab').forEach(tab => {
+                    if (tab.style.display === 'none') return;
                     const iconHTML = tab.querySelector('svg').outerHTML;
                     const text = tab.getAttribute('title');
                     linksHtml += `<div class="mobile-nav-link ${tab.classList.contains('active') ? 'active' : ''}" data-target="${tab.dataset.target}">${iconHTML}<span>${text}</span></div>`;
@@ -1051,7 +1334,7 @@
                             <p class="text-sm mb-4 flex-grow break-words">${article.resumen}</p>
                             <div class="flex justify-between items-center mt-auto">
                                 <button data-action="read-more" data-type="news" data-id="${article.id}" class="neumorphic-btn primary btn-sm">Leer Más</button>
-                                <div class="admin-only" style="gap: 0.5rem;">
+                                <div class="admin-only" data-permission="noticias" style="gap: 0.5rem;">
                                     <button data-action="edit" data-type="news" data-id="${article.id}" class="neumorphic-btn btn-sm">Editar</button>
                                     <button data-action="delete" data-type="news" data-id="${article.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
                                 </div>
@@ -1066,7 +1349,7 @@
                         <td class="p-3">${date}</td>
                         <td class="p-3 hidden sm:table-cell">${event.time}</td>
                         <td class="p-3 font-medium">${event.name}</td>
-                        <td class="p-3 admin-only-table-cell">
+                        <td class="p-3 admin-only-table-cell" data-permission="agenda">
                             <div class="flex gap-2">
                                 <button data-action="edit" data-type="event" data-id="${event.id}" class="neumorphic-btn btn-sm">Editar</button>
                                 <button data-action="delete" data-type="event" data-id="${event.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
@@ -1080,7 +1363,7 @@
                         <td class="p-3 font-medium">${p.nombre || ''}</td>
                         <td class="p-3 hidden md:table-cell">${p.telefono || ''}</td>
                         <td class="p-3 hidden lg:table-cell">${p.emergencia_nombre || ''}</td>
-                        <td class="p-3 admin-only-table-cell">
+                        <td class="p-3 admin-only-table-cell" data-permission="directorio">
                              <div class="flex gap-2">
                                 <button data-action="edit" data-type="parroquiano" data-id="${p.id}" class="neumorphic-btn btn-sm">Editar</button>
                                 <button data-action="delete" data-type="parroquiano" data-id="${p.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
@@ -1103,7 +1386,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 flex-shrink-0"><path d="M12.232 4.232a2.5 2.5 0 013.536 3.536l-1.225 1.224a.75.75 0 001.061 1.06l1.224-1.224a4 4 0 00-5.656-5.656l-3 3a4 4 0 00.225 5.865.75.75 0 00.977-1.138 2.5 2.5 0 01-.142-3.665l3-3z" /><path d="M8.603 14.397a2.5 2.5 0 01-3.536-3.536l1.225-1.224a.75.75 0 00-1.061-1.06l-1.224 1.224a4 4 0 005.656 5.656l3-3a4 4 0 00-.225-5.865.75.75 0 00-.977 1.138 2.5 2.5 0 01.142 3.665l-3 3z" /></svg>
                                 <span class="truncate">${item.nombre}</span>
                             </a>
-                            <div class="admin-only flex-shrink-0 ml-4" style="gap: 0.5rem;">
+                            <div class="admin-only flex-shrink-0 ml-4" data-permission="${typeConfig.permission}" style="gap: 0.5rem;">
                                 <button data-action="edit" data-type="${typeConfig.item}" data-block-id="${block.id}" data-item-id="${item.id}" class="neumorphic-btn btn-sm">Editar</button>
                                 <button data-action="delete" data-type="${typeConfig.item}" data-block-id="${block.id}" data-item-id="${item.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
                             </div>
@@ -1115,7 +1398,7 @@
                             <div class="flex justify-between items-center p-4 cursor-pointer accordion-toggle">
                                 <h3 class="text-xl font-bold">${block.nombre}</h3>
                                 <div class="flex items-center gap-4">
-                                    <div class="admin-only" style="gap: 0.5rem;">
+                                    <div class="admin-only" data-permission="${typeConfig.permission}" style="gap: 0.5rem;">
                                         <button data-action="add-${typeConfig.item}" data-modal-target="${typeConfig.item}-modal" data-block-id="${block.id}" class="neumorphic-btn primary btn-sm">Añadir</button>
                                         <button data-action="edit" data-type="${typeConfig.block}" data-id="${block.id}" class="neumorphic-btn btn-sm">Editar</button>
                                         <button data-action="delete" data-type="${typeConfig.block}" data-id="${block.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
@@ -1249,17 +1532,64 @@
                 });
                 App.state.currentGalleryIndex = index;
             },
-            updateAdminUI(isAdmin) {
-                this.elements.appContainer.classList.toggle('admin-mode', isAdmin);
-                this.elements.adminControlsContainer.innerHTML = isAdmin 
-                    ? `<button id="logout-btn" class="neumorphic-btn danger p-3" title="Cerrar Sesión"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m-3 0l-3-3m0 0l3-3m-3 3H9" /></svg></button>` 
-                    : `<button id="login-btn" class="neumorphic-btn p-3" title="Acceso de Administrador"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" /></svg></button>`;
+            updateAdminUI(isSuperAdmin, isAdmin, user) {
+                document.body.classList.toggle('super-admin-mode', isSuperAdmin);
+                document.body.classList.toggle('admin-mode', isAdmin || isSuperAdmin);
+                
+                if (user) {
+                     this.elements.adminControlsContainer.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <span class="font-semibold hidden sm:inline">${user.nombre.split(' ')[0]}</span>
+                            <button data-action="logout" class="neumorphic-btn danger p-2" title="Cerrar Sesión">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                            </button>
+                        </div>`;
+                } else {
+                     this.elements.adminControlsContainer.innerHTML = ``;
+                }
+                this.initMobileNav();
+            },
+            renderUserManagement(users) {
+                this.elements.userManagementTableBody.innerHTML = '';
+                const permissionsKeys = ['agenda', 'directorio', 'noticias', 'manuales', 'recursos'];
+                users.forEach(user => {
+                    if (user.role === 'superadmin') return; // No mostrar al superadmin en la lista
+                    
+                    const roleSelector = `
+                        <select data-user-id="${user.id}" class="user-role-selector neumorphic-input !p-1 !text-sm">
+                            <option value="viewer" ${user.role === 'viewer' ? 'selected' : ''}>Espectador</option>
+                            <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
+                        </select>`;
+
+                    const permissionsCheckboxes = permissionsKeys.map(key => `
+                        <label class="flex items-center gap-1 text-xs">
+                           <input type="checkbox" data-user-id="${user.id}" data-permission="${key}" class="user-permission-checkbox" 
+                           ${user.permissions && user.permissions[key] ? 'checked' : ''} ${user.role !== 'admin' ? 'disabled' : ''}>
+                           ${key.charAt(0).toUpperCase() + key.slice(1)}
+                        </label>
+                    `).join('');
+
+                    const row = `
+                        <tr class="border-b border-gray-300/50">
+                            <td class="p-3">${user.nombre}</td>
+                            <td class="p-3">${user.email}</td>
+                            <td class="p-3">${roleSelector}</td>
+                            <td class="p-3">
+                                <div class="flex flex-wrap gap-2 items-center ${user.role !== 'admin' ? 'opacity-50' : ''}">
+                                    ${permissionsCheckboxes}
+                                </div>
+                            </td>
+                        </tr>`;
+                    this.elements.userManagementTableBody.insertAdjacentHTML('beforeend', row);
+                });
             }
         };
 
         const FirebaseService = {
             db: null, auth: null, appIdPath: '', basePaths: {},
-            async init(onAuthReadyCallback) {
+            init(onAuthChangeCallback) {
                 const firebaseConfig = {
                     apiKey: "AIzaSyATCd0jgG2Lo5q8K5bB15eNvkakJBb15RU", authDomain: "ibcgapp.firebaseapp.com",
                     projectId: "ibcgapp", storageBucket: "ibcgapp.appspot.com",
@@ -1270,9 +1600,8 @@
                 this.db = getFirestore(app);
                 this.auth = getAuth(app);
                 this.appIdPath = `artifacts/${firebaseConfig.projectId}`;
-                this.basePaths = { events: `public/data/events`, parroquianos: `public/data/parroquianos`, news: `public/data/news`, manuales: `public/data/manuales`, archivos: `public/data/archivos` };
-                onAuthStateChanged(this.auth, (user) => onAuthReadyCallback());
-                await signInAnonymously(this.auth);
+                this.basePaths = { users: 'public/data/users', events: `public/data/events`, parroquianos: `public/data/parroquianos`, news: `public/data/news`, manuales: `public/data/manuales`, archivos: `public/data/archivos` };
+                onAuthStateChanged(this.auth, onAuthChangeCallback);
             },
             _getCollectionPath(type) {
                 const pathTemplate = this.basePaths[type];
@@ -1292,12 +1621,30 @@
                     await updateDoc(doc(this.db, collectionPath, id), data);
                 } else {
                     if (type === 'news' && !data.fechaPublicacion) data.fechaPublicacion = new Date().toISOString();
-                    await addDoc(collection(this.db, collectionPath), data);
+                    return await addDoc(collection(this.db, collectionPath), data);
                 }
+            },
+            async setDoc(type, id, data) {
+                const collectionPath = this._getCollectionPath(type);
+                await setDoc(doc(this.db, collectionPath, id), data);
+            },
+             async getDoc(type, id) {
+                const collectionPath = this._getCollectionPath(type);
+                const docRef = doc(this.db, collectionPath, id);
+                return await getDoc(docRef);
             },
             async deleteDoc(type, id) {
                 const path = this._getCollectionPath(type);
                 return deleteDoc(doc(this.db, path, id));
+            },
+            async findUserByEmail(email) {
+                const usersRef = collection(this.db, this._getCollectionPath('users'));
+                const q = query(usersRef, where("email", "==", email));
+                const querySnapshot = await getDocs(q);
+                if (querySnapshot.empty) {
+                    return null;
+                }
+                return { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
             }
         };
 
@@ -1320,71 +1667,135 @@
         };
         
         const App = {
-            state: { isAdmin: false, events: [], parroquianos: [], news: [], manuales: [], archivos: [], currentGalleryImages: [], currentGalleryIndex: 0, },
+            state: { isAdmin: false, isSuperAdmin: false, user: null, allUsers: [], events: [], parroquianos: [], news: [], manuales: [], archivos: [], currentGalleryImages: [], currentGalleryIndex: 0, },
+            dataListenersInitialized: false,
             currentCalendarDate: new Date(),
             async init() {
                 try {
                     UI.elements.appLoading.style.display = 'flex';
-                    this.checkAdminSession();
                     UI.initMobileNav();
                     this.setupEventListeners();
                     UI.updateDateTime();
-                    setInterval(() => {
-                        UI.updateDateTime();
-                        UI.updateLockscreenTime();
-                    }, 1000); // Actualiza cada segundo para la pantalla de bloqueo
+                    setInterval(() => { UI.updateDateTime(); UI.updateLockscreenTime(); }, 1000);
                     this.initTheme();
-                    await FirebaseService.init(this.onAuthReady.bind(this));
+                    FirebaseService.init(this.onAuthStateChanged.bind(this));
                 } catch (error) {
                      console.error("Error fatal durante la inicialización:", error);
                     document.body.innerHTML = `<div class="fixed inset-0 bg-red-100 text-red-800 p-8 flex flex-col justify-center items-center text-center"><h1 class="text-3xl font-bold mb-4">¡Ups! Ocurrió un error crítico.</h1><p class="mb-4">${error.message}</p></div>`;
                 }
             },
-            onAuthReady() {
-                this.setupDataListeners();
-                this.loadWeather();
-                UI.renderCalendar(this.currentCalendarDate, this.state.events, this.state.parroquianos);
-                UI.elements.appLoading.style.display = 'none';
-                UI.elements.appContainer.classList.add('loaded');
+            async onAuthStateChanged(authUser) {
+                const { unlockSwitch, unlockSwitchLabel, lockscreen, lockscreenMessage } = UI.elements;
+                let userProfile = null;
+                
+                if (authUser) {
+                     const userDoc = await FirebaseService.getDoc('users', authUser.uid);
+                     if (userDoc.exists()) {
+                         userProfile = { id: authUser.uid, ...userDoc.data() };
+                     } else {
+                        // Creación de usuario especial si no existe
+                        if (authUser.email === 'admin@portal.com') {
+                            const superAdminProfile = {
+                                nombre: 'Admin Especial',
+                                email: authUser.email,
+                                role: 'superadmin',
+                                permissions: {}
+                            };
+                            await FirebaseService.setDoc('users', authUser.uid, superAdminProfile);
+                            userProfile = { id: authUser.uid, ...superAdminProfile };
+                        }
+                     }
+                }
+               
+                this.state.isSuperAdmin = userProfile?.role === 'superadmin';
+                this.state.isAdmin = userProfile?.role === 'admin';
+                this.state.user = userProfile;
+                
+                if (this.state.isSuperAdmin || this.state.isAdmin || userProfile?.role === 'viewer') {
+                    unlockSwitch.disabled = false;
+                    unlockSwitchLabel.classList.remove('disabled');
+                    lockscreenMessage.classList.add('hidden');
+                } else {
+                    unlockSwitch.disabled = true;
+                    unlockSwitch.checked = false;
+                    unlockSwitchLabel.classList.add('disabled');
+                    if (lockscreen.classList.contains('fade-out')) {
+                        lockscreen.style.display = 'flex';
+                        setTimeout(() => lockscreen.classList.remove('fade-out'), 10);
+                    }
+                }
+
+                UI.updateAdminUI(this.state.isSuperAdmin, this.state.isAdmin, this.state.user);
+                this.updateUIPermissions();
+
+                if (!this.dataListenersInitialized) {
+                    this.setupDataListeners();
+                    this.loadWeather();
+                    UI.renderCalendar(this.currentCalendarDate, this.state.events, this.state.parroquianos);
+                    UI.elements.appLoading.style.display = 'none';
+                    UI.elements.appContainer.classList.add('loaded');
+                    this.dataListenersInitialized = true;
+                }
             },
             setupDataListeners() {
                 FirebaseService.onCollectionSnapshot('events', d => { this.state.events = d; UI.renderTable(UI.elements.agendaTableBody, d, UI.createEventRow, 'No hay eventos.'); UI.renderUpcomingEvents(d); UI.renderCalendar(this.currentCalendarDate, d, this.state.parroquianos); });
                 FirebaseService.onCollectionSnapshot('parroquianos', d => { this.state.parroquianos = d; UI.renderTable(UI.elements.directorioTableBody, d, UI.createParroquianoRow, 'No hay registros.'); UI.renderBirthdayReminders(d); UI.renderCalendar(this.currentCalendarDate, this.state.events, d); });
                 FirebaseService.onCollectionSnapshot('news', d => { this.state.news = d; UI.renderGrid(UI.elements.newsGrid, d, UI.createNewsCard, 'No hay noticias.'); });
-                FirebaseService.onCollectionSnapshot('manuales', d => { this.state.manuales = d; UI.renderAccordionBlocks(UI.elements.manualesContainer, d, 'No hay manuales disponibles.', {plural: 'manuales', block: 'bloqueManual', item: 'manual'}); });
-                FirebaseService.onCollectionSnapshot('archivos', d => { this.state.archivos = d; UI.renderAccordionBlocks(UI.elements.archivosContainer, d, 'No hay archivos disponibles.', {plural: 'archivos', block: 'bloqueArchivo', item: 'archivo'}); });
+                FirebaseService.onCollectionSnapshot('manuales', d => { this.state.manuales = d; UI.renderAccordionBlocks(UI.elements.manualesContainer, d, 'No hay manuales disponibles.', {plural: 'manuales', block: 'bloqueManual', item: 'manual', permission: 'manuales'}); });
+                FirebaseService.onCollectionSnapshot('archivos', d => { this.state.archivos = d; UI.renderAccordionBlocks(UI.elements.archivosContainer, d, 'No hay archivos disponibles.', {plural: 'archivos', block: 'bloqueArchivo', item: 'archivo', permission: 'recursos'}); });
+                FirebaseService.onCollectionSnapshot('users', users => { this.state.allUsers = users; if(this.state.isSuperAdmin) { UI.renderUserManagement(users); } });
+            },
+            hasPermission(section) {
+                if (this.state.isSuperAdmin) return true;
+                if (this.state.isAdmin && this.state.user.permissions) {
+                    return this.state.user.permissions[section] === true;
+                }
+                return false;
+            },
+            updateUIPermissions() {
+                 document.querySelectorAll('[data-permission]').forEach(el => {
+                    const permission = el.dataset.permission;
+                    if (this.hasPermission(permission)) {
+                       el.style.display = ''; // O el display original
+                    } else {
+                       el.style.display = 'none';
+                    }
+                 });
+                 // Re-inicializar nav móvil para que muestre u oculte la pestaña de usuarios
+                 UI.initMobileNav();
             },
             toggleSidenav(open, isFinal) {
-                const sidenav = UI.elements.mobileSidenav;
+                const { mobileSidenav, mobileSidenavOverlay } = UI.elements;
                 if (isFinal) {
-                    sidenav.classList.add('is-transitioning');
-                    sidenav.style.transform = open ? 'translateX(0)' : 'translateX(-100%)';
-                    UI.elements.mobileSidenavOverlay.classList.toggle('active', open);
+                    mobileSidenav.classList.add('is-transitioning');
+                    mobileSidenav.style.transform = open ? 'translateX(0)' : 'translateX(-100%)';
+                    mobileSidenavOverlay.classList.toggle('active', open);
                 } else {
-                    sidenav.classList.remove('is-transitioning');
-                    sidenav.style.transform = `translateX(${open ? 0 : -sidenav.offsetWidth}px)`;
+                    mobileSidenav.classList.remove('is-transitioning');
+                    mobileSidenav.style.transform = `translateX(${open ? 0 : -mobileSidenav.offsetWidth}px)`;
                 }
             },
             setupEventListeners() {
-                const unlockSwitch = document.getElementById('unlock-switch');
-                if (unlockSwitch) {
-                    const unlock = () => {
-                        const lockscreenEl = document.getElementById('app-lockscreen');
-                        if (lockscreenEl) {
-                            lockscreenEl.classList.add('fade-out');
-                            lockscreenEl.addEventListener('transitionend', () => {
-                                lockscreenEl.style.display = 'none';
-                            }, { once: true });
-                        }
-                    };
-                    unlockSwitch.addEventListener('change', () => {
-                        if (unlockSwitch.checked) {
-                            setTimeout(unlock, 300); // Esperar la animación del switch
-                        }
-                    });
-                }
+                const { unlockSwitch, unlockSwitchLabel, lockscreenMessage } = UI.elements;
+                
+                unlockSwitch.addEventListener('change', () => {
+                    if (unlockSwitch.checked) {
+                        setTimeout(() => {
+                           UI.elements.lockscreen.classList.add('fade-out');
+                        }, 300);
+                    }
+                });
 
-                UI.elements.tabsContainer.addEventListener('click', e => { const t = e.target.closest('.nav-tab'); if (t) UI.showPage(t.dataset.target); });
+                unlockSwitchLabel.addEventListener('click', (e) => {
+                    if (unlockSwitch.disabled) {
+                        e.preventDefault();
+                        lockscreenMessage.classList.remove('hidden');
+                        setTimeout(() => lockscreenMessage.classList.add('hidden'), 2000);
+                    } else {
+                        lockscreenMessage.classList.add('hidden');
+                    }
+                });
+                
                 const sidenav = UI.elements.mobileSidenav; let touchStartX=0,touchCurrentX=0,isDraggingSidenav=false; const sidenavWidth=280;
                 const handleDragStart = cX => { touchStartX=cX; isDraggingSidenav=true; sidenav.classList.remove('is-transitioning'); };
                 const handleDragMove = cX => { if (!isDraggingSidenav) return; touchCurrentX=cX; const dX=touchCurrentX-touchStartX; const cT=sidenav.classList.contains('active')?0:-sidenavWidth; let nT=Math.min(0,Math.max(-sidenavWidth,cT+dX)); sidenav.style.transform=`translateX(${nT}px)`; };
@@ -1392,44 +1803,58 @@
                 document.body.addEventListener('touchstart', e => { if (e.touches[0].clientX < 40 && !e.target.closest('.fixed.inset-0:not(.hidden)')) handleDragStart(e.touches[0].clientX); }, { passive: true });
                 document.body.addEventListener('touchmove', e => { if (isDraggingSidenav) handleDragMove(e.touches[0].clientX); }, { passive: true });
                 document.body.addEventListener('touchend', handleDragEnd);
-                UI.elements.edgeHandle.addEventListener('click', () => { const o = sidenav.classList.toggle('active'); this.toggleSidenav(o, true); });
-                UI.elements.closeSidenavBtn.addEventListener('click', () => { sidenav.classList.remove('active'); this.toggleSidenav(false, true); });
-                UI.elements.mobileSidenavOverlay.addEventListener('click', () => { sidenav.classList.remove('active'); this.toggleSidenav(false, true); });
-                UI.elements.mobileNavLinks.addEventListener('click', e => { const l = e.target.closest('.mobile-nav-link'); if (l) { UI.showPage(l.dataset.target); sidenav.classList.remove('active'); this.toggleSidenav(false, true); } });
-                document.getElementById('prev-month-btn').addEventListener('click', () => { this.currentCalendarDate.setMonth(this.currentCalendarDate.getMonth() - 1); UI.renderCalendar(this.currentCalendarDate, this.state.events, this.state.parroquianos); });
-                document.getElementById('next-month-btn').addEventListener('click', () => { this.currentCalendarDate.setMonth(this.currentCalendarDate.getMonth() + 1); UI.renderCalendar(this.currentCalendarDate, this.state.events, this.state.parroquianos); });
-                UI.elements.galleryPrevBtn.addEventListener('click', () => { let n = this.state.currentGalleryIndex-1; if(n<0)n=this.state.currentGalleryImages.length-1; UI.showGalleryImage(n); });
-                UI.elements.galleryNextBtn.addEventListener('click', () => { let n = this.state.currentGalleryIndex+1; if(n>=this.state.currentGalleryImages.length)n=0; UI.showGalleryImage(n); });
-                document.addEventListener('click', e => {
-                    const b = e.target.closest('button, .gallery-thumbnail, .accordion-toggle'); if (!b) return;
-                    if (b.matches('.accordion-toggle')) {
-                        b.classList.toggle('active');
-                        const content = b.nextElementSibling;
-                        if (content.style.maxHeight) {
-                            content.style.maxHeight = null;
-                        } else {
-                            content.style.maxHeight = content.scrollHeight + "px";
-                        }
-                        return;
+
+                document.body.addEventListener('click', e => {
+                    const target = e.target.closest('button, .nav-tab, .mobile-nav-link, .gallery-thumbnail, .accordion-toggle, a');
+                    if (!target) return;
+
+                    const action = target.dataset.action;
+                    const modalTarget = target.dataset.modalTarget;
+                    
+                    if (target.matches('.nav-tab')) { UI.showPage(target.dataset.target); }
+                    else if (target.matches('.mobile-nav-link')) { UI.showPage(target.dataset.target); sidenav.classList.remove('active'); this.toggleSidenav(false, true); }
+                    else if (target.matches('.accordion-toggle')) { target.classList.toggle('active'); const content = target.nextElementSibling; content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px"; }
+                    else if (target.matches('.gallery-thumbnail')) { UI.showGalleryImage(parseInt(target.dataset.index, 10)); }
+                    else if (modalTarget) { this.openModal(modalTarget, null, target.dataset.blockId); }
+                    else if (action === 'logout') { this.handleLogout(); }
+                    else if (action === 'close-modal') { const m = target.closest('.fixed.inset-0'); if (m) this.closeModal(m.id); }
+                    else if (action === 'close-sidenav') { sidenav.classList.remove('active'); this.toggleSidenav(false, true); }
+                    else if (action && ['edit', 'delete', 'read-more', 'add-manual', 'add-archivo'].includes(action)) {
+                        const { type, id, blockId, itemId } = target.dataset;
+                        if (action === 'edit') this.handleEdit(type, id, blockId, itemId);
+                        if (action === 'delete') this.handleDelete(type, id, blockId, itemId);
+                        if (action === 'read-more') this.handleReadMore(type, id);
+                        if (action === 'add-manual') this.openModal('manual-modal', null, blockId);
+                        if (action === 'add-archivo') this.openModal('archivo-modal', null, blockId);
                     }
-                    if (b.id==='login-btn')this.openModal('adminLogin');
-                    if(b.id==='logout-btn')this.handleLogout();
-                    if(b.dataset.modalTarget) {
-                        const blockId = b.dataset.blockId;
-                        this.openModal(b.dataset.modalTarget, null, blockId);
-                    }
-                    if(b.matches('.gallery-thumbnail')){UI.showGalleryImage(parseInt(b.dataset.index,10));return;}
-                    const a=b.dataset.action;
-                    if(a==='close-modal'){const m=b.closest('.fixed.inset-0'); if(m)this.closeModal(m.id);}
-                    if(a==='add-manual') { this.openModal('manual-modal', null, b.dataset.blockId); }
-                    if(a==='add-archivo') { this.openModal('archivo-modal', null, b.dataset.blockId); }
-                    if(['edit','delete','read-more'].includes(a)){const{type,id,blockId,itemId}=b.dataset; if(a==='edit')this.handleEdit(type,id,blockId,itemId); if(a==='delete')this.handleDelete(type,id,blockId,itemId); if(a==='read-more')this.handleReadMore(type,id);}
+                    else if(target.id === 'show-register-btn') { e.preventDefault(); document.getElementById('login-view').classList.add('hidden'); document.getElementById('register-view').classList.remove('hidden'); target.classList.add('active'); document.getElementById('show-login-btn').classList.remove('active'); }
+                    else if(target.id === 'show-login-btn') { e.preventDefault(); document.getElementById('register-view').classList.add('hidden'); document.getElementById('login-view').classList.remove('hidden'); target.classList.add('active'); document.getElementById('show-register-btn').classList.remove('active'); }
                 });
-                Object.values(UI.elements.modals).forEach(m => m.addEventListener('click', e => { if (e.target === m) this.closeModal(m.id); }));
-                document.addEventListener('submit', e => { e.preventDefault(); if (e.target.id === 'admin-login-form') this.handleAdminLoginAttempt(e.target); else if (e.target.matches('form')) this.handleFormSubmit(e.target); });
+
+                Object.values(UI.elements.modals).forEach(m => {
+                    if (m) m.addEventListener('click', e => { if (e.target === m) this.closeModal(m.id); });
+                });
+
+                document.addEventListener('submit', e => { 
+                    e.preventDefault(); 
+                    if (e.target.id === 'login-form') this.handleLogin(e.target);
+                    else if (e.target.id === 'register-form') this.handleRegister(e.target);
+                    else if (e.target.matches('form')) this.handleFormSubmit(e.target); 
+                });
+
+                UI.elements.userManagementTableBody.addEventListener('change', e => {
+                    if (e.target.matches('.user-role-selector')) {
+                        const userId = e.target.dataset.userId;
+                        const newRole = e.target.value;
+                        this.updateUserRole(userId, newRole);
+                    } else if (e.target.matches('.user-permission-checkbox')) {
+                         const { userId, permission } = e.target.dataset;
+                         const isEnabled = e.target.checked;
+                         this.updateUserPermission(userId, permission, isEnabled);
+                    }
+                });
             },
             async loadWeather() { UI.updateWeatherUI(await WeatherService.fetch()); },
-            checkAdminSession() { if(sessionStorage.getItem('isAdmin')==='true')this.state.isAdmin=true; UI.updateAdminUI(this.state.isAdmin); },
             initTheme() {
                 const themeSwitch = document.getElementById('theme-switch-checkbox');
                 const savedTheme = localStorage.getItem('theme');
@@ -1444,7 +1869,6 @@
                     }
                 };
 
-                // Aplica el tema guardado o el del sistema
                 if (savedTheme) {
                     applyTheme(savedTheme);
                 } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -1461,20 +1885,93 @@
                     }
                 });
             },
-            handleAdminLoginAttempt(form) {
-                const pass = form.querySelector('#admin-password').value;
-                const err = form.querySelector('#login-error-msg');
-                if (pass === 'parroquia2024') { this.state.isAdmin=true; sessionStorage.setItem('isAdmin','true'); UI.updateAdminUI(true); this.closeModal('adminLogin'); form.reset(); err.classList.add('hidden'); }
-                else { err.classList.remove('hidden'); }
+            async handleLogin(form) {
+                const email = form.querySelector('#login-email').value;
+                const password = form.querySelector('#login-password').value;
+                const errorMsg = form.querySelector('#login-error-msg');
+                errorMsg.classList.add('hidden');
+                
+                try {
+                    if (email === 'admin@portal.com' && password === 'admin123') {
+                         const userCredential = await signInWithEmailAndPassword(FirebaseService.auth, email, password)
+                            .catch(async (error) => {
+                                if (error.code === 'auth/user-not-found') {
+                                    return await createUserWithEmailAndPassword(FirebaseService.auth, email, password);
+                                }
+                                throw error;
+                            });
+                         this.onAuthStateChanged(userCredential.user);
+                    } else {
+                        await signInWithEmailAndPassword(FirebaseService.auth, email, password);
+                    }
+                    this.closeModal('user-auth-modal');
+                } catch(error) {
+                    console.error("Error de inicio de sesión:", error.code);
+                    errorMsg.textContent = 'Correo o contraseña incorrectos.';
+                    errorMsg.classList.remove('hidden');
+                }
             },
-            handleLogout() { this.state.isAdmin=false; sessionStorage.removeItem('isAdmin'); UI.updateAdminUI(false); },
+            async handleRegister(form) {
+                 const name = form.querySelector('#register-name').value;
+                 const email = form.querySelector('#register-email').value;
+                 const password = form.querySelector('#register-password').value;
+                 const errorMsg = form.querySelector('#register-error-msg');
+                 errorMsg.classList.add('hidden');
+
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(FirebaseService.auth, email, password);
+                    const user = userCredential.user;
+                    
+                    const newUserProfile = {
+                        nombre: name,
+                        email: email,
+                        role: 'viewer', // Rol por defecto
+                        permissions: {}
+                    };
+                    
+                    await FirebaseService.setDoc('users', user.uid, newUserProfile);
+                    this.closeModal('user-auth-modal');
+
+                } catch(error) {
+                     console.error("Error de registro:", error.code);
+                     if (error.code === 'auth/email-already-in-use') {
+                         errorMsg.textContent = 'Este correo ya está registrado.';
+                     } else if (error.code === 'auth/weak-password') {
+                          errorMsg.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+                     } else {
+                         errorMsg.textContent = 'Error al registrar la cuenta.';
+                     }
+                     errorMsg.classList.remove('hidden');
+                }
+            },
+            async handleLogout() {
+                try {
+                    await signOut(FirebaseService.auth);
+                } catch (error) {
+                    console.error("Error al cerrar sesión:", error);
+                }
+            },
+            async updateUserRole(userId, newRole) {
+                if (!this.state.isSuperAdmin) return;
+                await FirebaseService.saveDoc('users', userId, { role: newRole });
+            },
+            async updateUserPermission(userId, permission, isEnabled) {
+                 if (!this.state.isSuperAdmin) return;
+                 const user = this.state.allUsers.find(u => u.id === userId);
+                 if (user) {
+                     const currentPermissions = user.permissions || {};
+                     const newPermissions = { ...currentPermissions, [permission]: isEnabled };
+                     await FirebaseService.saveDoc('users', userId, { permissions: newPermissions });
+                 }
+            },
             async handleFormSubmit(form) {
-                if (!this.state.isAdmin) return;
+                const type = form.dataset.type;
+                if (!this.hasPermission(type === 'bloqueManual' ? 'manuales' : type === 'bloqueArchivo' ? 'recursos' : type )) return;
+                
                 const submitButton = form.querySelector('button[type="submit"]');
                 if (submitButton) submitButton.disabled = true;
 
                 try {
-                    const type = form.dataset.type;
                     const data = Object.fromEntries(new FormData(form).entries());
                     const id = data.id;
                     delete data.id;
@@ -1526,7 +2023,7 @@
             },
             handleReadMore(type, id) {
                 if(type!=='news')return; const item=this.state.news.find(i=>i.id===id); if(!item)return;
-                const modal=UI.elements.modals.newsDetail; const{galleryThumbnails,galleryPrevBtn,galleryNextBtn}=UI.elements;
+                const modal=UI.elements.modals.newsDetail; const{galleryThumbnails}=UI.elements;
                 modal.querySelector('#news-detail-title').textContent=item.titulo;
                 modal.querySelector('#news-detail-date').textContent=new Date(item.fechaPublicacion).toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'});
                 modal.querySelector('#news-detail-content').innerHTML=item.contenido.replace(/\n/g,'<br>');
@@ -1534,11 +2031,12 @@
                 galleryThumbnails.innerHTML='';
                 if(this.state.currentGalleryImages.length > 0){ this.state.currentGalleryImages.forEach((url,index)=>{galleryThumbnails.insertAdjacentHTML('beforeend',`<img src="${url}" data-index="${index}" class="gallery-thumbnail ${index===0?'active':''}">`);}); UI.showGalleryImage(0);}else{UI.elements.newsDetailImage.src='https://placehold.co/800x600/eef0f4/4b5563?text=Sin+Imagen';}
                 const showBtns = this.state.currentGalleryImages.length > 1;
-                galleryPrevBtn.classList.toggle('hidden',!showBtns); galleryNextBtn.classList.toggle('hidden',!showBtns);
+                document.getElementById('gallery-prev-btn').classList.toggle('hidden',!showBtns);
+                document.getElementById('gallery-next-btn').classList.toggle('hidden',!showBtns);
                 this.openModal('newsDetail');
             },
             handleEdit(type, id, blockId, itemId) {
-                if(!this.state.isAdmin) return;
+                if(!this.hasPermission(type)) return;
                 const itemTypes = {
                     manual: { state: 'manuales', modal: 'manual-modal' },
                     archivo: { state: 'archivos', modal: 'archivo-modal' }
@@ -1561,7 +2059,7 @@
                 }
             },
             handleDelete(type, id, blockId, itemId) {
-                if (!this.state.isAdmin) return;
+                if (!this.hasPermission(type)) return;
                 const modal = UI.elements.modals.confirm;
                 modal.querySelector('#confirm-message').textContent = `¿Seguro de eliminar este registro?`;
                 this.openModal('confirm');
@@ -1608,7 +2106,7 @@
                         'news': 'Noticia', 'event': 'Evento', 'parroquiano': 'Parroquiano'
                     }[type] || type;
 
-                    if (modalId !== 'admin-login-modal') {
+                    if (modalId !== 'user-auth-modal') {
                         if (titleEl) titleEl.textContent = data ? `Editar ${typeName}` : `Agregar ${typeName}`;
                     }
 
