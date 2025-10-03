@@ -1692,18 +1692,6 @@
                      const userDoc = await FirebaseService.getDoc('users', authUser.uid);
                      if (userDoc.exists()) {
                          userProfile = { id: authUser.uid, ...userDoc.data() };
-                     } else {
-                        // Creación de usuario especial si no existe
-                        if (authUser.email === 'admin@portal.com') {
-                            const superAdminProfile = {
-                                nombre: 'Admin Especial',
-                                email: authUser.email,
-                                role: 'superadmin',
-                                permissions: {}
-                            };
-                            await FirebaseService.setDoc('users', authUser.uid, superAdminProfile);
-                            userProfile = { id: authUser.uid, ...superAdminProfile };
-                        }
                      }
                 }
                
@@ -1892,18 +1880,7 @@
                 errorMsg.classList.add('hidden');
                 
                 try {
-                    if (email === 'admin@portal.com' && password === 'admin123') {
-                         const userCredential = await signInWithEmailAndPassword(FirebaseService.auth, email, password)
-                            .catch(async (error) => {
-                                if (error.code === 'auth/user-not-found') {
-                                    return await createUserWithEmailAndPassword(FirebaseService.auth, email, password);
-                                }
-                                throw error;
-                            });
-                         this.onAuthStateChanged(userCredential.user);
-                    } else {
-                        await signInWithEmailAndPassword(FirebaseService.auth, email, password);
-                    }
+                    await signInWithEmailAndPassword(FirebaseService.auth, email, password);
                     this.closeModal('user-auth-modal');
                 } catch(error) {
                     console.error("Error de inicio de sesión:", error.code);
@@ -1922,10 +1899,12 @@
                     const userCredential = await createUserWithEmailAndPassword(FirebaseService.auth, email, password);
                     const user = userCredential.user;
                     
+                    const isSuperAdmin = email.toLowerCase() === 'alexveo855@gmail.com';
+
                     const newUserProfile = {
                         nombre: name,
                         email: email,
-                        role: 'viewer', // Rol por defecto
+                        role: isSuperAdmin ? 'superadmin' : 'viewer',
                         permissions: {}
                     };
                     
