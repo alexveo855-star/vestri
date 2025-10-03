@@ -17,7 +17,37 @@
         }
         .fade-out {
             opacity: 0;
-@@ -45,11 +46,13 @@
+            pointer-events: none;
+        }
+        #app-loading {
+            position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+            background-color: #eef0f4; z-index: 100; font-size: 1.25rem; color: #4b5563;
+        }
+        #app-container { opacity: 0; transition: opacity 0.3s ease-in-out; }
+        #app-container.loaded { opacity: 1; }
+        .page { display: none; }
+        .page.active { display: block; }
+
+        /* --- Visibilidad del Administrador --- */
+        .admin-only, .admin-only-table-cell {
+            display: none !important;
+        }
+        .admin-mode .admin-only {
+            display: inline-flex !important;
+        }
+         .admin-mode .admin-only-block {
+            display: block !important;
+        }
+        .admin-mode .admin-only-table-cell {
+            display: table-cell !important;
+        }
+        
+        .super-admin-only { display: none !important; }
+        .super-admin-mode .super-admin-only { display: flex !important; }
+        .super-admin-mode .super-admin-only-table-cell { display: table-cell !important; }
+
+        /* Tarjeta Neumorfista (Extruida) */
+        .neumorphic-card {
             background: #eef0f4;
             border-radius: 20px;
             box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
@@ -31,7 +61,66 @@
         }
 
         /* Botones Neumorfistas */
-@@ -110,6 +113,8 @@
+        .neumorphic-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            border: none;
+            background: #eef0f4;
+            box-shadow: 4px 4px 8px #d1d9e6, -4px -4px 8px #ffffff;
+            color: #4b5563;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .neumorphic-btn:hover {
+            box-shadow: 2px 2px 4px #d1d9e6, -2px -2px 4px #ffffff;
+        }
+        .neumorphic-btn:active, .neumorphic-btn.active {
+            box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
+            color: #3b82f6;
+        }
+        .neumorphic-btn.primary { color: #3b82f6; font-weight: 600; }
+        .neumorphic-btn.danger { color: #ef4444; }
+        .btn-sm { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
+        .neumorphic-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+            box-shadow: inset 2px 2px 4px #d1d9e6, inset -2px -2px 4px #ffffff;
+        }
+
+        /* Pestañas de Navegación */
+        #tabs-container { padding: 1rem; }
+        .nav-tab {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            outline: none;
+            cursor: pointer;
+            padding: 0.75rem;
+            background-image: linear-gradient(to top, #D8D9DB 0%, #fff 80%, #FDFDFD 100%);
+            border-radius: 30px;
+            border: 1px solid #8F9092;
+            transition: all 0.2s ease;
+            color: #606060;
+            text-shadow: 0 1px #fff;
+        }
+        .nav-tab:hover {
+            box-shadow: 0 4px 3px 1px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 3px 3px #CECFD1;
+        }
+        .nav-tab.active {
+            color: #3b82f6;
+            box-shadow: 0 4px 3px 1px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 5px 3px #999, inset 0 0 30px #aaa;
+        }
+
+        /* Campos de Formulario */
+        .neumorphic-input {
+            width: 100%;
+            background: #eef0f4;
+            border: none;
             border-radius: 10px;
             padding: 0.75rem 1rem;
             box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
@@ -40,22 +129,126 @@
         }
         .neumorphic-input:focus { outline: none; }
         textarea.neumorphic-input { resize: none; }
-@@ -139,8 +144,9 @@
+
+        /* Estilos del Calendario */
+        .calendar-cell {
+            min-height: 100px; padding: 0.25rem; border-radius: 10px; background: #eef0f4;
+            transition: all 0.2s ease-in-out; border: 1px solid transparent; display: flex; flex-direction: column;
+        }
+        @media (min-width: 768px) { .calendar-cell { min-height: 120px; padding: 0.5rem; } }
+        .calendar-cell.is-today { box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff; border-color: #3b82f6; }
+        .calendar-cell.not-current-month { color: #9ca3af; background: transparent; }
+        .calendar-day-number { font-weight: 600; margin-bottom: 0.25rem; }
+        .calendar-items-container { flex-grow: 1; overflow-y: auto; }
+        .calendar-item {
+            font-size: 0.75rem; padding: 2px 6px; border-radius: 6px; margin-bottom: 4px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: default;
+        }
+        .event-item { background-color: #bfdbfe; color: #1e40af; }
+        .birthday-item { background-color: #fef08a; color: #854d0e; }
+
+        /* Estilos del Panel Edge Móvil */
+        #mobile-sidenav-overlay {
+            position: fixed; inset: 0; background-color: rgba(31, 41, 55, 0.5); z-index: 55;
+            opacity: 0; transition: opacity 0.3s ease-in-out; pointer-events: none;
+        }
         #mobile-sidenav {
             position: fixed; top: 0; left: 0; bottom: 0; width: 280px; background-color: #eef0f4;
             z-index: 60; transform: translateX(-100%); padding: 1.5rem; display: flex; flex-direction: column; will-change: transform;
             transition: background-color 0.5s ease;
         }
-        #mobile-sidenav.is-transitioning { transition: transform 0.3s ease-in-out; }
         #mobile-sidenav.is-transitioning { transition: transform 0.3s ease-in-out, background-color 0.5s ease; }
         #mobile-sidenav.active { transform: translateX(0); }
         #mobile-sidenav-overlay.active { opacity: 1; pointer-events: auto; }
+
         .mobile-nav-link {
-@@ -203,6 +209,244 @@
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1.5rem;
+            background-image: linear-gradient(to top, #D8D9DB 0%, #fff 80%, #FDFDFD 100%);
+            border-radius: 30px;
+            border: 1px solid #8F9092;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            color: #606060;
+            text-shadow: 0 1px #fff;
+            cursor: pointer;
+        }
+        .mobile-nav-link:hover {
+            box-shadow: 0 4px 3px 1px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 3px 3px #CECFD1;
+        }
+        .mobile-nav-link.active {
+            box-shadow: 0 4px 3px 1px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 5px 3px #999, inset 0 0 30px #aaa;
+            color: #3b82f6;
+        }
+
+        #edge-handle {
+            position: fixed; top: 50%; left: 0; transform: translateY(-50%); width: 20px; height: 80px;
+            background-color: rgba(107, 114, 128, 0.4); border-top-right-radius: 10px; border-bottom-right-radius: 10px;
+            z-index: 50; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        #edge-handle::before { content: ''; width: 4px; height: 20px; background: #fff; border-radius: 2px; }
+
+        /* Estilos de la Galería de Noticias */
+        .gallery-thumbnail {
+            width: 80px; height: 60px; border-radius: 8px; cursor: pointer; object-fit: cover;
+            opacity: 0.6; transition: all 0.2s ease-in-out; border: 2px solid transparent; flex-shrink: 0;
+        }
+        .gallery-thumbnail.active { opacity: 1; border-color: #3b82f6; box-shadow: 0 0 0 3px #eef0f4; }
+        #news-gallery-thumbnails { -ms-overflow-style: none; scrollbar-width: none; }
+        #news-gallery-thumbnails::-webkit-scrollbar { display: none; }
+
+        /* Estilos de Acordeón */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+        .accordion-icon {
+            transition: transform 0.3s ease-in-out;
+        }
+        .accordion-toggle.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        /* --- Pantalla de Bloqueo --- */
+        #app-lockscreen {
+             background-color: #eef0f4;
+             transition: background-color 0.5s ease, opacity 0.5s ease-in-out;
+        }
+
+        /* --- Estilos del Interruptor de Desbloqueo --- */
+        .unlock-switch-label {
+            display: inline-block;
+            width: 120px;
+            height: 60px;
+            transition: opacity 0.3s ease;
+        }
+        .unlock-switch-label.disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        .unlock-switch-track {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 30px;
+        }
+        .unlock-switch-thumb {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            transition: transform 0.3s ease-in-out, background-color 0.3s;
+        }
+        #unlock-switch:checked + .unlock-switch-track .unlock-switch-thumb {
             transform: translateX(60px);
             background-color: #d1fae5; /* Verde claro para indicar 'desbloqueado' */
         }
-        
+
         /* --- ESTILOS DEL INTERRUPTOR DE TEMA (UIVERSE.IO) --- */
         .theme-switch {
           --toggle-size: 24px;
@@ -225,6 +418,277 @@
           transform: translateY(-50%);
         }
 
+        /* --- Estilos del Widget de Clima --- */
+        .weather-widget {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          height: 200px;
+          width: 100%;
+          border-radius: 20px;
+          overflow: hidden;
+          box-shadow: rgba(0, 0, 0, 0.15) 2px 3px 4px;
+        }
+
+        .weather-widget .info-section {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          height: 100%;
+          color: white;
+        }
+
+        .weather-widget .left-side {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          height: 100%;
+          z-index: 1;
+          padding-left: 18px;
+        }
+
+        .weather-widget .weather {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 5px;
+          font-size: 0.9rem;
+        }
+
+        .weather-widget .weather div:nth-child(1) {
+          width: 30px;
+          height: auto;
+        }
+
+        .weather-widget .temperature {
+          font-size: 3rem;
+          font-weight: 600;
+        }
+
+        .weather-widget .right-side {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          justify-content: space-around;
+          height: 100%;
+          padding-right: 18px;
+          z-index: 1;
+        }
+
+        .weather-widget .right-side > div {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+        }
+
+        .weather-widget .hour {
+          font-size: 2.25rem;
+          font-weight: 600;
+          line-height: 1em;
+        }
+
+        .weather-widget .date {
+          font-size: 1rem;
+        }
+         .weather-widget .city {
+            font-size: 0.9rem;
+         }
+
+        .weather-widget .background-design {
+          position: absolute;
+          height: 100%;
+          width: 100%;
+          background-color: #ec7263;
+          overflow: hidden;
+        }
+
+        .weather-widget .circle {
+          background-color: #efc745;
+        }
+
+        .weather-widget .circle:nth-child(1) {
+          position: absolute;
+          top: -80%;
+          right: -50%;
+          width: 300px;
+          height: 300px;
+          opacity: 0.4;
+          border-radius: 50%;
+        }
+
+        .weather-widget .circle:nth-child(2) {
+          position: absolute;
+          top: -70%;
+          right: -30%;
+          width: 210px;
+          height: 210px;
+          opacity: 0.4;
+          border-radius: 50%;
+        }
+
+        .weather-widget .circle:nth-child(3) {
+          position: absolute;
+          top: -35%;
+          right: -8%;
+          width: 100px;
+          height: 100px;
+          opacity: 1;
+          border-radius: 50%;
+        }
+        
+        /* --- ESTILOS MODAL AUTH (UIVERSE.IO) --- */
+        #user-auth-modal .content {
+          width: 330px;
+          padding: 40px 30px;
+          background: #dde1e7;
+          border-radius: 10px;
+          box-shadow: -3px -3px 7px #ffffff73,
+                      2px 2px 5px rgba(94,104,121,0.288);
+        }
+        
+        #user-auth-modal .auth-tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 25px;
+            border-radius: 25px;
+            background: #dde1e7;
+            box-shadow: inset 2px 2px 5px #BABECC, inset -5px -5px 10px #ffffff73;
+        }
+        #user-auth-modal .auth-tab {
+            width: 50%;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            color: #595959;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        #user-auth-modal .auth-tab.active {
+            color: #3498db;
+            background: #dde1e7;
+            box-shadow: 2px 2px 5px #BABECC, -5px -5px 10px #ffffff73;
+        }
+
+        #user-auth-modal .text {
+          font-size: 33px;
+          font-weight: 600;
+          margin-bottom: 35px;
+          color: #595959;
+          text-align: center;
+        }
+
+        #user-auth-modal .field {
+          height: 50px;
+          width: 100%;
+          display: flex;
+          position: relative;
+          margin-top: 20px;
+        }
+        #user-auth-modal form .field:first-of-type {
+            margin-top: 0;
+        }
+
+        #user-auth-modal .field .input {
+          height: 100%;
+          width: 100%;
+          padding-left: 45px;
+          outline: none;
+          border: none;
+          font-size: 18px;
+          background: #dde1e7;
+          color: #595959;
+          border-radius: 25px;
+          box-shadow: inset 2px 2px 5px #BABECC,
+                      inset -5px -5px 10px #ffffff73;
+        }
+
+        #user-auth-modal .field .input:focus {
+          box-shadow: inset 1px 1px 2px #BABECC,
+                      inset -1px -1px 2px #ffffff73;
+        }
+        #user-auth-modal .field .input:focus ~ .label {
+            opacity: 0;
+        }
+
+        #user-auth-modal .field .span {
+          position: absolute;
+          color: #595959;
+          width: 50px;
+          line-height: 55px;
+        }
+
+        #user-auth-modal .field .label {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          left: 45px;
+          pointer-events: none;
+          color: #666666;
+          transition: opacity 0.2s ease;
+        }
+
+        #user-auth-modal .field .input:valid ~ .label {
+          opacity: 0;
+        }
+
+        #user-auth-modal .forgot-pass {
+          text-align: left;
+          margin: 10px 0 10px 5px;
+        }
+
+        #user-auth-modal .forgot-pass a {
+          font-size: 16px;
+          color: #666666;
+          text-decoration: none;
+        }
+
+        #user-auth-modal .forgot-pass:hover a {
+          text-decoration: underline;
+        }
+
+        #user-auth-modal .button {
+          margin: 15px 0;
+          width: 100%;
+          height: 50px;
+          font-size: 18px;
+          line-height: 50px;
+          font-weight: 600;
+          background: #dde1e7;
+          border-radius: 25px;
+          border: none;
+          outline: none;
+          cursor: pointer;
+          color: #595959;
+          box-shadow: 2px 2px 5px #BABECC,
+                      -5px -5px 10px #ffffff73;
+        }
+
+        #user-auth-modal .button:focus {
+          color: #3498db;
+          box-shadow: inset 2px 2px 5px #BABECC,
+                     inset -5px -5px 10px #ffffff73;
+        }
+
+        #user-auth-modal .sign-up {
+          margin: 10px 0;
+          color: #595959;
+          font-size: 16px;
+        }
+
+        #user-auth-modal .sign-up a {
+          color: #3498db;
+          text-decoration: none;
+        }
+
+        #user-auth-modal .sign-up a:hover {
+          text-decoration: underline;
+        }
+        
         /* --- ESTILOS DEL TEMA OSCURO --- */
         body.dark-theme {
             background-color: #1f2937;
@@ -260,13 +724,20 @@
         }
         body.dark-theme .neumorphic-btn.primary { color: #60a5fa; }
         body.dark-theme .neumorphic-btn.danger { color: #f87171; }
-        
-        body.dark-theme .nav-tab { color: #9ca3af; }
-        body.dark-theme .nav-tab.active {
-            color: #60a5fa;
-            box-shadow: inset 5px 5px 10px #111827, inset -5px -5px 10px #4b5563;
+
+        body.dark-theme .nav-tab {
+            background-image: linear-gradient(to top, #2a3341 0%, #374151 80%, #404a59 100%);
+            border: 1px solid #5a6678;
+            color: #d1d5db;
+            text-shadow: 0 1px #111827;
         }
-        body.dark-theme .nav-tab:not(.active):hover { color: #60a5fa; }
+        body.dark-theme .nav-tab:hover {
+            box-shadow: 0 4px 3px 1px #1a202c, 0 6px 8px #111827, 0 -4px 4px #4a5568, 0 -6px 4px #5a6678, inset 0 0 3px 3px #1f2937;
+        }
+        body.dark-theme .nav-tab.active {
+            box-shadow: 0 4px 3px 1px #1a202c, 0 6px 8px #111827, 0 -4px 4px #4a5568, 0 -6px 4px #5a6678, inset 0 0 5px 3px #000, inset 0 0 30px #2d3748;
+            color: #60a5fa;
+        }
 
         body.dark-theme .neumorphic-input {
             background: #374151;
@@ -276,15 +747,30 @@
         body.dark-theme .neumorphic-input::placeholder { color: #6b7280; }
 
         body.dark-theme #mobile-sidenav { background-color: #374151; }
-        body.dark-theme .mobile-nav-link { color: #d1d5db; }
-        body.dark-theme .mobile-nav-link.active {
-             color: #60a5fa;
-             box-shadow: inset 5px 5px 10px #111827, inset -5px -5px 10px #4b5563;
+        body.dark-theme .mobile-nav-link {
+            background-image: linear-gradient(to top, #2a3341 0%, #374151 80%, #404a59 100%);
+            border: 1px solid #5a6678;
+            color: #d1d5db;
+            text-shadow: 0 1px #111827;
         }
-        body.dark-theme .mobile-nav-link:not(.active):hover { color: #60a5fa; }
+        body.dark-theme .mobile-nav-link:hover {
+            box-shadow: 0 4px 3px 1px #1a202c, 0 6px 8px #111827, 0 -4px 4px #4a5568, 0 -6px 4px #5a6678, inset 0 0 3px 3px #1f2937;
+        }
+        body.dark-theme .mobile-nav-link.active {
+            box-shadow: 0 4px 3px 1px #1a202c, 0 6px 8px #111827, 0 -4px 4px #4a5568, 0 -6px 4px #5a6678, inset 0 0 5px 3px #000, inset 0 0 30px #2d3748;
+            color: #60a5fa;
+        }
 
-        body.dark-theme #current-date { color: #60a5fa; }
-        
+        body.dark-theme .weather-widget {
+            box-shadow: none;
+        }
+        body.dark-theme .weather-widget .background-design {
+            background-color: #3b82f6;
+        }
+        body.dark-theme .weather-widget .circle {
+            background-color: #60a5fa;
+        }
+
         body.dark-theme .calendar-cell { background: #374151; }
         body.dark-theme .calendar-cell.is-today { 
             box-shadow: inset 4px 4px 8px #111827, inset -4px -4px 8px #4b5563; 
@@ -293,15 +779,113 @@
         body.dark-theme .calendar-cell.not-current-month { background: transparent; color: #6b7280; }
         body.dark-theme table thead { border-color: #4b5563; }
         body.dark-theme table tr { border-color: rgba(75, 85, 99, 0.5); }
+
+        body.dark-theme #app-lockscreen {
+            background-color: #1f2937;
+        }
+        body.dark-theme #lockscreen-time, body.dark-theme #lockscreen-date, body.dark-theme #app-lockscreen p {
+            color: #d1d5db;
+        }
+        body.dark-theme #lockscreen-message { color: #f87171; }
+        
+        body.dark-theme #user-auth-modal .content {
+            background: #374151;
+            box-shadow: -3px -3px 7px #4b5563, 2px 2px 5px #111827;
+        }
+        body.dark-theme #user-auth-modal .text {
+            color: #f9fafb;
+        }
+        body.dark-theme #user-auth-modal .field .input {
+            background: #374151;
+            color: #d1d5db;
+            box-shadow: inset 2px 2px 5px #111827, inset -5px -5px 10px #4b5563;
+        }
+        body.dark-theme #user-auth-modal .field .input:focus {
+          box-shadow: inset 1px 1px 2px #111827, inset -1px -1px 2px #4b5563;
+        }
+        body.dark-theme #user-auth-modal .field .span,
+        body.dark-theme #user-auth-modal .field .label {
+            color: #9ca3af;
+        }
+        body.dark-theme #user-auth-modal .forgot-pass a {
+            color: #9ca3af;
+        }
+        body.dark-theme #user-auth-modal .button {
+            background: #374151;
+            color: #d1d5db;
+            box-shadow: 2px 2px 5px #111827, -5px -5px 10px #4b5563;
+        }
+        body.dark-theme #user-auth-modal .button:focus {
+            color: #60a5fa;
+            box-shadow: inset 2px 2px 5px #111827, inset -5px -5px 10px #4b5563;
+        }
+        body.dark-theme #user-auth-modal .sign-up {
+            color: #9ca3af;
+        }
+        body.dark-theme #user-auth-modal .auth-tabs {
+            background: #374151;
+            box-shadow: inset 2px 2px 5px #111827, inset -5px -5px 10px #4b5563;
+        }
+        body.dark-theme #user-auth-modal .auth-tab {
+            color: #d1d5db;
+        }
+        body.dark-theme #user-auth-modal .auth-tab.active {
+            color: #60a5fa;
+            background: #374151;
+            box-shadow: 2px 2px 5px #111827, -5px -5px 10px #4b5563;
+        }
     </style>
 </head>
 <body class="antialiased">
-@@ -244,7 +488,29 @@
-        <header class="text-center mb-8 relative">
-            <h1 class="text-3xl sm:text-4xl font-bold text-gray-700">Portal Parroquial</h1>
-            <p class="text-gray-500 mt-2">Un espacio para toda la comunidad.</p>
-             <div id="admin-controls-container" class="absolute top-0 right-0"></div>
-             <div class="absolute top-0 right-0 flex items-center gap-4">
+
+    <!-- Pantalla de Bloqueo -->
+    <div id="app-lockscreen" class="fixed inset-0 z-[101] flex flex-col items-center justify-center transition-opacity duration-500 ease-in-out">
+        <div class="text-center">
+            <p id="lockscreen-time" class="text-6xl sm:text-7xl font-bold text-gray-700"></p>
+            <p id="lockscreen-date" class="text-lg sm:text-xl text-gray-500"></p>
+        </div>
+
+        <div class="mt-16 text-center">
+            <label for="unlock-switch" class="unlock-switch-label">
+                <input type="checkbox" id="unlock-switch" class="hidden" disabled>
+                <div class="unlock-switch-track neumorphic-inset">
+                    <div class="unlock-switch-thumb neumorphic-card"></div>
+                </div>
+            </label>
+            <p class="mt-6 text-gray-500 font-medium">Desliza para desbloquear</p>
+            <p id="lockscreen-message" class="text-red-500 text-sm mt-2 hidden">Debes iniciar sesión para desbloquear.</p>
+        </div>
+
+        <div class="mt-8">
+            <button data-modal-target="user-auth-modal" class="neumorphic-btn primary">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
+                <span>Registrarse o Iniciar Sesión</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Menú Móvil -->
+    <div id="mobile-nav-wrapper" class="md:hidden">
+        <div id="mobile-sidenav-overlay"></div>
+        <div id="mobile-sidenav">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-xl font-bold text-gray-700">Menú</h2>
+                <button data-action="close-sidenav" class="neumorphic-btn p-2"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
+            </div>
+            <nav id="mobile-nav-links" class="flex flex-col gap-3"></nav>
+        </div>
+        <div id="edge-handle"></div>
+    </div>
+
+    <div id="app-loading">Cargando Portal...</div>
+
+    <div id="app-container" class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="flex flex-col sm:flex-row justify-between sm:items-center mb-8 gap-4">
+            <div class="text-center sm:text-left">
+                <h1 class="text-3xl sm:text-4xl font-bold text-gray-700">Comunidad de Gracia</h1>
+                <p class="text-gray-500 mt-2">Mi espacio Digital</p>
+            </div>
+             <div class="flex items-center justify-center sm:justify-end shrink-0 gap-4">
                  <label class="theme-switch">
                   <input type="checkbox" id="theme-switch-checkbox" class="theme-switch__checkbox">
                   <div class="theme-switch__container">
@@ -327,28 +911,955 @@
         </header>
 
         <!-- Navegación Principal (Desktop) -->
-@@ -868,11 +1134,11 @@
+        <nav class="mb-8 hidden md:block">
+            <div id="tabs-container" class="flex flex-wrap justify-center items-center gap-2 sm:gap-4">
+                <div class="nav-tab active" data-target="page-tablero" title="Tablero"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 8.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg></div>
+                <div class="nav-tab" data-target="page-agenda" title="Eventos"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+                <div class="nav-tab" data-target="page-directorio" title="Directorio"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-4.67c.12-.24.232-.487.335-.737m-3.058 3.07A3.375 3.375 0 008.25 15c0-1.01.39-1.928 1.04-2.625M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" /></svg></div>
+                <div class="nav-tab" data-target="page-noticias" title="Noticias"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" /></svg></div>
+                <div class="nav-tab" data-target="page-manuales" title="Manuales"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg></div>
+                <div class="nav-tab" data-target="page-recursos" title="Recursos"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" /></svg></div>
+                <div class="nav-tab" data-target="page-calendario" title="Calendario"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0h18M-4.5 12h22.5" /></svg></div>
+                <div class="nav-tab super-admin-only" data-target="page-user-management" title="Usuarios"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-4.67c.12-.24.232-.487.335-.737m-3.058 3.07A3.375 3.375 0 008.25 15c0-1.01.39-1.928 1.04-2.625M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5" /></svg></div>
+            </div>
+        </nav>
+
+        <main>
+            <div id="pages-container">
+                <!-- Páginas de Contenido -->
+                <div id="page-tablero" class="page active">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Tarjeta de Hoy (Clima y Hora) -->
+                        <div class="md:col-span-1">
+                            <div class="weather-widget">
+                                <section class="info-section">
+                                    <div class="background-design">
+                                        <div class="circle"></div>
+                                        <div class="circle"></div>
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="left-side">
+                                        <div class="weather">
+                                            <div>
+                                                <svg id="weather-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g><path d="M12 4.5V9.5M12 14.5V19.5M19.5 12H14.5M9.5 12H4.5M17.6066 6.3934L15.5 8.5M8.5 15.5L6.3934 17.6066M17.6066 17.6066L15.5 15.5M8.5 8.5L6.3934 6.3934" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
+                                            </div>
+                                            <div id="weather-desc">Cargando...</div>
+                                        </div>
+                                        <div id="weather-temp" class="temperature">--°</div>
+                                    </div>
+                                    <div class="right-side">
+                                        <div>
+                                            <div id="current-time" class="hour">--:--</div>
+                                            <div id="current-date" class="date">-- --/--</div>
+                                        </div>
+                                        <div id="weather-location" class="city">Cargando...</div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                        <div class="md:col-span-2 space-y-6">
+                            <div id="birthday-card" class="neumorphic-card p-6" style="display: none;">
+                                <h2 class="text-xl font-bold mb-4">Cumpleaños de Hoy</h2>
+                                <ul id="birthday-list" class="space-y-3"></ul>
+                            </div>
+                            <div class="neumorphic-card p-6">
+                                <h2 class="text-xl font-bold mb-4">Próximos Eventos</h2>
+                                <ul id="upcoming-events-list" class="space-y-3"><li class="text-gray-500">Cargando eventos...</li></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="page-agenda" class="page">
+                    <div class="neumorphic-card p-6">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                            <h2 class="text-2xl font-bold">Eventos</h2>
+                            <button data-modal-target="event-modal" data-permission="agenda" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Evento</span></button>
+                        </div>
+                        <div class="overflow-x-auto"><table class="w-full text-left"><thead class="border-b border-gray-300"><tr><th class="p-3 font-semibold">Fecha</th><th class="p-3 font-semibold hidden sm:table-cell">Hora</th><th class="p-3 font-semibold">Nombre del Evento</th><th class="p-3 font-semibold admin-only-table-cell" data-permission="agenda">Acciones</th></tr></thead><tbody id="agenda-table-body"></tbody></table></div>
+                    </div>
+                </div>
+                <div id="page-directorio" class="page">
+                    <div class="neumorphic-card p-6">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                            <h2 class="text-2xl font-bold">Directorio</h2>
+                            <button data-modal-target="parroquiano-modal" data-permission="directorio" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M11 5a3 3 0 11-6 0 3 3 0 016 0zM12.73 10.21a5.002 5.002 0 016.536 6.536l.243.243a1 1 0 11-1.414 1.414l-.243-.243a5.002 5.002 0 01-7.95-7.95l-1.01-1.01A5.002 5.002 0 012.27 12.27l-1.01 1.01a1 1 0 11-1.414-1.414l1.01-1.01a5.002 5.002 0 017.95 7.95l.243.243a1 1 0 011.414 1.414l-.243-.243a5.002 5.002 0 01-6.536-6.536l1.01 1.01z" /></svg><span>Agregar Parroquiano</span></button>
+                        </div>
+                        <div class="overflow-x-auto"><table class="w-full text-left"><thead class="border-b border-gray-300"><tr><th class="p-3 font-semibold">Nombre</th><th class="p-3 font-semibold hidden md:table-cell">Teléfono</th><th class="p-3 font-semibold hidden lg:table-cell">Contacto Emergencia</th><th class="p-3 font-semibold admin-only-table-cell" data-permission="directorio">Acciones</th></tr></thead><tbody id="directorio-table-body"></tbody></table></div>
+                    </div>
+                </div>
+                <div id="page-noticias" class="page">
+                    <div class="neumorphic-card p-6">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                            <h2 class="text-2xl font-bold">Noticias Parroquiales</h2>
+                            <button data-modal-target="news-modal" data-permission="noticias" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Noticia</span></button>
+                        </div>
+                        <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                    </div>
+                </div>
+                <div id="page-manuales" class="page">
+                    <div class="neumorphic-card p-6">
+                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                            <h2 class="text-2xl font-bold">Manuales y Guías</h2>
+                            <button data-modal-target="bloque-manual-modal" data-permission="manuales" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
+                        </div>
+                        <div id="manuales-container" class="space-y-4"></div>
+                    </div>
+                </div>
+                <div id="page-recursos" class="page">
+                    <div class="neumorphic-card p-6">
+                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                            <h2 class="text-2xl font-bold">Recursos y Documentos</h2>
+                            <button data-modal-target="bloque-archivo-modal" data-permission="recursos" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
+                        </div>
+                        <div id="archivos-container" class="space-y-4"></div>
+                    </div>
+                </div>
+                <div id="page-calendario" class="page">
+                    <div class="neumorphic-card p-6">
+                        <div id="calendar-header" class="flex justify-between items-center mb-6">
+                            <button id="prev-month-btn" class="neumorphic-btn p-2 sm:p-auto"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg></button>
+                            <h2 id="month-year-header" class="text-xl sm:text-2xl font-bold text-center"></h2>
+                            <button id="next-month-btn" class="neumorphic-btn p-2 sm:p-auto"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></button>
+                        </div>
+                        <div class="grid grid-cols-7 gap-1 sm:gap-2 text-center font-semibold mb-2 text-gray-600 text-sm sm:text-base"><div>Do</div><div>Lu</div><div>Ma</div><div>Mi</div><div>Ju</div><div>Vi</div><div>Sá</div></div>
+                        <div id="calendar-grid" class="grid grid-cols-7 gap-1 sm:gap-2"></div>
+                    </div>
+                </div>
+                <div id="page-user-management" class="page">
+                    <div class="neumorphic-card p-6">
+                        <h2 class="text-2xl font-bold mb-6">Gestión de Usuarios</h2>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="border-b border-gray-300">
+                                    <tr>
+                                        <th class="p-3 font-semibold">Nombre</th>
+                                        <th class="p-3 font-semibold">Correo</th>
+                                        <th class="p-3 font-semibold">Rol</th>
+                                        <th class="p-3 font-semibold">Permisos</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="user-management-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modales -->
+     <div id="user-auth-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 backdrop-blur-sm flex items-center justify-center hidden z-[110] p-4">
+        <div class="content relative">
+             <button data-action="close-modal" class="absolute -top-6 -right-3 text-white hover:text-gray-300">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            
+            <div class="auth-tabs">
+                <button id="show-login-btn" class="auth-tab active">Iniciar Sesión</button>
+                <button id="show-register-btn" class="auth-tab">Registrarse</button>
+            </div>
+
+            <!-- Vista de Login -->
+            <div id="login-view">
+                <form id="login-form" action="#" class="mt-8">
+                    <div class="field">
+                       <input required type="email" id="login-email" class="input">
+                       <span class="span"><svg class="" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" y="0" x="0" height="20" width="50" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg"><g><path class="" data-original="#000000" fill="#595959" d="m467 61h-422c-24.813 0-45 20.187-45 45v300c0 24.813 20.187 45 45 45h422c24.813 0 45-20.187 45-45v-300c0-24.813-20.187-45-45-45zm-21.086 42.229 18.172 15.143-207.086 172.583-207.086-172.583 18.172-15.143 188.914 157.417zm-403.914 329.771v-274.526l183.58 152.958c2.582 2.152 5.53 3.229 8.48 3.229s5.898-1.077 8.48-3.229l183.58-152.958v274.526z"></path></g></svg></span>
+                       <label class="label">Correo Electrónico</label>
+                    </div>
+                    <div class="field">
+                       <input required type="password" id="login-password" class="input">
+                       <span class="span"><svg class="" xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" y="0" x="0" height="20" width="50" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg"><g><path class="" data-original="#000000" fill="#595959" d="M336 192h-16v-64C320 57.406 262.594 0 192 0S64 57.406 64 128v64H48c-26.453 0-48 21.523-48 48v224c0 26.477 21.547 48 48 48h288c26.453 0 48-21.523 48-48V240c0-26.477-21.547-48-48-48zm-229.332-64c0-47.063 38.27-85.332 85.332-85.332s85.332 38.27 85.332 85.332v64H106.668zm0 0"></path></g></svg></span>
+                       <label class="label">Contraseña</label>
+                    </div>
+                    <p id="login-error-msg" class="text-red-500 text-sm my-4 text-center hidden">Credenciales incorrectas.</p>
+                    <button class="button" type="submit">Ingresar</button>
+                </form>
+            </div>
+            <!-- Vista de Registro -->
+            <div id="register-view" class="hidden">
+                <form id="register-form" action="#" class="mt-8">
+                    <div class="field">
+                       <input required type="text" id="register-name" class="input">
+                       <span class="span"><svg class="" xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" y="0" x="0" height="20" width="50" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg"><g><path class="" data-original="#000000" fill="#595959" d="M256 0c-74.439 0-135 60.561-135 135s60.561 135 135 135 135-60.561 135-135S330.439 0 256 0zM423.966 358.195C387.006 320.667 338.009 300 286 300h-60c-52.008 0-101.006 20.667-137.966 58.195C51.255 395.539 31 444.833 31 497c0 8.284 6.716 15 15 15h420c8.284 0 15-6.716 15-15 0-52.167-20.255-101.461-57.034-138.805z"></path></g></svg></span>
+                       <label class="label">Nombre Completo</label>
+                    </div>
+                    <div class="field">
+                       <input required type="email" id="register-email" class="input">
+                       <span class="span"><svg class="" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" y="0" x="0" height="20" width="50" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg"><g><path class="" data-original="#000000" fill="#595959" d="m467 61h-422c-24.813 0-45 20.187-45 45v300c0 24.813 20.187 45 45 45h422c24.813 0 45-20.187 45-45v-300c0-24.813-20.187-45-45-45zm-21.086 42.229 18.172 15.143-207.086 172.583-207.086-172.583 18.172-15.143 188.914 157.417zm-403.914 329.771v-274.526l183.58 152.958c2.582 2.152 5.53 3.229 8.48 3.229s5.898-1.077 8.48-3.229l183.58-152.958v274.526z"></path></g></svg></span>
+                       <label class="label">Correo</label>
+                    </div>
+                    <div class="field">
+                       <input required type="password" id="register-password" class="input">
+                       <span class="span"><svg class="" xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" y="0" x="0" height="20" width="50" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg"><g><path class="" data-original="#000000" fill="#595959" d="M336 192h-16v-64C320 57.406 262.594 0 192 0S64 57.406 64 128v64H48c-26.453 0-48 21.523-48 48v224c0 26.477 21.547 48 48 48h288c26.453 0 48-21.523 48-48V240c0-26.477-21.547-48-48-48zm-229.332-64c0-47.063 38.27-85.332 85.332-85.332s85.332 38.27 85.332 85.332v64H106.668zm0 0"></path></g></svg></span>
+                       <label class="label">Contraseña</label>
+                    </div>
+                    <p id="register-error-msg" class="text-red-500 text-sm my-4 text-center hidden"></p>
+                    <button class="button" type="submit">Crear Cuenta</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div id="event-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="event-form" data-type="event">
+                <input type="hidden" name="id">
+                <div class="mb-4"><label for="event-name" class="block text-sm font-medium mb-1">Nombre del Evento</label><input type="text" id="event-name" name="name" class="neumorphic-input" required></div>
+                <div class="mb-4"><label for="event-date" class="block text-sm font-medium mb-1">Fecha</label><input type="date" id="event-date" name="date" class="neumorphic-input" required></div>
+                <div class="mb-4"><label for="event-time" class="block text-sm font-medium mb-1">Hora</label><input type="time" id="event-time" name="time" class="neumorphic-input" required></div>
+                <div class="mb-6">
+                    <label for="event-imageUrl" class="block text-sm font-medium mb-1">URL de la Imagen (Opcional)</label>
+                    <input type="url" id="event-imageUrl" name="imageUrl" class="neumorphic-input" placeholder="https://ejemplo.com/imagen.jpg">
+                </div>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+    <div id="parroquiano-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-lg">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="parroquiano-form" data-type="parroquiano">
+                <input type="hidden" name="id">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto pr-2">
+                    <div class="md:col-span-2"><label for="parroquiano-nombre" class="block text-sm font-medium mb-1">Nombre Completo</label><input type="text" id="parroquiano-nombre" name="nombre" class="neumorphic-input" required></div>
+                    <div class="md:col-span-2"><label for="parroquiano-direccion" class="block text-sm font-medium mb-1">Dirección</label><input type="text" id="parroquiano-direccion" name="direccion" class="neumorphic-input"></div>
+                    <div><label for="parroquiano-telefono" class="block text-sm font-medium mb-1">Teléfono</label><input type="tel" id="parroquiano-telefono" name="telefono" class="neumorphic-input"></div>
+                    <div><label for="parroquiano-correo" class="block text-sm font-medium mb-1">Correo Electrónico</label><input type="email" id="parroquiano-correo" name="correo" class="neumorphic-input"></div>
+                    <div><label for="parroquiano-nacimiento" class="block text-sm font-medium mb-1">Fecha de Nacimiento</label><input type="date" id="parroquiano-nacimiento" name="nacimiento" class="neumorphic-input"></div>
+                    <div><label for="parroquiano-tipo-sangre" class="block text-sm font-medium mb-1">Tipo de Sangre</label><input type="text" id="parroquiano-tipo-sangre" name="tipo_sangre" class="neumorphic-input"></div>
+                    <div class="md:col-span-2"><label for="parroquiano-alergias" class="block text-sm font-medium mb-1">Alergias</label><textarea id="parroquiano-alergias" name="alergias" rows="2" class="neumorphic-input"></textarea></div>
+                    <div class="md:col-span-2"><label for="parroquiano-medicamentos" class="block text-sm font-medium mb-1">Medicamentos</label><textarea id="parroquiano-medicamentos" name="medicamentos" rows="2" class="neumorphic-input"></textarea></div>
+                    <div class="md:col-span-2"><hr class="my-2 border-gray-300/50"></div>
+                    <div><label for="parroquiano-emergencia-nombre" class="block text-sm font-medium mb-1">Llamar a (Emergencia)</label><input type="text" id="parroquiano-emergencia-nombre" name="emergencia_nombre" class="neumorphic-input"></div>
+                    <div><label for="parroquiano-emergencia-telefono" class="block text-sm font-medium mb-1">Teléfono (Emergencia)</label><input type="tel" id="parroquiano-emergencia-telefono" name="emergencia_telefono" class="neumorphic-input"></div>
+                    <div class="md:col-span-2"><label for="parroquiano-notas" class="block text-sm font-medium mb-1">Notas Adicionales</label><textarea id="parroquiano-notas" name="notas" rows="2" class="neumorphic-input"></textarea></div>
+                </div>
+                <div class="flex justify-end gap-4 mt-6"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+     <div id="news-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-lg">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="news-form" data-type="news">
+                <input type="hidden" name="id">
+                <div class="grid grid-cols-1 gap-4 max-h-[70vh] overflow-y-auto pr-2">
+                    <div><label for="news-titulo" class="block text-sm font-medium mb-1">Título</label><input type="text" id="news-titulo" name="titulo" class="neumorphic-input" required></div>
+                    <div>
+                        <label for="news-imagenUrl" class="block text-sm font-medium mb-1">URL de la Imagen Principal</label>
+                        <input type="url" id="news-imagenUrl" name="imagenUrl" class="neumorphic-input" placeholder="https://ejemplo.com/imagen.jpg">
+                    </div>
+                    <div><label for="news-resumen" class="block text-sm font-medium mb-1">Resumen</label><textarea id="news-resumen" name="resumen" rows="3" class="neumorphic-input" required></textarea></div>
+                    <div><label for="news-contenido" class="block text-sm font-medium mb-1">Contenido Completo</label><textarea id="news-contenido" name="contenido" rows="6" class="neumorphic-input" required></textarea></div>
+                    <div>
+                        <label for="news-galleryUrls" class="block text-sm font-medium mb-1">URLs de la Galería (una por línea)</label>
+                        <textarea id="news-galleryUrls" name="galleryUrls" rows="4" class="neumorphic-input" placeholder="https://ejemplo.com/imagen1.jpg\nhttps://ejemplo.com/imagen2.jpg"></textarea>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-4 mt-6">
+                    <button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button>
+                    <button type="submit" class="neumorphic-btn primary">Guardar Noticia</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="news-detail-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-6 sm:p-8 w-full max-w-3xl max-h-[90vh] flex flex-col">
+            <h2 id="news-detail-title" class="text-2xl sm:text-3xl font-bold mb-2"></h2>
+            <p id="news-detail-date" class="text-sm text-gray-500 mb-4"></p>
+            <div class="flex-grow overflow-y-auto pr-2">
+                <div id="news-gallery-container" class="relative mb-4">
+                    <img id="news-detail-image" src="" alt="Imagen de la noticia" class="rounded-2xl w-full h-64 sm:h-80 object-cover transition-opacity duration-300">
+                    <button id="gallery-prev-btn" class="absolute top-1/2 left-2 transform -translate-y-1/2 neumorphic-btn p-2 rounded-full hidden"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg></button>
+                    <button id="gallery-next-btn" class="absolute top-1/2 right-2 transform -translate-y-1/2 neumorphic-btn p-2 rounded-full hidden"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></button>
+                </div>
+                <div id="news-gallery-thumbnails" class="flex gap-2 overflow-x-auto pb-2 mb-4"></div>
+                <div id="news-detail-content" class="prose max-w-none"></div>
+            </div>
+            <div class="flex justify-end gap-4 mt-6 flex-shrink-0"><button type="button" data-action="close-modal" class="neumorphic-btn">Cerrar</button></div>
+        </div>
+    </div>
+    <div id="bloque-manual-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="bloque-manual-form" data-type="bloqueManual">
+                <input type="hidden" name="id">
+                <div class="mb-6"><label for="bloque-manual-nombre" class="block text-sm font-medium mb-1">Nombre del Bloque</label><input type="text" id="bloque-manual-nombre" name="nombre" class="neumorphic-input" required></div>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+     <div id="bloque-archivo-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="bloque-archivo-form" data-type="bloqueArchivo">
+                <input type="hidden" name="id">
+                <div class="mb-6"><label for="bloque-archivo-nombre" class="block text-sm font-medium mb-1">Nombre del Bloque</label><input type="text" id="bloque-archivo-nombre" name="nombre" class="neumorphic-input" required></div>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+    <div id="manual-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="manual-form" data-type="manual">
+                <input type="hidden" name="id">
+                <input type="hidden" name="blockId">
+                <div class="mb-4"><label for="manual-nombre" class="block text-sm font-medium mb-1">Nombre del Manual</label><input type="text" id="manual-nombre" name="nombre" class="neumorphic-input" required></div>
+                <div class="mb-6"><label for="manual-url" class="block text-sm font-medium mb-1">URL del Manual</label><input type="url" id="manual-url" name="url" class="neumorphic-input" required placeholder="https://ejemplo.com/documento.pdf"></div>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+    <div id="archivo-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="archivo-form" data-type="archivo">
+                <input type="hidden" name="id">
+                <input type="hidden" name="blockId">
+                <div class="mb-4"><label for="archivo-nombre" class="block text-sm font-medium mb-1">Nombre del Archivo</label><input type="text" id="archivo-nombre" name="nombre" class="neumorphic-input" required></div>
+                <div class="mb-6"><label for="archivo-url" class="block text-sm font-medium mb-1">URL del Archivo</label><input type="url" id="archivo-url" name="url" class="neumorphic-input" required placeholder="https://ejemplo.com/documento.pdf"></div>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+    <div id="confirm-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-sm">
+            <h2 class="text-xl font-bold mb-4">Confirmar Eliminación</h2>
+            <p id="confirm-message" class="mb-6">¿Estás seguro?</p>
+            <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="button" id="confirm-delete-btn" class="neumorphic-btn danger">Eliminar</button></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, addDoc, doc, setDoc, getDoc, updateDoc, deleteDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const UI = {
+            elements: {
+                appLoading: document.getElementById('app-loading'),
+                appContainer: document.getElementById('app-container'),
+                tabsContainer: document.getElementById('tabs-container'),
+                pagesContainer: document.getElementById('pages-container'),
+                adminControlsContainer: document.getElementById('admin-controls-container'),
+                edgeHandle: document.getElementById('edge-handle'),
+                mobileSidenav: document.getElementById('mobile-sidenav'),
+                mobileSidenavOverlay: document.getElementById('mobile-sidenav-overlay'),
+                mobileNavLinks: document.getElementById('mobile-nav-links'),
+                lockscreen: document.getElementById('app-lockscreen'),
+                lockscreenTime: document.getElementById('lockscreen-time'),
+                lockscreenDate: document.getElementById('lockscreen-date'),
+                lockscreenMessage: document.getElementById('lockscreen-message'),
+                unlockSwitch: document.getElementById('unlock-switch'),
+                unlockSwitchLabel: document.querySelector('.unlock-switch-label'),
+                currentDate: document.getElementById('current-date'),
+                currentTime: document.getElementById('current-time'),
+                weatherTemp: document.getElementById('weather-temp'),
+                weatherDesc: document.getElementById('weather-desc'),
+                weatherLocation: document.getElementById('weather-location'),
+                upcomingEventsList: document.getElementById('upcoming-events-list'),
+                birthdayCard: document.getElementById('birthday-card'),
+                birthdayList: document.getElementById('birthday-list'),
+                agendaTableBody: document.getElementById('agenda-table-body'),
+                directorioTableBody: document.getElementById('directorio-table-body'),
+                newsGrid: document.getElementById('news-grid'),
+                manualesContainer: document.getElementById('manuales-container'),
+                archivosContainer: document.getElementById('archivos-container'),
+                monthYearHeader: document.getElementById('month-year-header'),
+                calendarGrid: document.getElementById('calendar-grid'),
+                userManagementTableBody: document.getElementById('user-management-table-body'),
+                newsDetailImage: document.getElementById('news-detail-image'),
+                galleryThumbnails: document.getElementById('news-gallery-thumbnails'),
+                modals: {
+                    userAuth: document.getElementById('user-auth-modal'),
+                    event: document.getElementById('event-modal'),
+                    parroquiano: document.getElementById('parroquiano-modal'),
+                    news: document.getElementById('news-modal'),
+                    newsDetail: document.getElementById('news-detail-modal'),
+                    bloqueManual: document.getElementById('bloque-manual-modal'),
+                    manual: document.getElementById('manual-modal'),
+                    bloqueArchivo: document.getElementById('bloque-archivo-modal'),
+                    archivo: document.getElementById('archivo-modal'),
+                    confirm: document.getElementById('confirm-modal'),
+                },
+                confirmMessage: document.getElementById('confirm-message'),
+                confirmDeleteBtn: document.getElementById('confirm-delete-btn'),
+            },
+            initMobileNav() {
+                let linksHtml = '';
+                document.querySelectorAll('#tabs-container .nav-tab').forEach(tab => {
+                    if (tab.style.display === 'none') return;
+                    const iconHTML = tab.querySelector('svg').outerHTML;
+                    const text = tab.getAttribute('title');
+                    linksHtml += `<div class="mobile-nav-link ${tab.classList.contains('active') ? 'active' : ''}" data-target="${tab.dataset.target}">${iconHTML}<span>${text}</span></div>`;
+                });
+                this.elements.mobileNavLinks.innerHTML = linksHtml;
+            },
+            showPage(pageId) {
+                this.elements.pagesContainer.querySelectorAll('.page').forEach(page => page.classList.toggle('active', page.id === pageId));
+                document.querySelectorAll(`[data-target]`).forEach(tab => tab.classList.toggle('active', tab.dataset.target === pageId));
+            },
+            renderGrid(container, data, cardRenderer, emptyMessage) {
+                container.innerHTML = '';
+                if (data.length === 0) {
+                    container.innerHTML = `<p class="col-span-full text-center text-gray-500">${emptyMessage}</p>`;
+                    return;
+                }
+                 const sortedData = [...data].sort((a, b) => new Date(b.fechaPublicacion) - new Date(a.fechaPublicacion));
+                sortedData.forEach(item => container.insertAdjacentHTML('beforeend', cardRenderer(item)));
+            },
+            renderTable(tbody, data, rowRenderer, emptyMessage) {
+                tbody.innerHTML = '';
+                if (data.length === 0) {
+                    const colSpan = tbody.closest('table')?.querySelector('thead tr').childElementCount || 1;
+                    tbody.innerHTML = `<tr><td colspan="${colSpan}" class="p-4 text-center text-gray-500">${emptyMessage}</td></tr>`;
+                    return;
+                }
+                const sortedData = [...data].sort((a, b) => (a.nombre || a.name || '').localeCompare(b.nombre || b.name || ''));
+                sortedData.forEach(item => tbody.insertAdjacentHTML('beforeend', rowRenderer(item)));
+            },
+            createNewsCard(article) {
+                const placeholderImage = 'https://placehold.co/600x400/eef0f4/4b5563?text=Noticia';
+                return `
+                    <div class="neumorphic-card flex flex-col">
+                        <img src="${article.imagenUrl || placeholderImage}" alt="Imagen de la noticia" class="rounded-t-2xl h-48 w-full object-cover" onerror="this.src='${placeholderImage}'">
+                        <div class="p-4 flex flex-col flex-grow">
+                            <h3 class="text-lg font-bold mb-2 break-words">${article.titulo}</h3>
+                            <p class="text-sm text-gray-500 mb-2">${new Date(article.fechaPublicacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                            <p class="text-sm mb-4 flex-grow break-words">${article.resumen}</p>
+                            <div class="flex justify-between items-center mt-auto">
+                                <button data-action="read-more" data-type="news" data-id="${article.id}" class="neumorphic-btn primary btn-sm">Leer Más</button>
+                                <div class="admin-only" data-permission="noticias" style="gap: 0.5rem;">
+                                    <button data-action="edit" data-type="news" data-id="${article.id}" class="neumorphic-btn btn-sm">Editar</button>
+                                    <button data-action="delete" data-type="news" data-id="${article.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+            },
+            createEventRow(event) {
+                const date = new Date(event.date + 'T00:00:00Z').toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
+                return `
+                    <tr class="border-b border-gray-300/50">
+                        <td class="p-3">${date}</td>
+                        <td class="p-3 hidden sm:table-cell">${event.time}</td>
+                        <td class="p-3 font-medium">${event.name}</td>
+                        <td class="p-3 admin-only-table-cell" data-permission="agenda">
+                            <div class="flex gap-2">
+                                <button data-action="edit" data-type="event" data-id="${event.id}" class="neumorphic-btn btn-sm">Editar</button>
+                                <button data-action="delete" data-type="event" data-id="${event.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
+                            </div>
+                        </td>
+                    </tr>`;
+            },
+            createParroquianoRow(p) {
+                return `
+                    <tr class="border-b border-gray-300/50">
+                        <td class="p-3 font-medium">${p.nombre || ''}</td>
+                        <td class="p-3 hidden md:table-cell">${p.telefono || ''}</td>
+                        <td class="p-3 hidden lg:table-cell">${p.emergencia_nombre || ''}</td>
+                        <td class="p-3 admin-only-table-cell" data-permission="directorio">
+                             <div class="flex gap-2">
+                                <button data-action="edit" data-type="parroquiano" data-id="${p.id}" class="neumorphic-btn btn-sm">Editar</button>
+                                <button data-action="delete" data-type="parroquiano" data-id="${p.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
+                            </div>
+                        </td>
+                    </tr>`;
+            },
+             renderAccordionBlocks(container, blocks, emptyMessage, typeConfig) {
+                container.innerHTML = '';
+                if (blocks.length === 0) {
+                    container.innerHTML = `<p class="text-center text-gray-500">${emptyMessage}</p>`;
+                    return;
+                }
+                const sortedBlocks = [...blocks].sort((a, b) => (a.nombre || '').localeCompare(b.nombre || ''));
+                sortedBlocks.forEach(block => {
+                    const items = block.items || [];
+                    const itemsHtml = items.length > 0 ? items.map(item => `
+                        <li class="flex justify-between items-center p-3 rounded-lg neumorphic-inset">
+                            <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="flex-grow truncate hover:text-blue-600 flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 flex-shrink-0"><path d="M12.232 4.232a2.5 2.5 0 013.536 3.536l-1.225 1.224a.75.75 0 001.061 1.06l1.224-1.224a4 4 0 00-5.656-5.656l-3 3a4 4 0 00.225 5.865.75.75 0 00.977-1.138 2.5 2.5 0 01-.142-3.665l3-3z" /><path d="M8.603 14.397a2.5 2.5 0 01-3.536-3.536l1.225-1.224a.75.75 0 00-1.061-1.06l-1.224 1.224a4 4 0 005.656 5.656l3-3a4 4 0 00-.225-5.865.75.75 0 00-.977 1.138 2.5 2.5 0 01.142 3.665l-3 3z" /></svg>
+                                <span class="truncate">${item.nombre}</span>
+                            </a>
+                            <div class="admin-only flex-shrink-0 ml-4" data-permission="${typeConfig.permission}" style="gap: 0.5rem;">
+                                <button data-action="edit" data-type="${typeConfig.item}" data-block-id="${block.id}" data-item-id="${item.id}" class="neumorphic-btn btn-sm">Editar</button>
+                                <button data-action="delete" data-type="${typeConfig.item}" data-block-id="${block.id}" data-item-id="${item.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
+                            </div>
+                        </li>
+                    `).join('') : `<li class="text-sm text-gray-500 p-2">No hay ${typeConfig.plural} en este bloque.</li>`;
+
+                    container.insertAdjacentHTML('beforeend', `
+                        <div class="neumorphic-card overflow-hidden">
+                            <div class="flex justify-between items-center p-4 cursor-pointer accordion-toggle">
+                                <h3 class="text-xl font-bold">${block.nombre}</h3>
+                                <div class="flex items-center gap-4">
+                                    <div class="admin-only" data-permission="${typeConfig.permission}" style="gap: 0.5rem;">
+                                        <button data-action="add-${typeConfig.item}" data-modal-target="${typeConfig.item}-modal" data-block-id="${block.id}" class="neumorphic-btn primary btn-sm">Añadir</button>
+                                        <button data-action="edit" data-type="${typeConfig.block}" data-id="${block.id}" class="neumorphic-btn btn-sm">Editar</button>
+                                        <button data-action="delete" data-type="${typeConfig.block}" data-id="${block.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="accordion-icon w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                                </div>
+                            </div>
+                            <div class="accordion-content">
+                                <ul class="p-4 pt-0 space-y-3">${itemsHtml}</ul>
+                            </div>
+                        </div>`);
+                });
+            },
+            renderCalendar(date, events, parroquianos) {
+                const year = date.getFullYear();
+                const month = date.getMonth();
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+                this.elements.monthYearHeader.textContent = `${monthNames[month]} ${year}`;
+                this.elements.calendarGrid.innerHTML = '';
+                const firstDayOfMonth = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                for (let i = 0; i < firstDayOfMonth; i++) {
+                    this.elements.calendarGrid.insertAdjacentHTML('beforeend', `<div class="calendar-cell not-current-month"></div>`);
+                }
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const cellDate = new Date(year, month, day);
+                    const isToday = cellDate.getTime() === today.getTime();
+                    const cellClasses = `calendar-cell ${isToday ? 'is-today' : ''}`;
+                    const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    const dailyEvents = events.filter(e => e.date === dateString);
+                    const dailyBirthdays = parroquianos.filter(p => {
+                        if (!p.nacimiento) return false;
+                        const birthDate = new Date(p.nacimiento + 'T00:00:00Z');
+                        return birthDate.getMonth() === month && birthDate.getDate() === day;
+                    });
+                    let itemsHtml = dailyEvents.map(e => `<div class="calendar-item event-item" title="${e.name} a las ${e.time}">${e.name}</div>`).join('');
+                    itemsHtml += dailyBirthdays.map(p => `<div class="calendar-item birthday-item" title="Cumpleaños de ${p.nombre}">🎂 ${p.nombre.split(' ')[0]}</div>`).join('');
+                    const cellHtml = `<div class="${cellClasses}"><div class="calendar-day-number">${day}</div><div class="calendar-items-container">${itemsHtml}</div></div>`;
+                    this.elements.calendarGrid.insertAdjacentHTML('beforeend', cellHtml);
+                }
+            },
+            renderUpcomingEvents(events) {
+                this.elements.upcomingEventsList.innerHTML = '';
+                const now = new Date();
+                now.setHours(0, 0, 0, 0);
+                const upcoming = events
+                    .filter(event => new Date(event.date + 'T00:00:00Z') >= now)
+                    .sort((a, b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`))
+                    .slice(0, 5);
+
+                if (upcoming.length === 0) {
+                    this.elements.upcomingEventsList.innerHTML = '<li class="text-gray-500">No hay próximos eventos.</li>';
+                    return;
+                }
+                upcoming.forEach(event => {
+                    const placeholderImage = 'https://placehold.co/100x100/eef0f4/4b5563?text=Evento';
+                    this.elements.upcomingEventsList.insertAdjacentHTML('beforeend', `
+                        <li class="flex items-center gap-4 p-3 rounded-lg neumorphic-inset">
+                            <img src="${event.imageUrl || placeholderImage}" alt="Imagen del evento" class="w-16 h-16 object-cover rounded-lg flex-shrink-0" onerror="this.src='${placeholderImage}'">
+                            <div class="overflow-hidden">
+                                <p class="font-semibold truncate">${event.name}</p>
+                                <p class="text-sm text-gray-500">${new Date(event.date + 'T00:00:00Z').toLocaleDateString('es-ES', { month: 'long', day: 'numeric' })} - ${event.time}h</p>
+                            </div>
+                        </li>`);
+                });
+            },
+            renderBirthdayReminders(parroquianos) {
+                const today = new Date();
+                const todayMonth = today.getMonth() + 1;
+                const todayDay = today.getDate();
+                const birthdayFolks = parroquianos.filter(p => {
+                    if (!p.nacimiento) return false;
+                    const birthDate = new Date(p.nacimiento + 'T00:00:00Z');
+                    return (birthDate.getMonth() + 1 === todayMonth) && (birthDate.getDate() === todayDay);
+                });
+                this.elements.birthdayList.innerHTML = '';
+                if (birthdayFolks.length === 0) {
+                    this.elements.birthdayCard.style.display = 'none';
+                } else {
+                    this.elements.birthdayCard.style.display = 'block';
+                    birthdayFolks.forEach(person => {
+                        this.elements.birthdayList.insertAdjacentHTML('beforeend', `
+                            <li class="flex items-center gap-4 p-3 rounded-lg neumorphic-inset">
+                                <div class="text-amber-500"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-8 h-8"><path fill-rule="evenodd" d="M10.868 2.884c.321-.772 1.415-.772 1.736 0l1.681 4.06c.064.155.19.283.348.333l4.48.653c.84.123 1.171 1.157.536 1.748l-3.242 3.159c-.12.117-.175.284-.15.444l.764 4.463c.145.845-.733 1.493-1.488 1.085l-4.01-2.108a.75.75 0 00-.702 0l-4.01 2.108c-.755.408-1.633-.24-1.488-1.085l.764-4.463c.025-.16-.03-.327-.15-.444l-3.242-3.159c-.635-.591-.304-1.625.536-1.748l4.48-.653c.158-.023.284-.15.348-.333l1.681-4.06z" clip-rule="evenodd" /></svg></div>
+                                <div><p class="font-semibold">${person.nombre}</p><p class="text-sm">¡Hoy es su cumpleaños!</p></div>
+                            </li>`);
+                    });
+                }
+            },
+            updateDateTime() {
+                const now = new Date();
+                const days = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
+                const dayName = days[now.getDay()];
+                const dayNum = String(now.getDate()).padStart(2, '0');
+                const monthNum = String(now.getMonth() + 1).padStart(2, '0');
+                if(this.elements.currentDate) this.elements.currentDate.textContent = `${dayName} ${dayNum}/${monthNum}`;
+                if(this.elements.currentTime) this.elements.currentTime.textContent = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+            },
+             updateLockscreenTime() {
+                const now = new Date();
+                if (this.elements.lockscreenTime) {
+                    this.elements.lockscreenTime.textContent = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                }
+                if (this.elements.lockscreenDate) {
+                    this.elements.lockscreenDate.textContent = now.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+                }
+            },
+            updateWeatherUI(data) {
+                if (data.temp !== undefined) {
+                    this.elements.weatherTemp.textContent = `${Math.round(data.temp)}°`;
+                    this.elements.weatherDesc.textContent = data.description.charAt(0).toUpperCase() + data.description.slice(1);
+                    this.elements.weatherLocation.textContent = data.location;
+                } else {
+                    this.elements.weatherTemp.textContent = '--°';
+                    this.elements.weatherDesc.textContent = data.description;
+                    this.elements.weatherLocation.textContent = data.location || '';
+                }
+            },
+            showGalleryImage(index) {
+                const { newsDetailImage, galleryThumbnails } = this.elements;
+                newsDetailImage.style.opacity = 0;
+                setTimeout(() => {
+                    newsDetailImage.src = App.state.currentGalleryImages[index] || 'https://placehold.co/800x600/eef0f4/4b5563?text=Imagen+no+disponible';
+                    newsDetailImage.style.opacity = 1;
+                }, 150);
+                galleryThumbnails.querySelectorAll('.gallery-thumbnail').forEach((thumb, i) => {
+                    thumb.classList.toggle('active', i === index);
+                    if (i === index) thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                });
+                App.state.currentGalleryIndex = index;
+            },
+            updateAdminUI(isSuperAdmin, isAdmin, user) {
+                document.body.classList.toggle('super-admin-mode', isSuperAdmin);
+                document.body.classList.toggle('admin-mode', isAdmin || isSuperAdmin);
+                
+                if (user) {
+                     this.elements.adminControlsContainer.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <span class="font-semibold hidden sm:inline">${user.nombre.split(' ')[0]}</span>
+                            <button data-action="logout" class="neumorphic-btn danger p-2" title="Cerrar Sesión">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                            </button>
+                        </div>`;
+                } else {
+                     this.elements.adminControlsContainer.innerHTML = ``;
+                }
+                this.initMobileNav();
+            },
+            renderUserManagement(users) {
+                this.elements.userManagementTableBody.innerHTML = '';
+                const permissionsKeys = ['agenda', 'directorio', 'noticias', 'manuales', 'recursos'];
+                users.forEach(user => {
+                    if (user.role === 'superadmin') return; // No mostrar al superadmin en la lista
+                    
+                    const roleSelector = `
+                        <select data-user-id="${user.id}" class="user-role-selector neumorphic-input !p-1 !text-sm">
+                            <option value="viewer" ${user.role === 'viewer' ? 'selected' : ''}>Espectador</option>
+                            <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
+                        </select>`;
+
+                    const permissionsCheckboxes = permissionsKeys.map(key => `
+                        <label class="flex items-center gap-1 text-xs">
+                           <input type="checkbox" data-user-id="${user.id}" data-permission="${key}" class="user-permission-checkbox" 
+                           ${user.permissions && user.permissions[key] ? 'checked' : ''} ${user.role !== 'admin' ? 'disabled' : ''}>
+                           ${key.charAt(0).toUpperCase() + key.slice(1)}
+                        </label>
+                    `).join('');
+
+                    const row = `
+                        <tr class="border-b border-gray-300/50">
+                            <td class="p-3">${user.nombre}</td>
+                            <td class="p-3">${user.email}</td>
+                            <td class="p-3">${roleSelector}</td>
+                            <td class="p-3">
+                                <div class="flex flex-wrap gap-2 items-center ${user.role !== 'admin' ? 'opacity-50' : ''}">
+                                    ${permissionsCheckboxes}
+                                </div>
+                            </td>
+                        </tr>`;
+                    this.elements.userManagementTableBody.insertAdjacentHTML('beforeend', row);
+                });
+            }
+        };
+
+        const FirebaseService = {
+            db: null, auth: null, appIdPath: '', basePaths: {},
+            init(onAuthChangeCallback) {
+                const firebaseConfig = {
+                    apiKey: "AIzaSyATCd0jgG2Lo5q8K5bB15eNvkakJBb15RU", authDomain: "ibcgapp.firebaseapp.com",
+                    projectId: "ibcgapp", storageBucket: "ibcgapp.appspot.com",
+                    messagingSenderId: "548258029551", appId: "1:548258029551:web:9354e4cc79ce4f25f0201a",
+                    measurementId: "G-RBN8KZPJ5X"
+                };
+                const app = initializeApp(firebaseConfig);
+                this.db = getFirestore(app);
+                this.auth = getAuth(app);
+                this.appIdPath = `artifacts/${firebaseConfig.projectId}`;
+                this.basePaths = { users: 'public/data/users', events: `public/data/events`, parroquianos: `public/data/parroquianos`, news: `public/data/news`, manuales: `public/data/manuales`, archivos: `public/data/archivos` };
+                onAuthStateChanged(this.auth, onAuthChangeCallback);
+            },
+            _getCollectionPath(type) {
+                const pathTemplate = this.basePaths[type];
+                if (!pathTemplate) throw new Error(`Collection type "${type}" not defined.`);
+                return `${this.appIdPath}/${pathTemplate}`;
+            },
+            onCollectionSnapshot(type, callback) {
+                const path = this._getCollectionPath(type);
+                if (!path) return () => {};
+                return onSnapshot(collection(this.db, path), (snapshot) => {
+                    callback(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+                }, (error) => console.error(`Error en listener de ${type}: `, error));
+            },
+            async saveDoc(type, id, data) {
+                const collectionPath = this._getCollectionPath(type);
+                if (id) {
+                    await updateDoc(doc(this.db, collectionPath, id), data);
+                } else {
+                    if (type === 'news' && !data.fechaPublicacion) data.fechaPublicacion = new Date().toISOString();
+                    return await addDoc(collection(this.db, collectionPath), data);
+                }
+            },
+            async setDoc(type, id, data) {
+                const collectionPath = this._getCollectionPath(type);
+                await setDoc(doc(this.db, collectionPath, id), data);
+            },
+             async getDoc(type, id) {
+                const collectionPath = this._getCollectionPath(type);
+                const docRef = doc(this.db, collectionPath, id);
+                return await getDoc(docRef);
+            },
+            async deleteDoc(type, id) {
+                const path = this._getCollectionPath(type);
+                return deleteDoc(doc(this.db, path, id));
+            },
+            async findUserByEmail(email) {
+                const usersRef = collection(this.db, this._getCollectionPath('users'));
+                const q = query(usersRef, where("email", "==", email));
+                const querySnapshot = await getDocs(q);
+                if (querySnapshot.empty) {
+                    return null;
+                }
+                return { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
+            }
+        };
+
+        const WeatherService = {
+            API_KEY: '9a11de307931b3ba88e6af9048b7f3b1',
+            async fetch() {
+                const lat = 19.5437, lon = -96.91;
+                const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${this.API_KEY}&units=metric&lang=es`;
+                try {
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    if (response.status === 401) throw new Error('Invalid API key');
+                    if (!response.ok || !data.main) throw new Error(data.message || 'Respuesta inválida de la API');
+                    return { temp: data.main.temp, description: data.weather[0].description, location: data.name };
+                } catch (error) {
+                    console.error("Error al obtener el clima:", error);
+                    return { description: error.message === 'Invalid API key' ? 'Clave API inválida' : 'Error de red' };
+                }
+            }
+        };
+
+        const App = {
+            state: { isAdmin: false, isSuperAdmin: false, user: null, allUsers: [], events: [], parroquianos: [], news: [], manuales: [], archivos: [], currentGalleryImages: [], currentGalleryIndex: 0, },
+            dataListenersInitialized: false,
+            currentCalendarDate: new Date(),
+            async init() {
+                try {
+                    UI.elements.appLoading.style.display = 'flex';
                     UI.initMobileNav();
                     this.setupEventListeners();
-                    UI.updateDateTime();
-                    UI.updateLockscreenTime();
-                    setInterval(() => {
-                        UI.updateDateTime();
-                        UI.updateLockscreenTime();
-                    }, 60000);
-                    }, 1000); // Actualiza cada segundo para la pantalla de bloqueo
+                    setInterval(() => { UI.updateDateTime(); UI.updateLockscreenTime(); }, 1000);
                     this.initTheme();
-                    await FirebaseService.init(this.onAuthReady.bind(this));
+                    FirebaseService.init(this.onAuthStateChanged.bind(this));
                 } catch (error) {
                      console.error("Error fatal durante la inicialización:", error);
-@@ -969,6 +1235,37 @@
+                    document.body.innerHTML = `<div class="fixed inset-0 bg-red-100 text-red-800 p-8 flex flex-col justify-center items-center text-center"><h1 class="text-3xl font-bold mb-4">¡Ups! Ocurrió un error crítico.</h1><p class="mb-4">${error.message}</p></div>`;
+                }
+            },
+            async onAuthStateChanged(authUser) {
+                const { unlockSwitch, unlockSwitchLabel, lockscreen, lockscreenMessage } = UI.elements;
+                let userProfile = null;
+                
+                if (authUser) {
+                     const userDoc = await FirebaseService.getDoc('users', authUser.uid);
+                     if (userDoc.exists()) {
+                         userProfile = { id: authUser.uid, ...userDoc.data() };
+                     } else {
+                        // Creación de usuario especial si no existe
+                        if (authUser.email === 'admin@portal.com') {
+                            const superAdminProfile = {
+                                nombre: 'Admin Especial',
+                                email: authUser.email,
+                                role: 'superadmin',
+                                permissions: {}
+                            };
+                            await FirebaseService.setDoc('users', authUser.uid, superAdminProfile);
+                            userProfile = { id: authUser.uid, ...superAdminProfile };
+                        }
+                     }
+                }
+               
+                this.state.isSuperAdmin = userProfile?.role === 'superadmin';
+                this.state.isAdmin = userProfile?.role === 'admin';
+                this.state.user = userProfile;
+                
+                if (this.state.isSuperAdmin || this.state.isAdmin || userProfile?.role === 'viewer') {
+                    unlockSwitch.disabled = false;
+                    unlockSwitchLabel.classList.remove('disabled');
+                    lockscreenMessage.classList.add('hidden');
+                } else {
+                    unlockSwitch.disabled = true;
+                    unlockSwitch.checked = false;
+                    unlockSwitchLabel.classList.add('disabled');
+                    if (lockscreen.classList.contains('fade-out')) {
+                        lockscreen.style.display = 'flex';
+                        setTimeout(() => lockscreen.classList.remove('fade-out'), 10);
+                    }
+                }
+
+                UI.updateAdminUI(this.state.isSuperAdmin, this.state.isAdmin, this.state.user);
+                this.updateUIPermissions();
+
+                if (!this.dataListenersInitialized) {
+                    this.setupDataListeners();
+                    this.loadWeather();
+                    UI.renderCalendar(this.currentCalendarDate, this.state.events, this.state.parroquianos);
+                    UI.elements.appLoading.style.display = 'none';
+                    UI.elements.appContainer.classList.add('loaded');
+                    this.dataListenersInitialized = true;
+                }
+            },
+            setupDataListeners() {
+                FirebaseService.onCollectionSnapshot('events', d => { this.state.events = d; UI.renderTable(UI.elements.agendaTableBody, d, UI.createEventRow, 'No hay eventos.'); UI.renderUpcomingEvents(d); UI.renderCalendar(this.currentCalendarDate, d, this.state.parroquianos); });
+                FirebaseService.onCollectionSnapshot('parroquianos', d => { this.state.parroquianos = d; UI.renderTable(UI.elements.directorioTableBody, d, UI.createParroquianoRow, 'No hay registros.'); UI.renderBirthdayReminders(d); UI.renderCalendar(this.currentCalendarDate, this.state.events, d); });
+                FirebaseService.onCollectionSnapshot('news', d => { this.state.news = d; UI.renderGrid(UI.elements.newsGrid, d, UI.createNewsCard, 'No hay noticias.'); });
+                FirebaseService.onCollectionSnapshot('manuales', d => { this.state.manuales = d; UI.renderAccordionBlocks(UI.elements.manualesContainer, d, 'No hay manuales disponibles.', {plural: 'manuales', block: 'bloqueManual', item: 'manual', permission: 'manuales'}); });
+                FirebaseService.onCollectionSnapshot('archivos', d => { this.state.archivos = d; UI.renderAccordionBlocks(UI.elements.archivosContainer, d, 'No hay archivos disponibles.', {plural: 'archivos', block: 'bloqueArchivo', item: 'archivo', permission: 'recursos'}); });
+                FirebaseService.onCollectionSnapshot('users', users => { this.state.allUsers = users; if(this.state.isSuperAdmin) { UI.renderUserManagement(users); } });
+            },
+            hasPermission(section) {
+                if (this.state.isSuperAdmin) return true;
+                if (this.state.isAdmin && this.state.user.permissions) {
+                    return this.state.user.permissions[section] === true;
+                }
+                return false;
+            },
+            updateUIPermissions() {
+                 document.querySelectorAll('[data-permission]').forEach(el => {
+                    const permission = el.dataset.permission;
+                    if (this.hasPermission(permission)) {
+                       el.style.display = ''; // O el display original
+                    } else {
+                       el.style.display = 'none';
+                    }
+                 });
+                 // Re-inicializar nav móvil para que muestre u oculte la pestaña de usuarios
+                 UI.initMobileNav();
+            },
+            toggleSidenav(open, isFinal) {
+                const { mobileSidenav, mobileSidenavOverlay } = UI.elements;
+                if (isFinal) {
+                    mobileSidenav.classList.add('is-transitioning');
+                    mobileSidenav.style.transform = open ? 'translateX(0)' : 'translateX(-100%)';
+                    mobileSidenavOverlay.classList.toggle('active', open);
+                } else {
+                    mobileSidenav.classList.remove('is-transitioning');
+                    mobileSidenav.style.transform = `translateX(${open ? 0 : -mobileSidenav.offsetWidth}px)`;
+                }
+            },
+            setupEventListeners() {
+                const { unlockSwitch, unlockSwitchLabel, lockscreenMessage, mobileSidenav } = UI.elements;
+                
+                unlockSwitch.addEventListener('change', () => {
+                    if (unlockSwitch.checked) {
+                        setTimeout(() => {
+                           UI.elements.lockscreen.classList.add('fade-out');
+                        }, 300);
+                    }
+                });
+
+                unlockSwitchLabel.addEventListener('click', (e) => {
+                    if (unlockSwitch.disabled) {
+                        e.preventDefault();
+                        lockscreenMessage.classList.remove('hidden');
+                        setTimeout(() => lockscreenMessage.classList.add('hidden'), 2000);
+                    } else {
+                        lockscreenMessage.classList.add('hidden');
+                    }
+                });
+                
+                let touchStartX=0,touchCurrentX=0,isDraggingSidenav=false; const sidenavWidth=280;
+                const handleDragStart = cX => { touchStartX=cX; isDraggingSidenav=true; mobileSidenav.classList.remove('is-transitioning'); };
+                const handleDragMove = cX => { if (!isDraggingSidenav) return; touchCurrentX=cX; const dX=touchCurrentX-touchStartX; const cT=mobileSidenav.classList.contains('active')?0:-sidenavWidth; let nT=Math.min(0,Math.max(-sidenavWidth,cT+dX)); mobileSidenav.style.transform=`translateX(${nT}px)`; };
+                const handleDragEnd = () => { if (!isDraggingSidenav) return; isDraggingSidenav=false; const dX=touchCurrentX-touchStartX; const isOpen=mobileSidenav.classList.contains('active'); if(Math.abs(dX)>50||Math.abs(dX)>sidenavWidth/3) { if(dX>0&&!isOpen){mobileSidenav.classList.add('active');this.toggleSidenav(true,true);}else if(dX<0&&isOpen){mobileSidenav.classList.remove('active');this.toggleSidenav(false,true);}else{this.toggleSidenav(isOpen,true);}}else{this.toggleSidenav(isOpen,true);} touchStartX=0; touchCurrentX=0; };
+                document.body.addEventListener('touchstart', e => { if (e.touches[0].clientX < 40 && !e.target.closest('.fixed.inset-0:not(.hidden)')) handleDragStart(e.touches[0].clientX); }, { passive: true });
+                document.body.addEventListener('touchmove', e => { if (isDraggingSidenav) handleDragMove(e.touches[0].clientX); }, { passive: true });
+                document.body.addEventListener('touchend', handleDragEnd);
+                UI.elements.edgeHandle.addEventListener('click', () => { const o = mobileSidenav.classList.toggle('active'); this.toggleSidenav(o, true); });
+
+                document.getElementById('prev-month-btn').addEventListener('click', () => { this.currentCalendarDate.setMonth(this.currentCalendarDate.getMonth() - 1); UI.renderCalendar(this.currentCalendarDate, this.state.events, this.state.parroquianos); });
+                document.getElementById('next-month-btn').addEventListener('click', () => { this.currentCalendarDate.setMonth(this.currentCalendarDate.getMonth() + 1); UI.renderCalendar(this.currentCalendarDate, this.state.events, this.state.parroquianos); });
+
+                document.body.addEventListener('click', e => {
+                    const target = e.target.closest('button, .nav-tab, .mobile-nav-link, .gallery-thumbnail, .accordion-toggle, a');
+                    if (!target) return;
+
+                    const action = target.dataset.action;
+                    const modalTarget = target.dataset.modalTarget;
+                    
+                    if (target.matches('.nav-tab')) { UI.showPage(target.dataset.target); }
+                    else if (target.matches('.mobile-nav-link')) { UI.showPage(target.dataset.target); mobileSidenav.classList.remove('active'); this.toggleSidenav(false, true); }
+                    else if (target.matches('.accordion-toggle')) { target.classList.toggle('active'); const content = target.nextElementSibling; content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px"; }
+                    else if (target.matches('.gallery-thumbnail')) { UI.showGalleryImage(parseInt(target.dataset.index, 10)); }
+                    else if (modalTarget) { this.openModal(modalTarget, null, target.dataset.blockId); }
+                    else if (action === 'logout') { this.handleLogout(); }
+                    else if (action === 'close-modal') { const m = target.closest('.fixed.inset-0'); if (m) this.closeModal(m.id); }
+                    else if (action === 'close-sidenav') { mobileSidenav.classList.remove('active'); this.toggleSidenav(false, true); }
+                    else if (action && ['edit', 'delete', 'read-more', 'add-manual', 'add-archivo'].includes(action)) {
+                        const { type, id, blockId, itemId } = target.dataset;
+                        if (action === 'edit') this.handleEdit(type, id, blockId, itemId);
+                        if (action === 'delete') this.handleDelete(type, id, blockId, itemId);
+                        if (action === 'read-more') this.handleReadMore(type, id);
+                        if (action === 'add-manual') this.openModal('manual-modal', null, blockId);
+                        if (action === 'add-archivo') this.openModal('archivo-modal', null, blockId);
+                    }
+                    else if(target.id === 'show-register-btn') { e.preventDefault(); document.getElementById('login-view').classList.add('hidden'); document.getElementById('register-view').classList.remove('hidden'); target.classList.add('active'); document.getElementById('show-login-btn').classList.remove('active'); }
+                    else if(target.id === 'show-login-btn') { e.preventDefault(); document.getElementById('register-view').classList.add('hidden'); document.getElementById('login-view').classList.remove('hidden'); target.classList.add('active'); document.getElementById('show-register-btn').classList.remove('active'); }
+                });
+
+                Object.values(UI.elements.modals).forEach(m => {
+                    if (m) m.addEventListener('click', e => { if (e.target === m) this.closeModal(m.id); });
+                });
+
+                document.addEventListener('submit', e => { 
+                    e.preventDefault(); 
+                    if (e.target.id === 'login-form') this.handleLogin(e.target);
+                    else if (e.target.id === 'register-form') this.handleRegister(e.target);
+                    else if (e.target.matches('form')) this.handleFormSubmit(e.target); 
+                });
+
+                UI.elements.userManagementTableBody.addEventListener('change', e => {
+                    if (e.target.matches('.user-role-selector')) {
+                        const userId = e.target.dataset.userId;
+                        const newRole = e.target.value;
+                        this.updateUserRole(userId, newRole);
+                    } else if (e.target.matches('.user-permission-checkbox')) {
+                         const { userId, permission } = e.target.dataset;
+                         const isEnabled = e.target.checked;
+                         this.updateUserPermission(userId, permission, isEnabled);
+                    }
+                });
             },
             async loadWeather() { UI.updateWeatherUI(await WeatherService.fetch()); },
-            checkAdminSession() { if(sessionStorage.getItem('isAdmin')==='true')this.state.isAdmin=true; UI.updateAdminUI(this.state.isAdmin); },
             initTheme() {
                 const themeSwitch = document.getElementById('theme-switch-checkbox');
                 const savedTheme = localStorage.getItem('theme');
-                
+
                 const applyTheme = (theme) => {
                     if (theme === 'dark') {
                         document.body.classList.add('dark-theme');
@@ -376,10 +1887,252 @@
                     }
                 });
             },
-            handleAdminLoginAttempt(form) {
-                const pass = form.querySelector('#admin-password').value;
-                const err = form.querySelector('#login-error-msg');
-@@ -1143,3 +1440,4 @@
+            async handleLogin(form) {
+                const email = form.querySelector('#login-email').value;
+                const password = form.querySelector('#login-password').value;
+                const errorMsg = form.querySelector('#login-error-msg');
+                errorMsg.classList.add('hidden');
+                
+                try {
+                    if (email === 'admin@portal.com' && password === 'admin123') {
+                         const userCredential = await signInWithEmailAndPassword(FirebaseService.auth, email, password)
+                            .catch(async (error) => {
+                                if (error.code === 'auth/user-not-found') {
+                                    return await createUserWithEmailAndPassword(FirebaseService.auth, email, password);
+                                }
+                                throw error;
+                            });
+                         this.onAuthStateChanged(userCredential.user);
+                    } else {
+                        await signInWithEmailAndPassword(FirebaseService.auth, email, password);
+                    }
+                    this.closeModal('user-auth-modal');
+                } catch(error) {
+                    console.error("Error de inicio de sesión:", error.code);
+                    errorMsg.textContent = 'Correo o contraseña incorrectos.';
+                    errorMsg.classList.remove('hidden');
+                }
+            },
+            async handleRegister(form) {
+                 const name = form.querySelector('#register-name').value;
+                 const email = form.querySelector('#register-email').value;
+                 const password = form.querySelector('#register-password').value;
+                 const errorMsg = form.querySelector('#register-error-msg');
+                 errorMsg.classList.add('hidden');
+
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(FirebaseService.auth, email, password);
+                    const user = userCredential.user;
+                    
+                    const newUserProfile = {
+                        nombre: name,
+                        email: email,
+                        role: 'viewer', // Rol por defecto
+                        permissions: {}
+                    };
+                    
+                    await FirebaseService.setDoc('users', user.uid, newUserProfile);
+                    this.closeModal('user-auth-modal');
+
+                } catch(error) {
+                     console.error("Error de registro:", error.code);
+                     if (error.code === 'auth/email-already-in-use') {
+                         errorMsg.textContent = 'Este correo ya está registrado.';
+                     } else if (error.code === 'auth/weak-password') {
+                          errorMsg.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+                     } else {
+                         errorMsg.textContent = 'Error al registrar la cuenta.';
+                     }
+                     errorMsg.classList.remove('hidden');
+                }
+            },
+            async handleLogout() {
+                try {
+                    await signOut(FirebaseService.auth);
+                } catch (error) {
+                    console.error("Error al cerrar sesión:", error);
+                }
+            },
+            async updateUserRole(userId, newRole) {
+                if (!this.state.isSuperAdmin) return;
+                await FirebaseService.saveDoc('users', userId, { role: newRole });
+            },
+            async updateUserPermission(userId, permission, isEnabled) {
+                 if (!this.state.isSuperAdmin) return;
+                 const user = this.state.allUsers.find(u => u.id === userId);
+                 if (user) {
+                     const currentPermissions = user.permissions || {};
+                     const newPermissions = { ...currentPermissions, [permission]: isEnabled };
+                     await FirebaseService.saveDoc('users', userId, { permissions: newPermissions });
+                 }
+            },
+            async handleFormSubmit(form) {
+                const type = form.dataset.type;
+                if (!this.hasPermission(type === 'bloqueManual' ? 'manuales' : type === 'bloqueArchivo' ? 'recursos' : type )) return;
+                
+                const submitButton = form.querySelector('button[type="submit"]');
+                if (submitButton) submitButton.disabled = true;
+
+                try {
+                    const data = Object.fromEntries(new FormData(form).entries());
+                    const id = data.id;
+                    delete data.id;
+
+                    const blockTypes = {
+                        bloqueManual: 'manuales',
+                        bloqueArchivo: 'archivos'
+                    };
+                    const itemTypes = {
+                        manual: { collection: 'manuales', state: 'manuales' },
+                        archivo: { collection: 'archivos', state: 'archivos' }
+                    };
+
+                    if (blockTypes[type]) {
+                        if (!id) data.items = [];
+                        await FirebaseService.saveDoc(blockTypes[type], id, data);
+                        this.closeModal(`${type}-modal`);
+                    } else if (itemTypes[type]) {
+                        const config = itemTypes[type];
+                        const { blockId, ...itemData } = data;
+                        const block = this.state[config.state].find(b => b.id === blockId);
+                        if (!block) throw new Error("Block not found");
+
+                        const items = block.items || [];
+                        if (itemData.id) {
+                            const index = items.findIndex(item => item.id === itemData.id);
+                            if (index > -1) items[index] = { ...items[index], ...itemData };
+                        } else {
+                             itemData.id = crypto.randomUUID();
+                             items.push(itemData);
+                        }
+                        await FirebaseService.saveDoc(config.collection, blockId, { items });
+                        this.closeModal(`${type}-modal`);
+
+                    } else if (type === 'news') {
+                         if (data.galleryUrls) data.galleryUrls = data.galleryUrls.split('\n').map(url => url.trim()).filter(Boolean); else data.galleryUrls = [];
+                        await FirebaseService.saveDoc('news', id, data);
+                        this.closeModal('news-modal');
+                    } else {
+                        const serviceType = type + 's';
+                        await FirebaseService.saveDoc(serviceType, id, data);
+                        this.closeModal(`${type}-modal`);
+                    }
+                } catch (err) {
+                    console.error(`Error al guardar:`, err);
+                } finally {
+                    if (submitButton) submitButton.disabled = false;
+                }
+            },
+            handleReadMore(type, id) {
+                if(type!=='news')return; const item=this.state.news.find(i=>i.id===id); if(!item)return;
+                const modal=UI.elements.modals.newsDetail; const{galleryThumbnails}=UI.elements;
+                modal.querySelector('#news-detail-title').textContent=item.titulo;
+                modal.querySelector('#news-detail-date').textContent=new Date(item.fechaPublicacion).toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'});
+                modal.querySelector('#news-detail-content').innerHTML=item.contenido.replace(/\n/g,'<br>');
+                this.state.currentGalleryImages=[item.imagenUrl, ...(item.galleryUrls||[])].filter(Boolean); this.state.currentGalleryIndex=0;
+                galleryThumbnails.innerHTML='';
+                if(this.state.currentGalleryImages.length > 0){ this.state.currentGalleryImages.forEach((url,index)=>{galleryThumbnails.insertAdjacentHTML('beforeend',`<img src="${url}" data-index="${index}" class="gallery-thumbnail ${index===0?'active':''}">`);}); UI.showGalleryImage(0);}else{UI.elements.newsDetailImage.src='https://placehold.co/800x600/eef0f4/4b5563?text=Sin+Imagen';}
+                const showBtns = this.state.currentGalleryImages.length > 1;
+                document.getElementById('gallery-prev-btn').classList.toggle('hidden',!showBtns);
+                document.getElementById('gallery-next-btn').classList.toggle('hidden',!showBtns);
+                this.openModal('newsDetail');
+            },
+            handleEdit(type, id, blockId, itemId) {
+                if(!this.hasPermission(type)) return;
+                const itemTypes = {
+                    manual: { state: 'manuales', modal: 'manual-modal' },
+                    archivo: { state: 'archivos', modal: 'archivo-modal' }
+                };
+                const blockTypes = {
+                    bloqueManual: { state: 'manuales', modal: 'bloque-manual-modal' },
+                    bloqueArchivo: { state: 'archivos', modal: 'bloque-archivo-modal' },
+                }
+
+                if (itemTypes[type]) {
+                    const config = itemTypes[type];
+                    const block = this.state[config.state].find(b => b.id === blockId);
+                    const item = block?.items.find(i => i.id === itemId);
+                    if (item) this.openModal(config.modal, { ...item, blockId });
+                } else {
+                    const collectionName = blockTypes[type]?.state || (type === 'news' ? 'news' : type + 's');
+                    const modalId = blockTypes[type]?.modal || `${type}-modal`;
+                    const item = this.state[collectionName].find(i => i.id === id);
+                    if (item) this.openModal(modalId, item);
+                }
+            },
+            handleDelete(type, id, blockId, itemId) {
+                if (!this.hasPermission(type)) return;
+                const modal = UI.elements.modals.confirm;
+                modal.querySelector('#confirm-message').textContent = `¿Seguro de eliminar este registro?`;
+                this.openModal('confirm');
+
+                UI.elements.confirmDeleteBtn.onclick = async () => {
+                    try {
+                         const itemTypes = {
+                            manual: { collection: 'manuales', state: 'manuales' },
+                            archivo: { collection: 'archivos', state: 'archivos' }
+                        };
+                        const blockTypes = {
+                            bloqueManual: 'manuales',
+                            bloqueArchivo: 'archivos'
+                        };
+
+                        if (itemTypes[type]) {
+                            const config = itemTypes[type];
+                            const block = this.state[config.state].find(b => b.id === blockId);
+                            if (block) {
+                                const items = (block.items || []).filter(item => item.id !== itemId);
+                                await FirebaseService.saveDoc(config.collection, blockId, { items });
+                            }
+                        } else {
+                            const serviceType = blockTypes[type] || (type === 'news' ? 'news' : type + 's');
+                            await FirebaseService.deleteDoc(serviceType, id);
+                        }
+                        this.closeModal('confirm');
+                    } catch (err) {
+                        console.error(`Error al eliminar ${type}:`, err);
+                    }
+                };
+            },
+            openModal(modalId, data = null, blockId = null) {
+                const modal = UI.elements.modals[modalId.replace('-modal','')] || document.getElementById(modalId);
+                if (!modal) return;
+                const form = modal.querySelector('form');
+                if (form) {
+                    form.reset();
+                    const titleEl = modal.querySelector('h2'); 
+                    const type = form.dataset.type;
+                    let typeName = {
+                        'bloqueManual': 'Bloque de Manual', 'manual': 'Manual',
+                        'bloqueArchivo': 'Bloque de Archivo', 'archivo': 'Archivo',
+                        'news': 'Noticia', 'event': 'Evento', 'parroquiano': 'Parroquiano'
+                    }[type] || type;
+
+                    if (modalId !== 'user-auth-modal') {
+                        if (titleEl) titleEl.textContent = data ? `Editar ${typeName}` : `Agregar ${typeName}`;
+                    }
+
+                    if (data) {
+                        Object.keys(data).forEach(key => {
+                            const input = form.querySelector(`[name="${key}"]`);
+                            if (input) {
+                                if (key === 'galleryUrls' && Array.isArray(data[key])) input.value = data[key].join('\n');
+                                else input.value = data[key];
+                            }
+                        });
+                    }
+                    if (blockId) {
+                         const blockIdInput = form.querySelector('input[name="blockId"]');
+                         if (blockIdInput) blockIdInput.value = blockId;
+                    }
+                }
+                modal.classList.remove('hidden');
+            },
+            closeModal(modalId) { const modal = UI.elements.modals[modalId.replace('-modal','')] || document.getElementById(modalId); if (modal) modal.classList.add('hidden'); },
+        };
+
+        App.init();
     </script>
 </body>
 </html>
+
