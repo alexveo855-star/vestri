@@ -212,6 +212,20 @@
             transform: rotate(180deg);
         }
 
+        /* Estilos del Interruptor de Vista */
+        #view-as-user-switch:checked ~ .dot {
+          transform: translateX(1rem); /* 16px */
+        }
+        #view-as-user-switch:checked ~ .block {
+          background-color: #3b82f6;
+        }
+        body.dark-theme #view-as-user-switch:checked ~ .block {
+          background-color: #60a5fa;
+        }
+        .dot {
+            transition: transform 0.2s ease-in-out;
+        }
+
         /* --- Pantalla de Bloqueo --- */
         #app-lockscreen {
              background-color: #eef0f4;
@@ -689,6 +703,108 @@
           text-decoration: underline;
         }
         
+        /* --- ESTILOS REDES SOCIALES --- */
+        #SocailIcons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
+        }
+        .icons {
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            outline: none;
+            border: none;
+            text-align: center;
+            position: relative;
+        }
+        .iconName {
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            transform-origin: bottom;
+            font-size: 12px;
+            color: #fff;
+            border-radius: 3px;
+            text-align: center;
+            padding: 5px 8px;
+            white-space: nowrap;
+            transition: transform 0.3s ease;
+        }
+        .icons:hover .iconName {
+            transform: translateX(-50%) scale(1);
+        }
+        .icons.instaIcon:hover .iconName {
+            background: linear-gradient(30deg, #405DE6, #E1306C, #F77737);
+        }
+        .icons.facebook:hover .iconName {
+            background: #1877F2;
+        }
+        .icons.whatsapp:hover .iconName {
+            background: #25d366;
+        }
+        .icons.youtube:hover .iconName {
+            background: #ff0000;
+        }
+        .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            outline: none;
+            transition: color 0.3s ease, box-shadow 0.3s ease;
+            color: #0c0c0c;
+        }
+        .icon:hover {
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .icon::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            border-radius: 50%;
+            transition: height 0.3s ease;
+            z-index: -1;
+        }
+        .icon:hover::before {
+            height: 100%;
+        }
+        .icon.tube::before {
+            background: #ff0000;
+        }
+        .icon.insta::before {
+            background: linear-gradient(40deg, #405DE6, #E1306C, #F77737);
+        }
+        .icon.fb::before {
+            background: #1877F2;
+        }
+        .icon.whats::before {
+            background: #25d366;
+        }
+        body.dark-theme .icons {
+             background: #374151;
+        }
+        body.dark-theme .icon {
+            color: #d1d5db;
+        }
+        body.dark-theme .icon:hover {
+            color: #fff;
+        }
+        
         /* --- ESTILOS DEL TEMA OSCURO --- */
         body.dark-theme {
             background-color: #1f2937;
@@ -1045,6 +1161,42 @@
                 </div>
             </div>
         </main>
+        <footer class="mt-8 pt-8">
+            <div id="SocailIcons">
+                <a href="#" class="icons instaIcon">
+                    <p class="iconName">Instagram</p>
+                    <div class="icon insta">
+                        <svg viewBox="0 0 24 24" fill="none" height="24" width="24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path clip-rule="evenodd" d="M3 8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Zm5-3a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H8Zm7.597 2.214a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2h-.01a1 1 0 0 1-1-1ZM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-5 3a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z" fill-rule="evenodd" fill="currentColor"></path>
+                        </svg>
+                    </div>
+                </a>
+                <a href="#" class="icons facebook">
+                    <p class="iconName">Facebook</p>
+                    <div class="icon fb">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;">
+                            <path d="M12.001 2.002c-5.522 0-9.999 4.477-9.999 9.999 0 4.99 3.656 9.126 8.437 9.879v-6.988h-2.54v-2.891h2.54V9.798c0-2.508 1.493-3.891 3.776-3.891 1.094 0 2.238.195 2.238.195v2.459h-1.28c-1.24 0-1.628.772-1.628 1.561v1.875h2.771l-.443 2.891h-2.328v6.988C18.344 21.129 22 16.992 22 12.001c0-5.522-4.477-9.999-9.999-9.999z"></path>
+                        </svg>
+                    </div>
+                </a>
+                <a href="#" class="icons whatsapp">
+                    <p class="iconName">WhatsApp</p>
+                    <div class="icon whats">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M18.403 5.633A8.919 8.919 0 0 0 12.053 3c-4.948 0-8.976 4.027-8.978 8.977 0 1.582.413 3.126 1.198 4.488L3 21.116l4.759-1.249a8.981 8.981 0 0 0 4.29 1.093h.004c4.947 0 8.975-4.027 8.977-8.977a8.926 8.926 0 0 0-2.627-6.35m-6.35 13.812h-.003a7.446 7.446 0 0 1-3.798-1.041l-.272-.162-2.824.741.753-2.753-.177-.282a7.448 7.448 0 0 1-1.141-3.971c.002-4.114 3.349-7.461 7.465-7.461a7.413 7.413 0 0 1 5.275 2.188 7.42 7.42 0 0 1 2.183 5.279c-.002 4.114-3.349 7.462-7.461 7.462m4.093-5.589c-.225-.113-1.327-.655-1.533-.73-.205-.075-.354-.112-.504.112s-.58.729-.711.879-.262.168-.486.056-.947-.349-1.804-1.113c-.667-.595-1.117-1.329-1.248-1.554s-.014-.346.099-.458c.101-.1.224-.262.336-.393.112-.131.149-.224.224-.374s.038-.281-.019-.393c-.056-.113-.505-1.217-.692-1.666-.181-.435-.366-.377-.504-.383a9.65 9.65 0 0 0-.429-.008.826.826 0 0 0-.599.28c-.206.225-.785.767-.785 1.871s.804 2.171.916 2.321c.112.15 1.582 2.415 3.832 3.387.536.231.954.369 1.279.473.537.171 1.026.146 1.413.089.431-.064 1.327-.542 1.514-1.066.187-.524.187-.973.131-1.067-.056-.094-.207-.151-.43-.263" fill="currentColor"></path>
+                        </svg>
+                    </div>
+                </a>
+                <a href="#" class="icons youtube">
+                    <p class="iconName">YouTube</p>
+                    <div class="icon tube">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;">
+                            <path d="M21.593 7.203a2.506 2.506 0 0 0-1.762-1.766C18.265 5.007 12 5 12 5s-6.264-.007-7.831.404a2.56 2.56 0 0 0-1.766 1.778c-.413 1.566-.417 4.814-.417 4.814s-.004 3.264.406 4.814c.23.857.905 1.534 1.763 1.765 1.582.43 7.83.437 7.83.437s6.265.007 7.831-.403a2.515 2.515 0 0 0 1.767-1.763c.414-1.565.417-4.812.417-4.812s.02-3.265-.407-4.831zM9.996 15.005l.005-6 5.207 3.005-5.212 2.995z" fill="currentColor"></path>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+        </footer>
     </div>
 
     <!-- Modales -->
@@ -1531,12 +1683,27 @@
                 App.state.currentGalleryIndex = index;
             },
             updateAdminUI(isSuperAdmin, isAdmin, user) {
-                document.body.classList.toggle('super-admin-mode', isSuperAdmin);
-                document.body.classList.toggle('admin-mode', isAdmin || isSuperAdmin);
+                const inUserView = App.state.viewAsUser;
+                document.body.classList.toggle('super-admin-mode', isSuperAdmin && !inUserView);
+                document.body.classList.toggle('admin-mode', (isAdmin || isSuperAdmin) && !inUserView);
                 
                 if (user) {
+                     const isSuperAdminView = isSuperAdmin ? `
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-medium whitespace-nowrap">Vista Usuario</span>
+                            <label for="view-as-user-switch" class="flex items-center cursor-pointer">
+                                <div class="relative">
+                                    <input type="checkbox" id="view-as-user-switch" class="sr-only">
+                                    <div class="block bg-gray-400 dark:bg-gray-600 w-10 h-6 rounded-full transition"></div>
+                                    <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform"></div>
+                                </div>
+                            </label>
+                        </div>
+                    ` : '';
+
                      this.elements.adminControlsContainer.innerHTML = `
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-4">
+                            ${isSuperAdminView}
                             <span class="font-semibold hidden sm:inline">${user.nombre.split(' ')[0]}</span>
                             <button data-action="logout" class="neumorphic-btn danger p-2" title="Cerrar Sesión">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -1544,6 +1711,16 @@
                                 </svg>
                             </button>
                         </div>`;
+                    
+                    const viewSwitch = document.getElementById('view-as-user-switch');
+                    if (viewSwitch) {
+                        viewSwitch.checked = inUserView;
+                        viewSwitch.addEventListener('change', (e) => {
+                            App.state.viewAsUser = e.target.checked;
+                            this.updateAdminUI(App.state.isSuperAdmin, App.state.isAdmin, App.state.user);
+                            App.updateUIPermissions();
+                        });
+                    }
                 } else {
                      this.elements.adminControlsContainer.innerHTML = ``;
                 }
@@ -1665,7 +1842,7 @@
         };
 
         const App = {
-            state: { isAdmin: false, isSuperAdmin: false, user: null, allUsers: [], events: [], parroquianos: [], news: [], manuales: [], archivos: [], currentGalleryImages: [], currentGalleryIndex: 0, },
+            state: { isAdmin: false, isSuperAdmin: false, user: null, allUsers: [], events: [], parroquianos: [], news: [], manuales: [], archivos: [], currentGalleryImages: [], currentGalleryIndex: 0, viewAsUser: false },
             dataListenersInitialized: false,
             currentCalendarDate: new Date(),
             async init() {
@@ -1743,6 +1920,7 @@
                 FirebaseService.onCollectionSnapshot('users', users => { this.state.allUsers = users; if(this.state.isSuperAdmin) { UI.renderUserManagement(users); } });
             },
             hasPermission(section) {
+                if (this.state.viewAsUser) return false;
                 if (this.state.isSuperAdmin) return true;
                 if (this.state.isAdmin && this.state.user.permissions) {
                     return this.state.user.permissions[section] === true;
