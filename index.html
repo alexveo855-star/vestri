@@ -184,7 +184,7 @@
         }
 
         #edge-handle {
-            position: fixed; top: 50%; left: 0; transform: translateY(-50%); width: 20px; height: 80px;
+            position: fixed; top: 30%; left: 0; transform: translateY(-50%); width: 20px; height: 150px;
             background-color: rgba(107, 114, 128, 0.4); border-top-right-radius: 10px; border-bottom-right-radius: 10px;
             z-index: 50; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 2px 0 5px rgba(0,0,0,0.1);
         }
@@ -1810,13 +1810,18 @@
                     }
                 });
                 
-                const sidenav = UI.elements.mobileSidenav; let touchStartX=0,touchCurrentX=0,isDraggingSidenav=false; const sidenavWidth=280;
-                const handleDragStart = cX => { touchStartX=cX; isDraggingSidenav=true; sidenav.classList.remove('is-transitioning'); };
-                const handleDragMove = cX => { if (!isDraggingSidenav) return; touchCurrentX=cX; const dX=touchCurrentX-touchStartX; const cT=sidenav.classList.contains('active')?0:-sidenavWidth; let nT=Math.min(0,Math.max(-sidenavWidth,cT+dX)); sidenav.style.transform=`translateX(${nT}px)`; };
-                const handleDragEnd = () => { if (!isDraggingSidenav) return; isDraggingSidenav=false; const dX=touchCurrentX-touchStartX; const isOpen=sidenav.classList.contains('active'); if(Math.abs(dX)>50||Math.abs(dX)>sidenavWidth/3) { if(dX>0&&!isOpen){sidenav.classList.add('active');this.toggleSidenav(true,true);}else if(dX<0&&isOpen){sidenav.classList.remove('active');this.toggleSidenav(false,true);}else{this.toggleSidenav(isOpen,true);}}else{this.toggleSidenav(isOpen,true);} touchStartX=0; touchCurrentX=0; };
-                document.body.addEventListener('touchstart', e => { if (e.touches[0].clientX < 40 && !e.target.closest('.fixed.inset-0:not(.hidden)')) handleDragStart(e.touches[0].clientX); }, { passive: true });
-                document.body.addEventListener('touchmove', e => { if (isDraggingSidenav) handleDragMove(e.touches[0].clientX); }, { passive: true });
-                document.body.addEventListener('touchend', handleDragEnd);
+                // --- Mobile Sidenav Activation ---
+                const { edgeHandle, mobileSidenav, mobileSidenavOverlay } = UI.elements;
+                
+                edgeHandle.addEventListener('click', () => {
+                    mobileSidenav.classList.add('active');
+                    this.toggleSidenav(true, true);
+                });
+
+                mobileSidenavOverlay.addEventListener('click', () => {
+                    mobileSidenav.classList.remove('active');
+                    this.toggleSidenav(false, true);
+                });
 
                 document.body.addEventListener('click', e => {
                     const target = e.target.closest('button, .nav-tab, .mobile-nav-link, .gallery-thumbnail, .accordion-toggle, a');
@@ -1826,13 +1831,13 @@
                     const modalTarget = target.dataset.modalTarget;
                     
                     if (target.matches('.nav-tab')) { UI.showPage(target.dataset.target); }
-                    else if (target.matches('.mobile-nav-link')) { UI.showPage(target.dataset.target); sidenav.classList.remove('active'); this.toggleSidenav(false, true); }
+                    else if (target.matches('.mobile-nav-link')) { UI.showPage(target.dataset.target); mobileSidenav.classList.remove('active'); this.toggleSidenav(false, true); }
                     else if (target.matches('.accordion-toggle')) { target.classList.toggle('active'); const content = target.nextElementSibling; content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px"; }
                     else if (target.matches('.gallery-thumbnail')) { UI.showGalleryImage(parseInt(target.dataset.index, 10)); }
                     else if (modalTarget) { this.openModal(modalTarget, null, target.dataset.blockId); }
                     else if (action === 'logout') { this.handleLogout(); }
                     else if (action === 'close-modal') { const m = target.closest('.fixed.inset-0'); if (m) this.closeModal(m.id); }
-                    else if (action === 'close-sidenav') { sidenav.classList.remove('active'); this.toggleSidenav(false, true); }
+                    else if (action === 'close-sidenav') { mobileSidenav.classList.remove('active'); this.toggleSidenav(false, true); }
                     else if (action && ['edit', 'delete', 'read-more', 'add-manual', 'add-archivo'].includes(action)) {
                         const { type, id, blockId, itemId } = target.dataset;
                         if (action === 'edit') this.handleEdit(type, id, blockId, itemId);
@@ -2139,6 +2144,4 @@
     </script>
 </body>
 </html>
-
-
 
