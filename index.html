@@ -218,25 +218,25 @@
             align-items: center;
             justify-content: center;
             padding: 0.75rem 1.5rem;
-            background-image: linear-gradient(to top, #D8D9DB 0%, #fff 80%, #FDFDFD 100%);
-            border-radius: 30px;
-            border: 1px solid #8F9092;
-            transition: all 0.2s ease;
+            background-color: rgb(20, 20, 20);
+            border-radius: 50px;
+            border: none;
+            transition: all 0.3s ease;
             font-weight: 600;
-            color: #606060;
-            text-shadow: 0 1px #fff;
+            color: white;
             cursor: pointer;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
         }
         .mobile-nav-link:hover {
-            box-shadow: 0 4px 3px 1px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 3px 3px #CECFD1;
+            background-color: #0369a1;
         }
         .mobile-nav-link.active {
-            box-shadow: 0 4px 3px 1px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 5px 3px #999, inset 0 0 30px #aaa;
-            color: #3b82f6;
+            background-color: #0369a1;
+            color: white;
         }
 
         #edge-handle {
-            position: fixed; top: 50%; left: 0; transform: translateY(-50%); width: 20px; height: 80px;
+            position: fixed; top: 30%; left: 0; transform: translateY(-50%); width: 20px; height: 120px;
             background-color: rgba(107, 114, 128, 0.4); border-top-right-radius: 10px; border-bottom-right-radius: 10px;
             z-index: 50; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 2px 0 5px rgba(0,0,0,0.1);
         }
@@ -914,17 +914,14 @@
 
         body.dark-theme #mobile-sidenav { background-color: #374151; }
         body.dark-theme .mobile-nav-link {
-            background-image: linear-gradient(to top, #2a3341 0%, #374151 80%, #404a59 100%);
-            border: 1px solid #5a6678;
-            color: #d1d5db;
-            text-shadow: 0 1px #111827;
+            background-color: #171717;
         }
         body.dark-theme .mobile-nav-link:hover {
-            box-shadow: 0 4px 3px 1px #1a202c, 0 6px 8px #111827, 0 -4px 4px #4a5568, 0 -6px 4px #5a6678, inset 0 0 3px 3px #1f2937;
+            background-color: #075985;
         }
         body.dark-theme .mobile-nav-link.active {
-            box-shadow: 0 4px 3px 1px #1a202c, 0 6px 8px #111827, 0 -4px 4px #4a5568, 0 -6px 4px #5a6678, inset 0 0 5px 3px #000, inset 0 0 30px #2d3748;
-            color: #60a5fa;
+            background-color: #075985;
+            color: white;
         }
 
         body.dark-theme .weather-widget {
@@ -1823,7 +1820,7 @@
                             </td>
                         </tr>`;
                     this.elements.userManagementTableBody.insertAdjacentHTML('beforeend', row);
-                });
+                }
             }
         };
 
