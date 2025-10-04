@@ -95,26 +95,68 @@
         /* Pestañas de Navegación */
         #tabs-container { padding: 1rem; }
         .nav-tab {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: rgb(20, 20, 20);
+            border: none;
+            font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
-            outline: none;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.164);
             cursor: pointer;
-            padding: 0.75rem;
-            background-image: linear-gradient(to top, #D8D9DB 0%, #fff 80%, #FDFDFD 100%);
-            border-radius: 30px;
-            border: 1px solid #8F9092;
-            transition: all 0.2s ease;
-            color: #606060;
-            text-shadow: 0 1px #fff;
+            transition-duration: 0.3s;
+            overflow: hidden;
+            position: relative;
+        }
+        .nav-tab-abbr {
+            color: white;
+            font-size: 14px;
+            transition-duration: 0.3s;
         }
         .nav-tab:hover {
-            box-shadow: 0 4px 3px 1px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 3px 3px #CECFD1;
+            width: 110px;
+            border-radius: 50px;
+            transition-duration: 0.3s;
+            background-color: #0369a1;
+            align-items: center;
+        }
+        .nav-tab:hover .nav-tab-abbr {
+            transition-duration: 0.3s;
+            transform: translateY(150%);
+            opacity: 0;
+        }
+        .nav-tab::before {
+            position: absolute;
+            display: block;
+            content: attr(title);
+            color: white;
+            transition-duration: 0.3s;
+            font-size: 13px;
+            opacity: 0;
+            transform: translateY(-150%);
+        }
+        .nav-tab:hover::before {
+            opacity: 1;
+            transform: translateY(0px);
         }
         .nav-tab.active {
-            color: #3b82f6;
-            box-shadow: 0 4px 3px 1px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 5px 3px #999, inset 0 0 30px #aaa;
+            width: 110px;
+            border-radius: 50px;
+            background-color: #0369a1;
         }
+        .nav-tab.active .nav-tab-abbr {
+            opacity: 0;
+            transform: translateY(150%);
+            transition-duration: 0.3s;
+        }
+        .nav-tab.active::before {
+            opacity: 1;
+            transform: translateY(0px);
+            transition-duration: 0.3s;
+        }
+
 
         /* Campos de Formulario */
         .neumorphic-input {
@@ -126,6 +168,16 @@
             box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
             transition: background-color 0.5s ease, box-shadow 0.5s ease, color 0.5s ease;
             color: #4b5563;
+        }
+        select.neumorphic-input {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
         }
         .neumorphic-input:focus { outline: none; }
         textarea.neumorphic-input { resize: none; }
@@ -164,7 +216,7 @@
         .mobile-nav-link {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            justify-content: center;
             padding: 0.75rem 1.5rem;
             background-image: linear-gradient(to top, #D8D9DB 0%, #fff 80%, #FDFDFD 100%);
             border-radius: 30px;
@@ -842,23 +894,21 @@
         body.dark-theme .neumorphic-btn.danger { color: #f87171; }
 
         body.dark-theme .nav-tab {
-            background-image: linear-gradient(to top, #2a3341 0%, #374151 80%, #404a59 100%);
-            border: 1px solid #5a6678;
-            color: #d1d5db;
-            text-shadow: 0 1px #111827;
+            background-color: #171717;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
         }
-        body.dark-theme .nav-tab:hover {
-            box-shadow: 0 4px 3px 1px #1a202c, 0 6px 8px #111827, 0 -4px 4px #4a5568, 0 -6px 4px #5a6678, inset 0 0 3px 3px #1f2937;
-        }
+        body.dark-theme .nav-tab:hover,
         body.dark-theme .nav-tab.active {
-            box-shadow: 0 4px 3px 1px #1a202c, 0 6px 8px #111827, 0 -4px 4px #4a5568, 0 -6px 4px #5a6678, inset 0 0 5px 3px #000, inset 0 0 30px #2d3748;
-            color: #60a5fa;
+            background-color: #075985;
         }
-
+        
         body.dark-theme .neumorphic-input {
             background: #374151;
             box-shadow: inset 4px 4px 8px #111827, inset -4px -4px 8px #4b5563;
             color: #f9fafb;
+        }
+        body.dark-theme select.neumorphic-input {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
         }
         body.dark-theme .neumorphic-input::placeholder { color: #6b7280; }
 
@@ -1029,14 +1079,30 @@
         <!-- Navegación Principal (Desktop) -->
         <nav class="mb-8 hidden md:block">
             <div id="tabs-container" class="flex flex-wrap justify-center items-center gap-2 sm:gap-4">
-                <div class="nav-tab active" data-target="page-tablero" title="Tablero"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 8.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg></div>
-                <div class="nav-tab" data-target="page-agenda" title="Eventos"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
-                <div class="nav-tab" data-target="page-directorio" title="Directorio"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-4.67c.12-.24.232-.487.335-.737m-3.058 3.07A3.375 3.375 0 008.25 15c0-1.01.39-1.928 1.04-2.625M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" /></svg></div>
-                <div class="nav-tab" data-target="page-noticias" title="Noticias"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" /></svg></div>
-                <div class="nav-tab" data-target="page-manuales" title="Manuales"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg></div>
-                <div class="nav-tab" data-target="page-recursos" title="Recursos"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" /></svg></div>
-                <div class="nav-tab" data-target="page-calendario" title="Calendario"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0h18M-4.5 12h22.5" /></svg></div>
-                <div class="nav-tab super-admin-only" data-target="page-user-management" title="Usuarios"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-4.67c.12-.24.232-.487.335-.737m-3.058 3.07A3.375 3.375 0 008.25 15c0-1.01.39-1.928 1.04-2.625M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5" /></svg></div>
+                <button class="nav-tab active" data-target="page-tablero" title="Tablero">
+                    <span class="nav-tab-abbr">Ta</span>
+                </button>
+                <button class="nav-tab" data-target="page-agenda" title="Eventos">
+                    <span class="nav-tab-abbr">Ev</span>
+                </button>
+                <button class="nav-tab" data-target="page-directorio" title="Directorio">
+                    <span class="nav-tab-abbr">Di</span>
+                </button>
+                <button class="nav-tab" data-target="page-noticias" title="Noticias">
+                    <span class="nav-tab-abbr">No</span>
+                </button>
+                <button class="nav-tab" data-target="page-manuales" title="Manuales">
+                    <span class="nav-tab-abbr">Ma</span>
+                </button>
+                <button class="nav-tab" data-target="page-recursos" title="Recursos">
+                    <span class="nav-tab-abbr">Re</span>
+                </button>
+                <button class="nav-tab" data-target="page-calendario" title="Calendario">
+                    <span class="nav-tab-abbr">Ca</span>
+                </button>
+                <button class="nav-tab super-admin-only" data-target="page-user-management" title="Usuarios">
+                    <span class="nav-tab-abbr">Us</span>
+                </button>
             </div>
         </nav>
 
@@ -1444,9 +1510,8 @@
                 let linksHtml = '';
                 document.querySelectorAll('#tabs-container .nav-tab').forEach(tab => {
                     if (tab.style.display === 'none') return;
-                    const iconHTML = tab.querySelector('svg').outerHTML;
                     const text = tab.getAttribute('title');
-                    linksHtml += `<div class="mobile-nav-link ${tab.classList.contains('active') ? 'active' : ''}" data-target="${tab.dataset.target}">${iconHTML}<span>${text}</span></div>`;
+                    linksHtml += `<div class="mobile-nav-link ${tab.classList.contains('active') ? 'active' : ''}" data-target="${tab.dataset.target}"><span>${text}</span></div>`;
                 });
                 this.elements.mobileNavLinks.innerHTML = linksHtml;
             },
@@ -1983,8 +2048,24 @@
                 document.getElementById('prev-month-btn').addEventListener('click', () => { this.currentCalendarDate.setMonth(this.currentCalendarDate.getMonth() - 1); UI.renderCalendar(this.currentCalendarDate, this.state.events, this.state.parroquianos); });
                 document.getElementById('next-month-btn').addEventListener('click', () => { this.currentCalendarDate.setMonth(this.currentCalendarDate.getMonth() + 1); UI.renderCalendar(this.currentCalendarDate, this.state.events, this.state.parroquianos); });
 
+                document.getElementById('gallery-prev-btn').addEventListener('click', () => {
+                    let newIndex = this.state.currentGalleryIndex - 1;
+                    if (newIndex < 0) {
+                        newIndex = this.state.currentGalleryImages.length - 1;
+                    }
+                    UI.showGalleryImage(newIndex);
+                });
+
+                document.getElementById('gallery-next-btn').addEventListener('click', () => {
+                    let newIndex = this.state.currentGalleryIndex + 1;
+                    if (newIndex >= this.state.currentGalleryImages.length) {
+                        newIndex = 0;
+                    }
+                    UI.showGalleryImage(newIndex);
+                });
+
                 document.body.addEventListener('click', e => {
-                    const target = e.target.closest('button, .nav-tab, .mobile-nav-link, .gallery-thumbnail, .accordion-toggle, a');
+                    const target = e.target.closest('button, .mobile-nav-link, .gallery-thumbnail, .accordion-toggle, a');
                     if (!target) return;
 
                     const action = target.dataset.action;
@@ -2313,3 +2394,4 @@
     </script>
 </body>
 </html>
+
