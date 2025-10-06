@@ -278,6 +278,17 @@
             transition: transform 0.2s ease-in-out;
         }
 
+        /* Estilos del Interruptor de Rol de Usuario */
+        .user-role-switch:checked ~ .dot {
+          transform: translateX(1rem);
+        }
+        .user-role-switch:checked ~ .block {
+          background-color: #3b82f6;
+        }
+        body.dark-theme .user-role-switch:checked ~ .block {
+          background-color: #60a5fa;
+        }
+
         /* --- Pantalla de Bloqueo --- */
         #app-lockscreen {
              background-color: #eef0f4;
@@ -755,105 +766,81 @@
           text-decoration: underline;
         }
         
-        /* --- ESTILOS REDES SOCIALES --- */
-        #SocailIcons {
-            display: flex;
-            gap: 1.5rem;
+        /* --- ESTILOS REDES SOCIALES (UIVERSE.IO) --- */
+        .wrapper {
+            display: inline-flex;
+            list-style: none;
             justify-content: center;
-            align-items: center;
         }
-        .icons {
-            width: 50px;
-            height: 50px;
+        .wrapper a {
+            text-decoration: none;
+        }
+        .wrapper .icon {
+            position: relative;
             background: #fff;
             border-radius: 50%;
-            cursor: pointer;
-            outline: none;
-            border: none;
-            text-align: center;
-            position: relative;
-        }
-        .iconName {
-            position: absolute;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%) scale(0);
-            transform-origin: bottom;
-            font-size: 12px;
-            color: #fff;
-            border-radius: 3px;
-            text-align: center;
-            padding: 5px 8px;
-            white-space: nowrap;
-            transition: transform 0.3s ease;
-        }
-        .icons:hover .iconName {
-            transform: translateX(-50%) scale(1);
-        }
-        .icons.instaIcon:hover .iconName {
-            background: linear-gradient(30deg, #405DE6, #E1306C, #F77737);
-        }
-        .icons.facebook:hover .iconName {
-            background: #1877F2;
-        }
-        .icons.whatsapp:hover .iconName {
-            background: #25d366;
-        }
-        .icons.youtube:hover .iconName {
-            background: #ff0000;
-        }
-        .icon {
-            display: inline-flex;
-            align-items: center;
+            margin: 10px;
+            width: 50px;
+            height: 50px;
+            font-size: 18px;
+            display: flex;
             justify-content: center;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            border-radius: 50%;
-            position: relative;
-            overflow: hidden;
-            border: none;
-            outline: none;
-            transition: color 0.3s ease, box-shadow 0.3s ease;
-            color: #0c0c0c;
+            align-items: center;
+            flex-direction: column;
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
-        .icon:hover {
-            color: #fff;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        .icon::before {
-            content: "";
+        .wrapper .tooltip {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 0;
-            border-radius: 50%;
-            transition: height 0.3s ease;
-            z-index: -1;
+            top: 0;
+            font-size: 14px;
+            background: #fff;
+            color: #fff;
+            padding: 5px 8px;
+            border-radius: 5px;
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
-        .icon:hover::before {
-            height: 100%;
+        .wrapper .tooltip::before {
+            position: absolute;
+            content: "";
+            height: 8px;
+            width: 8px;
+            background: #fff;
+            bottom: -3px;
+            left: 50%;
+            transform: translate(-50%) rotate(45deg);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
-        .icon.tube::before {
-            background: #ff0000;
+        .wrapper .icon:hover .tooltip {
+            top: -45px;
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
         }
-        .icon.insta::before {
-            background: linear-gradient(40deg, #405DE6, #E1306C, #F77737);
+        .wrapper .icon:hover span,
+        .wrapper .icon:hover .tooltip {
+            text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
         }
-        .icon.fb::before {
-            background: #1877F2;
+        .wrapper .facebook:hover,
+        .wrapper .facebook:hover .tooltip,
+        .wrapper .facebook:hover .tooltip::before {
+            background: #1877f2;
+            color: #fff;
         }
-        .icon.whats::before {
-            background: #25d366;
+        .wrapper .twitter:hover,
+        .wrapper .twitter:hover .tooltip,
+        .wrapper .twitter:hover .tooltip::before {
+            background: #1da1f2;
+            color: #fff;
         }
-        body.dark-theme .icons {
-             background: #374151;
-        }
-        body.dark-theme .icon {
-            color: #d1d5db;
-        }
-        body.dark-theme .icon:hover {
+        .wrapper .instagram:hover,
+        .wrapper .instagram:hover .tooltip,
+        .wrapper .instagram:hover .tooltip::before {
+            background: #e4405f;
             color: #fff;
         }
         
@@ -922,6 +909,16 @@
         body.dark-theme .mobile-nav-link.active {
             background-color: #075985;
             color: white;
+        }
+
+        body.dark-theme .wrapper .icon {
+            background: #374151;
+            color: #d1d5db;
+        }
+        body.dark-theme .wrapper .facebook:hover,
+        body.dark-theme .wrapper .twitter:hover,
+        body.dark-theme .wrapper .instagram:hover {
+            color: #fff;
         }
 
         body.dark-theme .weather-widget {
@@ -1215,6 +1212,7 @@
                                         <th class="p-3 font-semibold">Correo</th>
                                         <th class="p-3 font-semibold">Rol</th>
                                         <th class="p-3 font-semibold">Permisos</th>
+                                        <th class="p-3 font-semibold">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody id="user-management-table-body"></tbody>
@@ -1225,39 +1223,55 @@
             </div>
         </main>
         <footer class="mt-8 pt-8">
-            <div id="SocailIcons">
-                <a href="https://www.instagram.com/acna_xalapa/" target="_blank" rel="noopener noreferrer" class="icons instaIcon">
-                    <p class="iconName">Instagram</p>
-                    <div class="icon insta">
-                        <svg viewBox="0 0 24 24" fill="none" height="24" width="24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path clip-rule="evenodd" d="M3 8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Zm5-3a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H8Zm7.597 2.214a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2h-.01a1 1 0 0 1-1-1ZM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-5 3a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z" fill-rule="evenodd" fill="currentColor"></path>
-                        </svg>
-                    </div>
-                </a>
-                <a href="https://www.facebook.com/profile.php?id=100090817543616" target="_blank" rel="noopener noreferrer" class="icons facebook">
-                    <p class="iconName">Facebook</p>
-                    <div class="icon fb">
-                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;">
-                            <path d="M12.001 2.002c-5.522 0-9.999 4.477-9.999 9.999 0 4.99 3.656 9.126 8.437 9.879v-6.988h-2.54v-2.891h2.54V9.798c0-2.508 1.493-3.891 3.776-3.891 1.094 0 2.238.195 2.238.195v2.459h-1.28c-1.24 0-1.628.772-1.628 1.561v1.875h2.771l-.443 2.891h-2.328v6.988C18.344 21.129 22 16.992 22 12.001c0-5.522-4.477-9.999-9.999-9.999z"></path>
-                        </svg>
-                    </div>
-                </a>
-                <a href="#" class="icons whatsapp">
-                    <p class="iconName">WhatsApp</p>
-                    <div class="icon whats">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M18.403 5.633A8.919 8.919 0 0 0 12.053 3c-4.948 0-8.976 4.027-8.978 8.977 0 1.582.413 3.126 1.198 4.488L3 21.116l4.759-1.249a8.981 8.981 0 0 0 4.29 1.093h.004c4.947 0 8.975-4.027 8.977-8.977a8.926 8.926 0 0 0-2.627-6.35m-6.35 13.812h-.003a7.446 7.446 0 0 1-3.798-1.041l-.272-.162-2.824.741.753-2.753-.177-.282a7.448 7.448 0 0 1-1.141-3.971c.002-4.114 3.349-7.461 7.465-7.461a7.413 7.413 0 0 1 5.275 2.188 7.42 7.42 0 0 1 2.183 5.279c-.002 4.114-3.349 7.462-7.461 7.462m4.093-5.589c-.225-.113-1.327-.655-1.533-.73-.205-.075-.354-.112-.504.112s-.58.729-.711.879-.262.168-.486.056-.947-.349-1.804-1.113c-.667-.595-1.117-1.329-1.248-1.554s-.014-.346.099-.458c.101-.1.224-.262.336-.393.112-.131.149-.224.224-.374s.038-.281-.019-.393c-.056-.113-.505-1.217-.692-1.666-.181-.435-.366-.377-.504-.383a9.65 9.65 0 0 0-.429-.008.826.826 0 0 0-.599.28c-.206.225-.785.767-.785 1.871s.804 2.171.916 2.321c.112.15 1.582 2.415 3.832 3.387.536.231.954.369 1.279.473.537.171 1.026.146 1.413.089.431-.064 1.327-.542 1.514-1.066.187-.524.187-.973.131-1.067-.056-.094-.207-.151-.43-.263" fill="currentColor"></path>
-                        </svg>
-                    </div>
-                </a>
-                <a href="https://www.youtube.com/@acna-xalapa" target="_blank" rel="noopener noreferrer" class="icons youtube">
-                    <p class="iconName">YouTube</p>
-                    <div class="icon tube">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;">
-                            <path d="M21.593 7.203a2.506 2.506 0 0 0-1.762-1.766C18.265 5.007 12 5 12 5s-6.264-.007-7.831.404a2.56 2.56 0 0 0-1.766 1.778c-.413 1.566-.417 4.814-.417 4.814s-.004 3.264.406 4.814c.23.857.905 1.534 1.763 1.765 1.582.43 7.83.437 7.83.437s6.265.007 7.831-.403a2.515 2.515 0 0 0 1.767-1.763c.414-1.565.417-4.812.417-4.812s.02-3.265-.407-4.831zM9.996 15.005l.005-6 5.207 3.005-5.212 2.995z" fill="currentColor"></path>
-                        </svg>
-                    </div>
-                </a>
+            <div class="flex justify-center">
+                <ul class="wrapper">
+                  <a href="https://www.facebook.com/profile.php?id=100090817543616" target="_blank" rel="noopener noreferrer">
+                    <li class="icon facebook">
+                      <span class="tooltip">Facebook</span>
+                      <svg
+                        viewBox="0 0 320 512"
+                        height="1.2em"
+                        fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"
+                        ></path>
+                      </svg>
+                    </li>
+                  </a>
+                  <a href="https://x.com/acna_xalapa" target="_blank" rel="noopener noreferrer">
+                    <li class="icon twitter">
+                      <span class="tooltip">X</span>
+                      <svg
+                        viewBox="0 0 24 24"
+                        height="1.2em"
+                        fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                        ></path>
+                      </svg>
+                    </li>
+                  </a>
+                  <a href="https://www.instagram.com/acna_xalapa/" target="_blank" rel="noopener noreferrer">
+                    <li class="icon instagram">
+                      <span class="tooltip">Instagram</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="1.2em"
+                        fill="currentColor"
+                        class="bi bi-instagram"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"
+                        ></path>
+                      </svg>
+                    </li>
+                  </a>
+                </ul>
             </div>
         </footer>
     </div>
@@ -1335,80 +1349,6 @@
     <div id="parroquiano-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
         <div class="neumorphic-card p-8 w-full max-w-lg">
             <h2 class="text-2xl font-bold mb-6"></h2>
-            <form id="parroquiano-form" data-type="parroquiano">
-                <input type="hidden" name="id">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto pr-2">
-                    <div class="md:col-span-2"><label for="parroquiano-nombre" class="block text-sm font-medium mb-1">Nombre Completo</label><input type="text" id="parroquiano-nombre" name="nombre" class="neumorphic-input" required></div>
-                    <div class="md:col-span-2"><label for="parroquiano-direccion" class="block text-sm font-medium mb-1">Dirección</label><input type="text" id="parroquiano-direccion" name="direccion" class="neumorphic-input"></div>
-                    <div><label for="parroquiano-telefono" class="block text-sm font-medium mb-1">Teléfono</label><input type="tel" id="parroquiano-telefono" name="telefono" class="neumorphic-input"></div>
-                    <div><label for="parroquiano-correo" class="block text-sm font-medium mb-1">Correo Electrónico</label><input type="email" id="parroquiano-correo" name="correo" class="neumorphic-input"></div>
-                    <div><label for="parroquiano-nacimiento" class="block text-sm font-medium mb-1">Fecha de Nacimiento</label><input type="date" id="parroquiano-nacimiento" name="nacimiento" class="neumorphic-input"></div>
-                    <div><label for="parroquiano-tipo-sangre" class="block text-sm font-medium mb-1">Tipo de Sangre</label><input type="text" id="parroquiano-tipo-sangre" name="tipo_sangre" class="neumorphic-input"></div>
-                    <div class="md:col-span-2"><label for="parroquiano-alergias" class="block text-sm font-medium mb-1">Alergias</label><textarea id="parroquiano-alergias" name="alergias" rows="2" class="neumorphic-input"></textarea></div>
-                    <div class="md:col-span-2"><label for="parroquiano-medicamentos" class="block text-sm font-medium mb-1">Medicamentos</label><textarea id="parroquiano-medicamentos" name="medicamentos" rows="2" class="neumorphic-input"></textarea></div>
-                    <div class="md:col-span-2"><hr class="my-2 border-gray-300/50"></div>
-                    <div><label for="parroquiano-emergencia-nombre" class="block text-sm font-medium mb-1">Llamar a (Emergencia)</label><input type="text" id="parroquiano-emergencia-nombre" name="emergencia_nombre" class="neumorphic-input"></div>
-                    <div><label for="parroquiano-emergencia-telefono" class="block text-sm font-medium mb-1">Teléfono (Emergencia)</label><input type="tel" id="parroquiano-emergencia-telefono" name="emergencia_telefono" class="neumorphic-input"></div>
-                    <div class="md:col-span-2"><label for="parroquiano-notas" class="block text-sm font-medium mb-1">Notas Adicionales</label><textarea id="parroquiano-notas" name="notas" rows="2" class="neumorphic-input"></textarea></div>
-                </div>
-                <div class="flex justify-end gap-4 mt-6"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
-            </form>
-        </div>
-    </div>
-     <div id="news-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-8 w-full max-w-lg">
-            <h2 class="text-2xl font-bold mb-6"></h2>
-            <form id="news-form" data-type="news">
-                <input type="hidden" name="id">
-                <div class="grid grid-cols-1 gap-4 max-h-[70vh] overflow-y-auto pr-2">
-                    <div><label for="news-titulo" class="block text-sm font-medium mb-1">Título</label><input type="text" id="news-titulo" name="titulo" class="neumorphic-input" required></div>
-                    <div>
-                        <label for="news-imagenUrl" class="block text-sm font-medium mb-1">URL de la Imagen Principal</label>
-                        <input type="url" id="news-imagenUrl" name="imagenUrl" class="neumorphic-input" placeholder="https://ejemplo.com/imagen.jpg">
-                    </div>
-                    <div><label for="news-resumen" class="block text-sm font-medium mb-1">Resumen</label><textarea id="news-resumen" name="resumen" rows="3" class="neumorphic-input" required></textarea></div>
-                    <div><label for="news-contenido" class="block text-sm font-medium mb-1">Contenido Completo</label><textarea id="news-contenido" name="contenido" rows="6" class="neumorphic-input" required></textarea></div>
-                    <div>
-                        <label for="news-galleryUrls" class="block text-sm font-medium mb-1">URLs de la Galería (una por línea)</label>
-                        <textarea id="news-galleryUrls" name="galleryUrls" rows="4" class="neumorphic-input" placeholder="https://ejemplo.com/imagen1.jpg\nhttps://ejemplo.com/imagen2.jpg"></textarea>
-                    </div>
-                </div>
-                <div class="flex justify-end gap-4 mt-6">
-                    <button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button>
-                    <button type="submit" class="neumorphic-btn primary">Guardar Noticia</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div id="news-detail-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-6 sm:p-8 w-full max-w-3xl max-h-[90vh] flex flex-col">
-            <h2 id="news-detail-title" class="text-2xl sm:text-3xl font-bold mb-2"></h2>
-            <p id="news-detail-date" class="text-sm text-gray-500 mb-4"></p>
-            <div class="flex-grow overflow-y-auto pr-2">
-                <div id="news-gallery-container" class="relative mb-4">
-                    <img id="news-detail-image" src="" alt="Imagen de la noticia" class="rounded-2xl w-full h-64 sm:h-80 object-cover transition-opacity duration-300">
-                    <button id="gallery-prev-btn" class="absolute top-1/2 left-2 transform -translate-y-1/2 neumorphic-btn p-2 rounded-full hidden"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg></button>
-                    <button id="gallery-next-btn" class="absolute top-1/2 right-2 transform -translate-y-1/2 neumorphic-btn p-2 rounded-full hidden"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></button>
-                </div>
-                <div id="news-gallery-thumbnails" class="flex gap-2 overflow-x-auto pb-2 mb-4"></div>
-                <div id="news-detail-content" class="prose max-w-none"></div>
-            </div>
-            <div class="flex justify-end gap-4 mt-6 flex-shrink-0"><button type="button" data-action="close-modal" class="neumorphic-btn">Cerrar</button></div>
-        </div>
-    </div>
-    <div id="bloque-manual-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-8 w-full max-w-md">
-            <h2 class="text-2xl font-bold mb-6"></h2>
-            <form id="bloque-manual-form" data-type="bloqueManual">
-                <input type="hidden" name="id">
-                <div class="mb-6"><label for="bloque-manual-nombre" class="block text-sm font-medium mb-1">Nombre del Bloque</label><input type="text" id="bloque-manual-nombre" name="nombre" class="neumorphic-input" required></div>
-                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
-            </form>
-        </div>
-    </div>
-     <div id="bloque-archivo-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-8 w-full max-w-md">
-            <h2 class="text-2xl font-bold mb-6"></h2>
             <form id="bloque-archivo-form" data-type="bloqueArchivo">
                 <input type="hidden" name="id">
                 <div class="mb-6"><label for="bloque-archivo-nombre" class="block text-sm font-medium mb-1">Nombre del Bloque</label><input type="text" id="bloque-archivo-nombre" name="nombre" class="neumorphic-input" required></div>
@@ -1423,7 +1363,7 @@
                 <input type="hidden" name="id">
                 <input type="hidden" name="blockId">
                 <div class="mb-4"><label for="manual-nombre" class="block text-sm font-medium mb-1">Nombre del Manual</label><input type="text" id="manual-nombre" name="nombre" class="neumorphic-input" required></div>
-                <div class="mb-6"><label for="manual-url" class="block text-sm font-medium mb-1">URL del Manual</label><input type="url" id="manual-url" name="url" class="neumorphic-input" required placeholder="https://ejemplo.com/documento.pdf"></div>
+                <div class="mb-6"><label for="manual-url" class="block text-sm font-medium mb-1">URL del Manual</label><input type="url" id="manual-url" name="url" class="neumorphic-input" placeholder="https://ejemplo.com/documento.pdf" required></div>
                 <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
             </form>
         </div>
@@ -1435,7 +1375,7 @@
                 <input type="hidden" name="id">
                 <input type="hidden" name="blockId">
                 <div class="mb-4"><label for="archivo-nombre" class="block text-sm font-medium mb-1">Nombre del Archivo</label><input type="text" id="archivo-nombre" name="nombre" class="neumorphic-input" required></div>
-                <div class="mb-6"><label for="archivo-url" class="block text-sm font-medium mb-1">URL del Archivo</label><input type="url" id="archivo-url" name="url" class="neumorphic-input" required placeholder="https://ejemplo.com/documento.pdf"></div>
+                <div class="mb-6"><label for="archivo-url" class="block text-sm font-medium mb-1">URL del Archivo</label><input type="url" id="archivo-url" name="url" class="neumorphic-input" placeholder="https://ejemplo.com/recurso.zip" required></div>
                 <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
             </form>
         </div>
@@ -1445,6 +1385,24 @@
             <h2 class="text-xl font-bold mb-4">Confirmar Eliminación</h2>
             <p id="confirm-message" class="mb-6">¿Estás seguro?</p>
             <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="button" id="confirm-delete-btn" class="neumorphic-btn danger">Eliminar</button></div>
+        </div>
+    </div>
+    <div id="calendar-day-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-md">
+            <h2 id="calendar-day-modal-title" class="text-xl font-bold mb-6"></h2>
+            <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+                <div>
+                    <h3 class="font-semibold mb-2">Eventos Programados</h3>
+                    <ul id="calendar-day-events-list" class="space-y-2"></ul>
+                </div>
+                <div id="calendar-day-birthdays-section" class="hidden">
+                    <h3 class="font-semibold mb-2">Agenda Parroquial (Cumpleaños)</h3>
+                    <ul id="calendar-day-birthdays-list" class="space-y-2"></ul>
+                </div>
+            </div>
+            <div class="flex justify-end gap-4 mt-6">
+                <button type="button" data-action="close-modal" class="neumorphic-btn">Cerrar</button>
+            </div>
         </div>
     </div>
 
@@ -1650,6 +1608,7 @@
                         bloqueArchivo: document.getElementById('bloque-archivo-modal'),
                         archivo: document.getElementById('archivo-modal'),
                         confirm: document.getElementById('confirm-modal'),
+                        calendarDay: document.getElementById('calendar-day-modal'),
                     },
                     newsDetail: {
                         title: document.getElementById('news-detail-title'),
@@ -1664,6 +1623,12 @@
                     confirmModal: {
                         message: document.getElementById('confirm-message'),
                         deleteBtn: document.getElementById('confirm-delete-btn'),
+                    },
+                    calendarDayModal: {
+                        title: document.getElementById('calendar-day-modal-title'),
+                        eventsList: document.getElementById('calendar-day-events-list'),
+                        birthdaysSection: document.getElementById('calendar-day-birthdays-section'),
+                        birthdaysList: document.getElementById('calendar-day-birthdays-list'),
                     }
                 };
             },
@@ -1828,7 +1793,7 @@
                     const placeholderImage = 'https://placehold.co/600x400/eef0f4/4b5563?text=Noticia';
                     return `
                         <div class="neumorphic-card flex flex-col">
-                            <img src="${article.imagenUrl || placeholderImage}" alt="Imagen de la noticia" class="rounded-t-2xl h-48 w-full object-cover" onerror="this.src='${placeholderImage}'">
+                            <img src="${article.imageUrl || placeholderImage}" alt="Imagen de la noticia" class="rounded-t-2xl h-48 w-full object-cover" onerror="this.src='${placeholderImage}'">
                             <div class="p-4 flex flex-col flex-grow">
                                 <h3 class="text-lg font-bold mb-2 break-words">${article.titulo}</h3>
                                 <p class="text-sm text-gray-500 mb-2">${new Date(article.fechaPublicacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
@@ -1899,12 +1864,11 @@
                     const firstDayOfMonth = new Date(year, month, 1).getDay();
                     const daysInMonth = new Date(year, month + 1, 0).getDate();
                     for (let i = 0; i < firstDayOfMonth; i++) {
-                        gridEl.insertAdjacentHTML('beforeend', `<div class="calendar-cell not-current-month"></div>`);
+                        gridEl.insertAdjacentHTML('beforeend', `<div></div>`);
                     }
                     for (let day = 1; day <= daysInMonth; day++) {
                         const cellDate = new Date(year, month, day);
                         const isToday = cellDate.getTime() === today.getTime();
-                        const cellClasses = `calendar-cell ${isToday ? 'is-today' : ''}`;
                         const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                         const dailyEvents = events.filter(e => e.date === dateString);
                         const dailyBirthdays = parroquianos.filter(p => {
@@ -1912,9 +1876,19 @@
                             const birthDate = new Date(p.nacimiento + 'T00:00:00Z');
                             return birthDate.getMonth() === month && birthDate.getDate() === day;
                         });
+                        
+                        const isClickable = dailyEvents.length > 0 || dailyBirthdays.length > 0;
+                        let cellClasses = `calendar-cell ${isToday ? 'is-today' : ''}`;
+                        let actionAttr = '';
+                        if (isClickable) {
+                            cellClasses += ' cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600';
+                            actionAttr = `data-action="show-day-details" data-date="${dateString}"`;
+                        }
+
                         let itemsHtml = dailyEvents.map(e => `<div class="calendar-item event-item" title="${e.name} a las ${e.time}">${e.name}</div>`).join('');
                         itemsHtml += dailyBirthdays.map(p => `<div class="calendar-item birthday-item" title="Cumpleaños de ${p.nombre}">🎂 ${p.nombre.split(' ')[0]}</div>`).join('');
-                        const cellHtml = `<div class="${cellClasses}"><div class="calendar-day-number">${day}</div><div class="calendar-items-container">${itemsHtml}</div></div>`;
+                        
+                        const cellHtml = `<div class="${cellClasses}" ${actionAttr}><div class="calendar-day-number">${day}</div><div class="calendar-items-container">${itemsHtml}</div></div>`;
                         gridEl.insertAdjacentHTML('beforeend', cellHtml);
                     }
                 }
@@ -1922,21 +1896,30 @@
             userManagement: {
                 render(users, tableBody) {
                     tableBody.innerHTML = '';
-                    const permissionsKeys = ['agenda', 'directorio', 'noticias', 'manuales', 'recursos'];
+                    const permissionsMap = {
+                        agenda: 'Agenda', directorio: 'Directorio', noticias: 'Noticias',
+                        manuales: 'Manuales', recursos: 'Recursos', verAgendaCalendario: 'Ver Agenda Cal.'
+                    };
+                    const permissionsKeys = Object.keys(permissionsMap);
+
                     users.forEach(user => {
-                        if (user.role === 'superadmin') return; // No mostrar al superadmin en la lista
+                        if (user.role === 'superadmin') return;
                         
-                        const roleSelector = `
-                            <select data-user-id="${user.id}" class="user-role-selector neumorphic-input !p-1 !text-sm">
-                                <option value="viewer" ${user.role === 'viewer' ? 'selected' : ''}>Espectador</option>
-                                <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
-                            </select>`;
+                        const roleSwitch = `
+                            <label class="flex items-center cursor-pointer">
+                                <div class="relative">
+                                    <input type="checkbox" data-user-id="${user.id}" class="sr-only user-role-switch" ${user.role === 'admin' ? 'checked' : ''}>
+                                    <div class="block bg-gray-400 dark:bg-gray-600 w-10 h-6 rounded-full transition"></div>
+                                    <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform"></div>
+                                </div>
+                                <span id="role-label-${user.id}" class="ml-3 text-sm font-medium">${user.role === 'admin' ? 'Admin' : 'Espectador'}</span>
+                            </label>`;
 
                         const permissionsCheckboxes = permissionsKeys.map(key => `
                             <label class="flex items-center gap-1 text-xs">
                                <input type="checkbox" data-user-id="${user.id}" data-permission="${key}" class="user-permission-checkbox" 
                                ${user.permissions && user.permissions[key] ? 'checked' : ''} ${user.role !== 'admin' ? 'disabled' : ''}>
-                               ${key.charAt(0).toUpperCase() + key.slice(1)}
+                               ${permissionsMap[key]}
                             </label>
                         `).join('');
 
@@ -1944,11 +1927,14 @@
                             <tr class="border-b border-gray-300/50">
                                 <td class="p-3">${user.nombre}</td>
                                 <td class="p-3">${user.email}</td>
-                                <td class="p-3">${roleSelector}</td>
+                                <td class="p-3">${roleSwitch}</td>
                                 <td class="p-3">
                                     <div class="flex flex-wrap gap-2 items-center ${user.role !== 'admin' ? 'opacity-50' : ''}">
                                         ${permissionsCheckboxes}
                                     </div>
+                                </td>
+                                <td class="p-3">
+                                    <button data-action="delete-user" data-user-id="${user.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
                                 </td>
                             </tr>`;
                         tableBody.insertAdjacentHTML('beforeend', row);
@@ -2007,19 +1993,17 @@
              * @param {import("firebase/auth").User | null} authUser - El objeto de usuario de Firebase.
              */
             async onAuthStateChanged(authUser) {
-                let userProfile = null;
-                if (authUser) {
-                    const userDoc = await FirebaseService.getDoc('users', authUser.uid);
-                    if (userDoc.exists()) {
-                        userProfile = { id: authUser.uid, ...userDoc.data() };
-                    } else if (authUser.email === 'admin@portal.com') { // Creación de superadmin especial
-                        const superAdminProfile = {
-                            nombre: 'Admin Especial', email: authUser.email, role: 'superadmin', permissions: {}
-                        };
-                        await FirebaseService.setDoc('users', authUser.uid, superAdminProfile);
-                        userProfile = { id: authUser.uid, ...superAdminProfile };
-                    }
-                }
+                 let userProfile = null;
+                 if (authUser) {
+                     const userDoc = await FirebaseService.getDoc('users', authUser.uid);
+                     if (userDoc.exists()) {
+                         userProfile = { id: authUser.uid, ...userDoc.data() };
+                     } else if (authUser.email === 'admin@portal.com') {
+                         const superAdminProfile = { nombre: 'Admin Especial', email: authUser.email, role: 'superadmin', permissions: {} };
+                         await FirebaseService.setDoc('users', authUser.uid, superAdminProfile);
+                         userProfile = { id: authUser.uid, ...superAdminProfile };
+                     }
+                 }
                 
                 this.state.auth.user = userProfile;
                 this.state.auth.isSuperAdmin = userProfile?.role === 'superadmin';
@@ -2032,9 +2016,12 @@
                     this.setupDataListeners();
                     this.loadWeather();
                     UI.calendario.render(this.state.ui.currentCalendarDate, this.state.data.events, this.state.data.parroquianos, UI.elements.pages.calendario.header, UI.elements.pages.calendario.grid);
+                    this.dataListenersInitialized = true;
+                }
+
+                if (UI.elements.appLoading.style.display !== 'none') {
                     UI.elements.appLoading.style.display = 'none';
                     UI.elements.appContainer.classList.add('loaded');
-                    this.dataListenersInitialized = true;
                 }
             },
             
@@ -2127,8 +2114,10 @@
                         'close-sidenav': () => UI.nav.toggleSidenav(false),
                         'edit': () => this.handleEdit(type, id, blockId, itemId),
                         'delete': () => this.handleDelete(type, id, blockId, itemId),
+                        'delete-user': () => this.handleDeleteUser(target.dataset.userId),
                         'read-more': () => this.handleReadMore(id),
                         'add-item': () => this.openModal(`${modalTarget.replace('-modal', '')}-modal`, null, blockId),
+                        'show-day-details': () => this.handleShowDayDetails(target.dataset.date),
                     };
                     actionHandlers[action]?.();
                 }
@@ -2159,8 +2148,14 @@
                 if (target.id === 'view-as-user-switch') {
                     this.state.auth.viewAsUser = e.target.checked;
                     this.updateUIPermissions();
-                } else if (target.matches('.user-role-selector')) {
-                    this.updateUserRole(target.dataset.userId, target.value);
+                } else if (target.matches('.user-role-switch')) {
+                    const userId = target.dataset.userId;
+                    const newRole = target.checked ? 'admin' : 'viewer';
+                    const label = document.getElementById(`role-label-${userId}`);
+                    if (label) {
+                        label.textContent = newRole === 'admin' ? 'Admin' : 'Espectador';
+                    }
+                    this.updateUserRole(userId, newRole);
                 } else if (target.matches('.user-permission-checkbox')) {
                     this.updateUserPermission(target.dataset.userId, target.dataset.permission, target.checked);
                 }
@@ -2173,7 +2168,55 @@
             async handleGenericFormSubmit(form) { /* ... Lógica de envío de formularios ... */ },
             handleEdit(type, id, blockId, itemId) { /* ... Lógica de edición ... */ },
             handleDelete(type, id, blockId, itemId) { /* ... Lógica de eliminación ... */ },
+            handleDeleteUser(userId) {
+                if (!this.state.auth.isSuperAdmin || this.state.auth.user.id === userId) return;
+
+                const userToDelete = this.state.data.allUsers.find(u => u.id === userId);
+                if (!userToDelete) return;
+
+                UI.elements.confirmModal.message.textContent = `¿Seguro de eliminar al usuario "${userToDelete.nombre}"? Esta acción eliminará su perfil de la app, pero no su cuenta de autenticación.`;
+                this.openModal('confirm');
+
+                UI.elements.confirmModal.deleteBtn.onclick = async () => {
+                    try {
+                        // Nota: Esto solo elimina el perfil del usuario de Firestore.
+                        // La eliminación completa de la cuenta de Firebase Auth requeriría una Cloud Function
+                        // por razones de seguridad, lo cual está fuera del alcance de este entorno de cliente.
+                        await FirebaseService.deleteDoc('users', userId);
+                        this.closeModal('confirm');
+                    } catch (err) {
+                        console.error(`Error al eliminar usuario:`, err);
+                    }
+                };
+            },
             handleReadMore(id) { /* ... Lógica de "Leer más" ... */ },
+            handleShowDayDetails(dateString) {
+                const date = new Date(dateString + 'T00:00:00Z');
+                const dailyEvents = this.state.data.events.filter(e => e.date === dateString);
+                const dailyBirthdays = this.state.data.parroquianos.filter(p => {
+                    if (!p.nacimiento) return false;
+                    const birthDate = new Date(p.nacimiento + 'T00:00:00Z');
+                    return birthDate.getMonth() === date.getMonth() && birthDate.getDate() === date.getDate();
+                });
+
+                const { title, eventsList, birthdaysSection, birthdaysList } = UI.elements.calendarDayModal;
+                title.textContent = `Detalles del ${date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
+
+                eventsList.innerHTML = dailyEvents.length > 0
+                    ? dailyEvents.map(e => `<li class="p-2 neumorphic-inset rounded-lg">${e.name} - ${e.time}h</li>`).join('')
+                    : '<li class="text-sm text-gray-500">No hay eventos para este día.</li>';
+
+                if (this.hasPermission('verAgendaCalendario')) {
+                    birthdaysSection.classList.remove('hidden');
+                    birthdaysList.innerHTML = dailyBirthdays.length > 0
+                        ? dailyBirthdays.map(p => `<li class="p-2 neumorphic-inset rounded-lg">🎂 Cumpleaños de ${p.nombre}</li>`).join('')
+                        : '<li class="text-sm text-gray-500">No hay cumpleaños este día.</li>';
+                } else {
+                    birthdaysSection.classList.add('hidden');
+                }
+
+                this.openModal('calendar-day-modal');
+            },
 
             async updateUserRole(userId, newRole) {
                 if (!this.state.auth.isSuperAdmin) return;
@@ -2274,8 +2317,16 @@
                 } else {
                     userCredential = await signInWithEmailAndPassword(FirebaseService.auth, email, password);
                 }
-                this.onAuthStateChanged(userCredential.user);
                 this.closeModal('user-auth-modal');
+
+                const { unlockSwitch, container } = UI.elements.lockscreen;
+                if (unlockSwitch.disabled) {
+                    unlockSwitch.disabled = false;
+                    UI.elements.lockscreen.unlockSwitchLabel.classList.remove('disabled');
+                    UI.elements.lockscreen.message.classList.add('hidden');
+                }
+                unlockSwitch.checked = true;
+                unlockSwitch.dispatchEvent(new Event('change'));
             } catch(error) {
                 errorMsg.textContent = 'Correo o contraseña incorrectos.';
                 errorMsg.classList.remove('hidden');
@@ -2293,6 +2344,15 @@
                 const newUserProfile = { nombre: name, email: email, role: 'viewer', permissions: {} };
                 await FirebaseService.setDoc('users', userCredential.user.uid, newUserProfile);
                 this.closeModal('user-auth-modal');
+
+                const { unlockSwitch, container } = UI.elements.lockscreen;
+                if (unlockSwitch.disabled) {
+                    unlockSwitch.disabled = false;
+                    UI.elements.lockscreen.unlockSwitchLabel.classList.remove('disabled');
+                    UI.elements.lockscreen.message.classList.add('hidden');
+                }
+                unlockSwitch.checked = true;
+                unlockSwitch.dispatchEvent(new Event('change'));
             } catch(error) {
                  if (error.code === 'auth/email-already-in-use') errorMsg.textContent = 'Este correo ya está registrado.';
                  else if (error.code === 'auth/weak-password') errorMsg.textContent = 'La contraseña debe tener al menos 6 caracteres.';
@@ -2305,7 +2365,8 @@
             const permissionMap = {
                 event: 'agenda', parroquiano: 'directorio', news: 'noticias',
                 bloqueManual: 'manuales', manual: 'manuales',
-                bloqueArchivo: 'recursos', archivo: 'recursos'
+                bloqueArchivo: 'recursos', archivo: 'recursos',
+                verAgendaCalendario: 'verAgendaCalendario'
             };
             if (!this.hasPermission(permissionMap[type])) return;
             
@@ -2353,7 +2414,8 @@
             const permissionMap = {
                 event: 'agenda', parroquiano: 'directorio', news: 'noticias',
                 bloqueManual: 'manuales', manual: 'manuales',
-                bloqueArchivo: 'recursos', archivo: 'recursos'
+                bloqueArchivo: 'recursos', archivo: 'recursos',
+                verAgendaCalendario: 'verAgendaCalendario'
             };
             if(!this.hasPermission(permissionMap[type])) return;
 
@@ -2374,7 +2436,8 @@
             const permissionMap = {
                 event: 'agenda', parroquiano: 'directorio', news: 'noticias',
                 bloqueManual: 'manuales', manual: 'manuales',
-                bloqueArchivo: 'recursos', archivo: 'recursos'
+                bloqueArchivo: 'recursos', archivo: 'recursos',
+                verAgendaCalendario: 'verAgendaCalendario'
             };
             if (!this.hasPermission(permissionMap[type])) return;
 
@@ -2408,7 +2471,7 @@
             date.textContent = new Date(item.fechaPublicacion).toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'});
             content.innerHTML = item.contenido.replace(/\n/g,'<br>');
             
-            this.state.ui.currentGalleryImages = [item.imagenUrl, ...(item.galleryUrls || [])].filter(Boolean);
+            this.state.ui.currentGalleryImages = [item.imageUrl, ...(item.galleryUrls || [])].filter(Boolean);
             this.state.ui.currentGalleryIndex = 0;
             
             thumbnails.innerHTML = this.state.ui.currentGalleryImages.map((url, index) => 
