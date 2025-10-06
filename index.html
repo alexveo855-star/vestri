@@ -289,6 +289,22 @@
           background-color: #60a5fa;
         }
 
+        /* Contenedor de Video Responsivo */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
         /* --- Pantalla de Bloqueo --- */
         #app-lockscreen {
              background-color: #eef0f4;
@@ -838,11 +854,17 @@
             color: #fff;
         }
         .wrapper .instagram:hover,
-        .wrapper .instagram:hover .tooltip,
-        .wrapper .instagram:hover .tooltip::before {
-            background: #e4405f;
-            color: #fff;
-        }
+.wrapper .instagram:hover .tooltip,
+.wrapper .instagram:hover .tooltip::before {
+    background: #e4405f;
+    color: #fff;
+}
+.wrapper .youtube:hover,
+.wrapper .youtube:hover .tooltip,
+.wrapper .youtube:hover .tooltip::before {
+    background: #ff0000;
+    color: #fff;
+}
         
         /* --- ESTILOS DEL TEMA OSCURO --- */
         body.dark-theme {
@@ -917,7 +939,8 @@
         }
         body.dark-theme .wrapper .facebook:hover,
         body.dark-theme .wrapper .twitter:hover,
-        body.dark-theme .wrapper .instagram:hover {
+        body.dark-theme .wrapper .instagram:hover,
+        body.dark-theme .wrapper .youtube:hover {
             color: #fff;
         }
 
@@ -1091,6 +1114,9 @@
                 <button class="nav-tab" data-target="page-recursos" title="Recursos">
                     <span class="nav-tab-abbr">Re</span>
                 </button>
+                <button class="nav-tab" data-target="page-videoteca" title="Videoteca">
+                    <span class="nav-tab-abbr">Vi</span>
+                </button>
                 <button class="nav-tab" data-target="page-calendario" title="Calendario">
                     <span class="nav-tab-abbr">Ca</span>
                 </button>
@@ -1190,6 +1216,15 @@
                         <div id="archivos-container" class="space-y-4"></div>
                     </div>
                 </div>
+                <div id="page-videoteca" class="page">
+                    <div class="neumorphic-card p-6">
+                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                            <h2 class="text-2xl font-bold">Videoteca Educativa</h2>
+                            <button data-modal-target="bloque-video-modal" data-permission="videoteca" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
+                        </div>
+                        <div id="videos-container" class="space-y-4"></div>
+                    </div>
+                </div>
                 <div id="page-calendario" class="page">
                     <div class="neumorphic-card p-6">
                         <div id="calendar-header" class="flex justify-between items-center mb-6">
@@ -1271,6 +1306,14 @@
                       </svg>
                     </li>
                   </a>
+                  <a href="https://www.youtube.com/@comunidaddegraciaxalapa" target="_blank" rel="noopener noreferrer">
+                    <li class="icon youtube">
+                      <span class="tooltip">YouTube</span>
+                      <svg height="1.2em" fill="currentColor" viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M549.655 124.083c-6.281-23.65-24.787-42.11-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.487-41.999 24.947-48.284 48.597-11.412 42.867-11.412 132.322-11.412 132.322s0 89.455 11.412 132.322c6.285 23.65 24.787 42.11 48.284 48.597C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.487 42-24.947 48.284-48.597 11.412-42.867 11.412-132.322 11.412-132.322s0-89.455-11.412-132.322zM232.615 354.708V157.292l157.54 98.708-157.54 98.708z"></path>
+                      </svg>
+                    </li>
+                  </a>
                 </ul>
             </div>
         </footer>
@@ -1349,9 +1392,72 @@
     <div id="parroquiano-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
         <div class="neumorphic-card p-8 w-full max-w-lg">
             <h2 class="text-2xl font-bold mb-6"></h2>
-            <form id="bloque-archivo-form" data-type="bloqueArchivo">
+            <form id="parroquiano-form" data-type="parroquiano">
                 <input type="hidden" name="id">
-                <div class="mb-6"><label for="bloque-archivo-nombre" class="block text-sm font-medium mb-1">Nombre del Bloque</label><input type="text" id="bloque-archivo-nombre" name="nombre" class="neumorphic-input" required></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[70vh] overflow-y-auto pr-2">
+                    <div><label for="parroquiano-nombre" class="block text-sm font-medium mb-1">Nombre Completo</label><input type="text" id="parroquiano-nombre" name="nombre" class="neumorphic-input" required></div>
+                    <div><label for="parroquiano-telefono" class="block text-sm font-medium mb-1">Teléfono</label><input type="tel" id="parroquiano-telefono" name="telefono" class="neumorphic-input"></div>
+                    <div><label for="parroquiano-nacimiento" class="block text-sm font-medium mb-1">Fecha de Nacimiento</label><input type="date" id="parroquiano-nacimiento" name="nacimiento" class="neumorphic-input"></div>
+                    <div></div> <!-- Spacer -->
+                    <div class="sm:col-span-2"><hr class="my-2 border-gray-300 dark:border-gray-600"></div>
+                    <div class="sm:col-span-2"><h3 class="text-lg font-semibold">Contacto de Emergencia</h3></div>
+                    <div><label for="parroquiano-emergencia-nombre" class="block text-sm font-medium mb-1">Nombre</label><input type="text" id="parroquiano-emergencia-nombre" name="emergencia_nombre" class="neumorphic-input"></div>
+                    <div><label for="parroquiano-emergencia-telefono" class="block text-sm font-medium mb-1">Teléfono</label><input type="tel" id="parroquiano-emergencia-telefono" name="emergencia_telefono" class="neumorphic-input"></div>
+                </div>
+                <div class="flex justify-end gap-4 mt-6"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+    <div id="news-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-lg">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="news-form" data-type="news">
+                <input type="hidden" name="id">
+                <div class="grid grid-cols-1 gap-4 max-h-[70vh] overflow-y-auto pr-2">
+                    <div><label for="news-titulo" class="block text-sm font-medium mb-1">Título</label><input type="text" id="news-titulo" name="titulo" class="neumorphic-input" required></div>
+                    <div>
+                        <label for="news-imageUrl" class="block text-sm font-medium mb-1">URL de la Imagen Principal</label>
+                        <input type="url" id="news-imageUrl" name="imageUrl" class="neumorphic-input" placeholder="https://ejemplo.com/imagen.jpg">
+                    </div>
+                    <div><label for="news-resumen" class="block text-sm font-medium mb-1">Resumen</label><textarea id="news-resumen" name="resumen" rows="3" class="neumorphic-input" required></textarea></div>
+                    <div><label for="news-contenido" class="block text-sm font-medium mb-1">Contenido Completo</label><textarea id="news-contenido" name="contenido" rows="6" class="neumorphic-input" required></textarea></div>
+                    <div>
+                        <label for="news-galleryUrls" class="block text-sm font-medium mb-1">URLs de Galería Adicional (una por línea)</label>
+                        <textarea id="news-galleryUrls" name="galleryUrls" rows="4" class="neumorphic-input" placeholder="https://ejemplo.com/foto1.jpg\nhttps://ejemplo.com/foto2.jpg"></textarea>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-4 mt-6"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+     <div id="news-detail-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-sm flex items-center justify-center hidden z-[105] p-4">
+        <div class="neumorphic-card w-full max-w-3xl max-h-[90vh] flex flex-col">
+            <div class="p-4 flex justify-between items-center border-b border-gray-300/50 dark:border-gray-600/50">
+                <h2 id="news-detail-title" class="text-xl font-bold truncate"></h2>
+                <button data-action="close-modal" class="neumorphic-btn p-2"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
+            </div>
+            <div class="flex-grow overflow-y-auto">
+                <div class="relative">
+                    <img id="news-detail-image" src="" alt="Imagen de la noticia" class="w-full h-64 md:h-80 object-cover transition-opacity duration-150">
+                    <button id="gallery-prev-btn" class="absolute left-2 top-1/2 -translate-y-1/2 neumorphic-btn p-2 rounded-full hidden"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg></button>
+                    <button id="gallery-next-btn" class="absolute right-2 top-1/2 -translate-y-1/2 neumorphic-btn p-2 rounded-full hidden"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></button>
+                </div>
+                <div id="news-gallery-container" class="p-4">
+                    <div id="news-gallery-thumbnails" class="flex gap-2 overflow-x-auto pb-2"></div>
+                </div>
+                <div class="p-6">
+                    <p id="news-detail-date" class="text-sm text-gray-500 mb-4"></p>
+                    <div id="news-detail-content" class="prose dark:prose-invert max-w-none break-words"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="bloque-manual-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-lg">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="bloque-manual-form" data-type="bloqueManual">
+                <input type="hidden" name="id">
+                <div class="mb-6"><label for="bloque-manual-nombre" class="block text-sm font-medium mb-1">Nombre del Bloque</label><input type="text" id="bloque-manual-nombre" name="nombre" class="neumorphic-input" required></div>
                 <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
             </form>
         </div>
@@ -1368,6 +1474,16 @@
             </form>
         </div>
     </div>
+    <div id="bloque-archivo-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-lg">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="bloque-archivo-form" data-type="bloqueArchivo">
+                <input type="hidden" name="id">
+                <div class="mb-6"><label for="bloque-archivo-nombre" class="block text-sm font-medium mb-1">Nombre del Bloque</label><input type="text" id="bloque-archivo-nombre" name="nombre" class="neumorphic-input" required></div>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
     <div id="archivo-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
         <div class="neumorphic-card p-8 w-full max-w-md">
             <h2 class="text-2xl font-bold mb-6"></h2>
@@ -1376,6 +1492,28 @@
                 <input type="hidden" name="blockId">
                 <div class="mb-4"><label for="archivo-nombre" class="block text-sm font-medium mb-1">Nombre del Archivo</label><input type="text" id="archivo-nombre" name="nombre" class="neumorphic-input" required></div>
                 <div class="mb-6"><label for="archivo-url" class="block text-sm font-medium mb-1">URL del Archivo</label><input type="url" id="archivo-url" name="url" class="neumorphic-input" placeholder="https://ejemplo.com/recurso.zip" required></div>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+    <div id="bloque-video-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-lg">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="bloque-video-form" data-type="bloqueVideo">
+                <input type="hidden" name="id">
+                <div class="mb-6"><label for="bloque-video-nombre" class="block text-sm font-medium mb-1">Nombre del Bloque</label><input type="text" id="bloque-video-nombre" name="nombre" class="neumorphic-input" required></div>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+    <div id="video-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="video-form" data-type="video">
+                <input type="hidden" name="id">
+                <input type="hidden" name="blockId">
+                <div class="mb-4"><label for="video-nombre" class="block text-sm font-medium mb-1">Nombre del Video</label><input type="text" id="video-nombre" name="nombre" class="neumorphic-input" required></div>
+                <div class="mb-6"><label for="video-url" class="block text-sm font-medium mb-1">URL del Video (YouTube)</label><input type="url" id="video-url" name="url" class="neumorphic-input" placeholder="https://www.youtube.com/watch?v=..." required></div>
                 <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
             </form>
         </div>
@@ -1425,14 +1563,15 @@
             weather: {
                 apiKey: '9a11de307931b3ba88e6af9048b7f3b1',
                 lat: 19.5437,
-                lon: -96.91
+                lon: -96.9086
             },
             paths: {
                 base: `artifacts/ibcgapp`,
                 collections: {
                     users: `public/data/users`, events: `public/data/events`, 
                     parroquianos: `public/data/parroquianos`, news: `public/data/news`, 
-                    manuales: `public/data/manuales`, archivos: `public/data/archivos`
+                    manuales: `public/data/manuales`, archivos: `public/data/archivos`,
+                    videos: `public/data/videos`
                 }
             }
         };
@@ -1591,6 +1730,7 @@
                         noticias: { grid: document.getElementById('news-grid') },
                         manuales: { container: document.getElementById('manuales-container') },
                         recursos: { container: document.getElementById('archivos-container') },
+                        videoteca: { container: document.getElementById('videos-container') },
                         calendario: {
                             header: document.getElementById('month-year-header'),
                             grid: document.getElementById('calendar-grid'),
@@ -1607,6 +1747,8 @@
                         manual: document.getElementById('manual-modal'),
                         bloqueArchivo: document.getElementById('bloque-archivo-modal'),
                         archivo: document.getElementById('archivo-modal'),
+                        bloqueVideo: document.getElementById('bloque-video-modal'),
+                        video: document.getElementById('video-modal'),
                         confirm: document.getElementById('confirm-modal'),
                         calendarDay: document.getElementById('calendar-day-modal'),
                     },
@@ -1850,6 +1992,67 @@
                                 </div>
                             </div>`);
                     });
+                },
+                renderVideos(container, blocks, emptyMessage, typeConfig) {
+                    container.innerHTML = '';
+                    if (blocks.length === 0) {
+                        container.innerHTML = `<p class="text-center text-gray-500">${emptyMessage}</p>`;
+                        return;
+                    }
+                    const sortedBlocks = [...blocks].sort((a, b) => (a.nombre || '').localeCompare(b.nombre || ''));
+                    
+                    const getYouTubeEmbedUrl = (url) => {
+                        try {
+                            const urlObj = new URL(url);
+                            let videoId = urlObj.searchParams.get("v");
+                            if (!videoId && urlObj.hostname === 'youtu.be') {
+                                videoId = urlObj.pathname.substring(1);
+                            }
+                            return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+                        } catch (e) {
+                            return null;
+                        }
+                    };
+
+                    sortedBlocks.forEach(block => {
+                        const items = block.items || [];
+                        const itemsHtml = items.length > 0 ? items.map(item => {
+                            const embedUrl = getYouTubeEmbedUrl(item.url);
+                            return `
+                            <li class="flex flex-col p-3 rounded-lg neumorphic-inset">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold flex-grow truncate pr-4">${item.nombre}</h4>
+                                    <div class="admin-only flex-shrink-0" data-permission="${typeConfig.permission}" style="gap: 0.5rem;">
+                                        <button data-action="edit" data-type="${typeConfig.item}" data-block-id="${block.id}" data-item-id="${item.id}" class="neumorphic-btn btn-sm">Editar</button>
+                                        <button data-action="delete" data-type="${typeConfig.item}" data-block-id="${block.id}" data-item-id="${item.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
+                                    </div>
+                                </div>
+                                ${embedUrl ? `
+                                <div class="video-container neumorphic-inset">
+                                    <iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                                ` : `<p class="text-sm text-red-500">URL de video no válida.</p>`}
+                            </li>`;
+                        }).join('') : `<li class="text-sm text-gray-500 p-2">No hay videos en este bloque.</li>`;
+
+                        container.insertAdjacentHTML('beforeend', `
+                            <div class="neumorphic-card overflow-hidden">
+                                <div class="flex justify-between items-center p-4 cursor-pointer accordion-toggle">
+                                    <h3 class="text-xl font-bold">${block.nombre}</h3>
+                                    <div class="flex items-center gap-4">
+                                        <div class="admin-only" data-permission="${typeConfig.permission}" style="gap: 0.5rem;">
+                                            <button data-action="add-item" data-modal-target="${typeConfig.item}-modal" data-block-id="${block.id}" class="neumorphic-btn primary btn-sm">Añadir</button>
+                                            <button data-action="edit" data-type="${typeConfig.block}" data-id="${block.id}" class="neumorphic-btn btn-sm">Editar</button>
+                                            <button data-action="delete" data-type="${typeConfig.block}" data-id="${block.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
+                                        </div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="accordion-icon w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                                    </div>
+                                </div>
+                                <div class="accordion-content">
+                                    <ul class="p-4 pt-0 space-y-4">${itemsHtml}</ul>
+                                </div>
+                            </div>`);
+                    });
                 }
             },
             calendario: {
@@ -1898,7 +2101,8 @@
                     tableBody.innerHTML = '';
                     const permissionsMap = {
                         agenda: 'Agenda', directorio: 'Directorio', noticias: 'Noticias',
-                        manuales: 'Manuales', recursos: 'Recursos', verAgendaCalendario: 'Ver Agenda Cal.'
+                        manuales: 'Manuales', recursos: 'Recursos', videoteca: 'Videoteca', 
+                        verAgendaCalendario: 'Ver Agenda Cal.'
                     };
                     const permissionsKeys = Object.keys(permissionsMap);
 
@@ -1967,7 +2171,7 @@
         const App = {
             state: {
                 auth: { user: null, isSuperAdmin: false, isAdmin: false, viewAsUser: false },
-                data: { events: [], parroquianos: [], news: [], manuales: [], archivos: [], allUsers: [] },
+                data: { events: [], parroquianos: [], news: [], manuales: [], archivos: [], videos: [], allUsers: [] },
                 ui: { currentCalendarDate: new Date(), currentGalleryImages: [], currentGalleryIndex: 0 },
             },
             dataListenersInitialized: false,
@@ -2034,6 +2238,7 @@
                 FirebaseService.onCollectionSnapshot('news', d => { this.state.data.news = d; UI.renderGrid(UI.elements.pages.noticias.grid, d, UI.noticias.createCard, 'No hay noticias.'); });
                 FirebaseService.onCollectionSnapshot('manuales', d => { this.state.data.manuales = d; UI.acordeon.render(UI.elements.pages.manuales.container, d, 'No hay manuales.', {plural: 'manuales', block: 'bloqueManual', item: 'manual', permission: 'manuales'}); });
                 FirebaseService.onCollectionSnapshot('archivos', d => { this.state.data.archivos = d; UI.acordeon.render(UI.elements.pages.recursos.container, d, 'No hay archivos.', {plural: 'archivos', block: 'bloqueArchivo', item: 'archivo', permission: 'recursos'}); });
+                FirebaseService.onCollectionSnapshot('videos', d => { this.state.data.videos = d; UI.acordeon.renderVideos(UI.elements.pages.videoteca.container, d, 'No hay videos.', {plural: 'videos', block: 'bloqueVideo', item: 'video', permission: 'videoteca'}); });
                 FirebaseService.onCollectionSnapshot('users', users => { this.state.data.allUsers = users; if(this.state.auth.isSuperAdmin) { UI.userManagement.render(users, UI.elements.pages.userManagement.tableBody); } });
             },
 
@@ -2274,6 +2479,7 @@
                     let typeName = {
                         'bloqueManual': 'Bloque de Manual', 'manual': 'Manual',
                         'bloqueArchivo': 'Bloque de Archivo', 'archivo': 'Archivo',
+                        'bloqueVideo': 'Bloque de Video', 'video': 'Video',
                         'news': 'Noticia', 'event': 'Evento', 'parroquiano': 'Parroquiano'
                     }[type] || type;
 
@@ -2366,6 +2572,7 @@
                 event: 'agenda', parroquiano: 'directorio', news: 'noticias',
                 bloqueManual: 'manuales', manual: 'manuales',
                 bloqueArchivo: 'recursos', archivo: 'recursos',
+                bloqueVideo: 'videoteca', video: 'videoteca',
                 verAgendaCalendario: 'verAgendaCalendario'
             };
             if (!this.hasPermission(permissionMap[type])) return;
@@ -2378,8 +2585,12 @@
                 const id = data.id;
                 delete data.id;
 
-                const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos' };
-                const itemTypes = { manual: { collection: 'manuales' }, archivo: { collection: 'archivos' } };
+                const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos', bloqueVideo: 'videos' };
+                const itemTypes = { 
+                    manual: { collection: 'manuales' }, 
+                    archivo: { collection: 'archivos' },
+                    video: { collection: 'videos' }
+                };
 
                 if (blockTypes[type]) {
                     if (!id) data.items = [];
@@ -2415,12 +2626,13 @@
                 event: 'agenda', parroquiano: 'directorio', news: 'noticias',
                 bloqueManual: 'manuales', manual: 'manuales',
                 bloqueArchivo: 'recursos', archivo: 'recursos',
+                bloqueVideo: 'videoteca', video: 'videoteca',
                 verAgendaCalendario: 'verAgendaCalendario'
             };
             if(!this.hasPermission(permissionMap[type])) return;
 
-            const itemTypes = { manual: 'manuales', archivo: 'archivos' };
-            const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos' };
+            const itemTypes = { manual: 'manuales', archivo: 'archivos', video: 'videos' };
+            const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos', bloqueVideo: 'videos' };
 
             if (itemTypes[type]) {
                 const block = this.state.data[itemTypes[type]].find(b => b.id === blockId);
@@ -2437,6 +2649,7 @@
                 event: 'agenda', parroquiano: 'directorio', news: 'noticias',
                 bloqueManual: 'manuales', manual: 'manuales',
                 bloqueArchivo: 'recursos', archivo: 'recursos',
+                bloqueVideo: 'videoteca', video: 'videoteca',
                 verAgendaCalendario: 'verAgendaCalendario'
             };
             if (!this.hasPermission(permissionMap[type])) return;
@@ -2446,8 +2659,8 @@
 
             UI.elements.confirmModal.deleteBtn.onclick = async () => {
                 try {
-                    const itemTypes = { manual: 'manuales', archivo: 'archivos' };
-                    const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos' };
+                    const itemTypes = { manual: 'manuales', archivo: 'archivos', video: 'videos' };
+                    const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos', bloqueVideo: 'videos' };
 
                     if (itemTypes[type]) {
                         const block = this.state.data[itemTypes[type]].find(b => b.id === blockId);
@@ -2510,4 +2723,5 @@
     </script>
 </body>
 </html>
+
 
