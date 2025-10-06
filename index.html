@@ -1057,7 +1057,7 @@
             </div>
             <nav id="mobile-nav-links" class="flex flex-col gap-3"></nav>
         </div>
-        <div id="edge-handle"></div>
+        <div id="edge-handle" data-action="open-sidenav"></div>
     </div>
 
     <div id="app-loading">Cargando Portal...</div>
@@ -2309,13 +2309,20 @@
 
                 const { action, target: pageTarget, modalTarget, type, id, blockId, itemId } = target.dataset;
 
-                if (pageTarget) UI.showPage(pageTarget);
+                if (pageTarget) {
+                    UI.showPage(pageTarget);
+                    // Si se hace clic en un enlace de navegación dentro del menú lateral, ciérralo.
+                    if (target.closest('#mobile-sidenav')) {
+                        UI.nav.toggleSidenav(false);
+                    }
+                }
                 if (modalTarget) this.openModal(modalTarget, null, blockId);
 
                 if (action) {
                     const actionHandlers = {
                         'logout': this.handleLogout,
                         'close-modal': () => this.closeModal(target.closest('.fixed.inset-0').id),
+                        'open-sidenav': () => UI.nav.toggleSidenav(true),
                         'close-sidenav': () => UI.nav.toggleSidenav(false),
                         'edit': () => this.handleEdit(type, id, blockId, itemId),
                         'delete': () => this.handleDelete(type, id, blockId, itemId),
@@ -2723,5 +2730,6 @@
     </script>
 </body>
 </html>
+
 
 
