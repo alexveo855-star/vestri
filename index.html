@@ -1893,7 +1893,7 @@
                 toggleSidenav(open) {
                     const { mobileSidenav, mobileSidenavOverlay } = UI.elements.nav;
                     mobileSidenav.classList.add('is-transitioning');
-                    mobileSidenav.style.transform = open ? 'translateX(0)' : 'translateX(-100%)';
+                    mobileSidenav.classList.toggle('active', open);
                     mobileSidenavOverlay.classList.toggle('active', open);
                 }
             },
@@ -2035,6 +2035,10 @@
                 });
                 document.getElementById('prev-month-btn').addEventListener('click', () => { this.state.ui.currentCalendarDate.setMonth(this.state.ui.currentCalendarDate.getMonth() - 1); this.renderCalendario(); });
                 document.getElementById('next-month-btn').addEventListener('click', () => { this.state.ui.currentCalendarDate.setMonth(this.state.ui.currentCalendarDate.getMonth() + 1); this.renderCalendario(); });
+
+                // Manejadores para el panel lateral móvil
+                UI.elements.nav.edgeHandle.addEventListener('click', () => UI.nav.toggleSidenav(true));
+                UI.elements.nav.mobileSidenavOverlay.addEventListener('click', () => UI.nav.toggleSidenav(false));
             },
             
             handleGlobalClick(e) {
