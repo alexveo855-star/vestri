@@ -941,6 +941,46 @@
             background: #374151;
             box-shadow: 2px 2px 5px #111827, -5px -5px 10px #4b5563;
         }
+
+        /* --- Estilos de Notificaciones (Toast) --- */
+        #toast-container {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: flex-end;
+        }
+        .toast {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            color: #fff;
+            background-color: #4b5563;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            opacity: 0;
+            transform: translateX(120%);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            min-width: 250px;
+            max-width: 350px;
+        }
+        body.dark-theme .toast {
+             background-color: #374151;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .toast-icon {
+            flex-shrink: 0;
+            margin-right: 0.75rem;
+        }
+        .toast-success { background-color: #22c55e; }
+        .toast-error { background-color: #ef4444; }
+        .toast-info { background-color: #3b82f6; }
     </style>
 </head>
 <body class="antialiased">
@@ -964,7 +1004,7 @@
         </div>
 
         <div class="mt-8">
-            <button data-modal-target="user-auth-modal" class="neumorphic-btn primary">
+            <button data-action="open-modal" data-form-type="userAuth" class="neumorphic-btn primary">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
                 <span>Registrarse o Iniciar Sesión</span>
             </button>
@@ -1083,7 +1123,7 @@
                     <div class="neumorphic-card p-6">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Eventos</h2>
-                            <button data-modal-target="event-modal" data-permission="agenda" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Evento</span></button>
+                            <button data-action="open-modal" data-form-type="event" data-permission="agenda" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Evento</span></button>
                         </div>
                         <div class="overflow-x-auto"><table class="w-full text-left"><thead class="border-b border-gray-300"><tr><th class="p-3 font-semibold">Fecha</th><th class="p-3 font-semibold hidden sm:table-cell">Hora</th><th class="p-3 font-semibold">Nombre del Evento</th><th class="p-3 font-semibold admin-only-table-cell" data-permission="agenda">Acciones</th></tr></thead><tbody id="agenda-table-body"></tbody></table></div>
                     </div>
@@ -1092,7 +1132,7 @@
                     <div class="neumorphic-card p-6">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Directorio</h2>
-                            <button data-modal-target="parroquiano-modal" data-permission="directorio" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M11 5a3 3 0 11-6 0 3 3 0 016 0zM12.73 10.21a5.002 5.002 0 016.536 6.536l.243.243a1 1 0 11-1.414 1.414l-.243-.243a5.002 5.002 0 01-7.95-7.95l-1.01-1.01A5.002 5.002 0 012.27 12.27l-1.01 1.01a1 1 0 11-1.414-1.414l1.01-1.01a5.002 5.002 0 017.95 7.95l.243.243a1 1 0 011.414 1.414l-.243-.243a5.002 5.002 0 01-6.536-6.536l1.01 1.01z" /></svg><span>Agregar Parroquiano</span></button>
+                            <button data-action="open-modal" data-form-type="parroquiano" data-permission="directorio" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M11 5a3 3 0 11-6 0 3 3 0 016 0zM12.73 10.21a5.002 5.002 0 016.536 6.536l.243.243a1 1 0 11-1.414 1.414l-.243-.243a5.002 5.002 0 01-7.95-7.95l-1.01-1.01A5.002 5.002 0 012.27 12.27l-1.01 1.01a1 1 0 11-1.414-1.414l1.01-1.01a5.002 5.002 0 017.95 7.95l.243.243a1 1 0 011.414 1.414l-.243-.243a5.002 5.002 0 01-6.536-6.536l1.01 1.01z" /></svg><span>Agregar Parroquiano</span></button>
                         </div>
                         <div class="overflow-x-auto"><table class="w-full text-left"><thead class="border-b border-gray-300"><tr><th class="p-3 font-semibold">Nombre</th><th class="p-3 font-semibold hidden md:table-cell">Teléfono</th><th class="p-3 font-semibold hidden lg:table-cell">Contacto Emergencia</th><th class="p-3 font-semibold admin-only-table-cell" data-permission="directorio">Acciones</th></tr></thead><tbody id="directorio-table-body"></tbody></table></div>
                     </div>
@@ -1101,7 +1141,7 @@
                     <div class="neumorphic-card p-6">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Noticias Parroquiales</h2>
-                            <button data-modal-target="news-modal" data-permission="noticias" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Noticia</span></button>
+                            <button data-action="open-modal" data-form-type="news" data-permission="noticias" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Noticia</span></button>
                         </div>
                         <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
                     </div>
@@ -1110,7 +1150,7 @@
                     <div class="neumorphic-card p-6">
                          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Manuales y Guías</h2>
-                            <button data-modal-target="bloque-manual-modal" data-permission="manuales" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
+                            <button data-action="open-modal" data-form-type="bloqueManual" data-permission="manuales" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
                         </div>
                         <div id="manuales-container" class="space-y-4"></div>
                     </div>
@@ -1119,7 +1159,7 @@
                     <div class="neumorphic-card p-6">
                          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Recursos y Documentos</h2>
-                            <button data-modal-target="bloque-archivo-modal" data-permission="recursos" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
+                            <button data-action="open-modal" data-form-type="bloqueArchivo" data-permission="recursos" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
                         </div>
                         <div id="archivos-container" class="space-y-4"></div>
                     </div>
@@ -1235,7 +1275,6 @@
                        <span class="span"><svg class="" xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" y="0" x="0" height="20" width="50" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg"><g><path class="" data-original="#000000" fill="#595959" d="M336 192h-16v-64C320 57.406 262.594 0 192 0S64 57.406 64 128v64H48c-26.453 0-48 21.523-48 48v224c0 26.477 21.547 48 48 48h288c26.453 0 48-21.523 48-48V240c0-26.477-21.547-48-48-48zm-229.332-64c0-47.063 38.27-85.332 85.332-85.332s85.332 38.27 85.332 85.332v64H106.668zm0 0"></path></g></svg></span>
                        <label class="label">Contraseña</label>
                     </div>
-                    <p id="login-error-msg" class="text-red-500 text-sm my-4 text-center hidden">Credenciales incorrectas.</p>
                     <button class="button" type="submit">Ingresar</button>
                 </form>
             </div>
@@ -1257,62 +1296,24 @@
                        <span class="span"><svg class="" xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" y="0" x="0" height="20" width="50" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg"><g><path class="" data-original="#000000" fill="#595959" d="M336 192h-16v-64C320 57.406 262.594 0 192 0S64 57.406 64 128v64H48c-26.453 0-48 21.523-48 48v224c0 26.477 21.547 48 48 48h288c26.453 0 48-21.523 48-48V240c0-26.477-21.547-48-48-48zm-229.332-64c0-47.063 38.27-85.332 85.332-85.332s85.332 38.27 85.332 85.332v64H106.668zm0 0"></path></g></svg></span>
                        <label class="label">Contraseña</label>
                     </div>
-                    <p id="register-error-msg" class="text-red-500 text-sm my-4 text-center hidden"></p>
                     <button class="button" type="submit">Crear Cuenta</button>
                 </form>
             </div>
         </div>
     </div>
     
-    <div id="event-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-8 w-full max-w-md">
-            <h2 class="text-2xl font-bold mb-6"></h2>
-            <form id="event-form" data-type="event">
-                <input type="hidden" name="id">
-                <div class="mb-4"><label for="event-name" class="block text-sm font-medium mb-1">Nombre del Evento</label><input type="text" id="event-name" name="name" class="neumorphic-input" required></div>
-                <div class="mb-4"><label for="event-date" class="block text-sm font-medium mb-1">Fecha</label><input type="date" id="event-date" name="date" class="neumorphic-input" required></div>
-                <div class="mb-4"><label for="event-time" class="block text-sm font-medium mb-1">Hora</label><input type="time" id="event-time" name="time" class="neumorphic-input" required></div>
-                <div class="mb-6">
-                    <label for="event-imageUrl" class="block text-sm font-medium mb-1">URL de la Imagen (Opcional)</label>
-                    <input type="url" id="event-imageUrl" name="imageUrl" class="neumorphic-input" placeholder="https://ejemplo.com/imagen.jpg">
-                </div>
-                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
-            </form>
+    <!-- Modal Genérico para Formularios -->
+    <div id="generic-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-lg max-h-[90vh] flex flex-col">
+            <h2 id="generic-modal-title" class="text-2xl font-bold mb-6 flex-shrink-0"></h2>
+            <div class="flex-grow overflow-y-auto pr-4 -mr-4">
+                <form id="generic-modal-form" class="space-y-4">
+                    <!-- Los campos del formulario se inyectarán aquí -->
+                </form>
+            </div>
         </div>
     </div>
-    <div id="parroquiano-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-8 w-full max-w-lg overflow-y-auto max-h-screen">
-            <h2 class="text-2xl font-bold mb-6"></h2>
-            <form id="parroquiano-form" data-type="parroquiano" class="space-y-4">
-                <input type="hidden" name="id">
-                <div><label for="parroquiano-nombre" class="block text-sm font-medium mb-1">Nombre Completo</label><input type="text" id="parroquiano-nombre" name="nombre" class="neumorphic-input" required></div>
-                <div><label for="parroquiano-telefono" class="block text-sm font-medium mb-1">Teléfono</label><input type="tel" id="parroquiano-telefono" name="telefono" class="neumorphic-input"></div>
-                <div><label for="parroquiano-email" class="block text-sm font-medium mb-1">Correo Electrónico</label><input type="email" id="parroquiano-email" name="email" class="neumorphic-input"></div>
-                <div><label for="parroquiano-nacimiento" class="block text-sm font-medium mb-1">Fecha de Nacimiento</label><input type="date" id="parroquiano-nacimiento" name="nacimiento" class="neumorphic-input"></div>
-                <div><label for="parroquiano-direccion" class="block text-sm font-medium mb-1">Dirección</label><input type="text" id="parroquiano-direccion" name="direccion" class="neumorphic-input"></div>
-                <div class="pt-4 border-t border-gray-300/50">
-                     <h3 class="text-lg font-semibold mb-2">Contacto de Emergencia</h3>
-                     <div><label for="parroquiano-emergencia-nombre" class="block text-sm font-medium mb-1">Nombre de Contacto</label><input type="text" id="parroquiano-emergencia-nombre" name="emergencia_nombre" class="neumorphic-input"></div>
-                     <div class="mt-4"><label for="parroquiano-emergencia-telefono" class="block text-sm font-medium mb-1">Teléfono de Contacto</label><input type="tel" id="parroquiano-emergencia-telefono" name="emergencia_telefono" class="neumorphic-input"></div>
-                </div>
-                <div class="flex justify-end gap-4 pt-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
-            </form>
-        </div>
-    </div>
-    <div id="news-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-8 w-full max-w-lg overflow-y-auto max-h-screen">
-            <h2 class="text-2xl font-bold mb-6"></h2>
-            <form id="news-form" data-type="news" class="space-y-4">
-                <input type="hidden" name="id">
-                <div><label for="news-titulo" class="block text-sm font-medium mb-1">Título</label><input type="text" id="news-titulo" name="titulo" class="neumorphic-input" required></div>
-                <div><label for="news-resumen" class="block text-sm font-medium mb-1">Resumen</label><input type="text" id="news-resumen" name="resumen" class="neumorphic-input" required></div>
-                <div><label for="news-contenido" class="block text-sm font-medium mb-1">Contenido Completo</label><textarea id="news-contenido" name="contenido" rows="5" class="neumorphic-input" required></textarea></div>
-                <div><label for="news-imageUrl" class="block text-sm font-medium mb-1">URL de Imagen Principal</label><input type="url" id="news-imageUrl" name="imageUrl" class="neumorphic-input" placeholder="https://ejemplo.com/imagen.jpg" required></div>
-                <div><label for="news-galleryUrls" class="block text-sm font-medium mb-1">URLs de Galería Adicional (una por línea)</label><textarea id="news-galleryUrls" name="galleryUrls" rows="3" class="neumorphic-input" placeholder="https://ejemplo.com/foto1.jpg&#10;https://ejemplo.com/foto2.jpg"></textarea></div>
-                <div class="flex justify-end gap-4 pt-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
-            </form>
-        </div>
-    </div>
+    
      <div id="news-detail-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden z-[60] p-4">
         <div class="neumorphic-card w-full max-w-3xl max-h-[90vh] flex flex-col">
             <div class="p-4 sm:p-6 flex justify-between items-center border-b border-gray-300/50 flex-shrink-0">
@@ -1333,50 +1334,7 @@
             </div>
         </div>
     </div>
-    <div id="bloque-manual-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-8 w-full max-w-md">
-            <h2 class="text-2xl font-bold mb-6"></h2>
-            <form id="bloque-manual-form" data-type="bloqueManual">
-                <input type="hidden" name="id">
-                <div class="mb-6"><label for="bloque-manual-nombre" class="block text-sm font-medium mb-1">Nombre del Bloque</label><input type="text" id="bloque-manual-nombre" name="nombre" class="neumorphic-input" required></div>
-                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
-            </form>
-        </div>
-    </div>
-     <div id="bloque-archivo-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-8 w-full max-w-md">
-            <h2 class="text-2xl font-bold mb-6"></h2>
-            <form id="bloque-archivo-form" data-type="bloqueArchivo">
-                <input type="hidden" name="id">
-                <div class="mb-6"><label for="bloque-archivo-nombre" class="block text-sm font-medium mb-1">Nombre del Bloque</label><input type="text" id="bloque-archivo-nombre" name="nombre" class="neumorphic-input" required></div>
-                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
-            </form>
-        </div>
-    </div>
-    <div id="manual-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-8 w-full max-w-md">
-            <h2 class="text-2xl font-bold mb-6"></h2>
-            <form id="manual-form" data-type="manual">
-                <input type="hidden" name="id">
-                <input type="hidden" name="blockId">
-                <div class="mb-4"><label for="manual-nombre" class="block text-sm font-medium mb-1">Nombre del Manual</label><input type="text" id="manual-nombre" name="nombre" class="neumorphic-input" required></div>
-                <div class="mb-6"><label for="manual-url" class="block text-sm font-medium mb-1">URL del Manual</label><input type="url" id="manual-url" name="url" class="neumorphic-input" placeholder="https://ejemplo.com/documento.pdf" required></div>
-                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
-            </form>
-        </div>
-    </div>
-    <div id="archivo-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-8 w-full max-w-md">
-            <h2 class="text-2xl font-bold mb-6"></h2>
-            <form id="archivo-form" data-type="archivo">
-                <input type="hidden" name="id">
-                <input type="hidden" name="blockId">
-                <div class="mb-4"><label for="archivo-nombre" class="block text-sm font-medium mb-1">Nombre del Archivo</label><input type="text" id="archivo-nombre" name="nombre" class="neumorphic-input" required></div>
-                <div class="mb-6"><label for="archivo-url" class="block text-sm font-medium mb-1">URL del Archivo</label><input type="url" id="archivo-url" name="url" class="neumorphic-input" placeholder="https://ejemplo.com/recurso.zip" required></div>
-                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
-            </form>
-        </div>
-    </div>
+
     <div id="confirm-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
         <div class="neumorphic-card p-8 w-full max-w-sm">
             <h2 class="text-xl font-bold mb-4">Confirmar Eliminación</h2>
@@ -1402,6 +1360,9 @@
             </div>
         </div>
     </div>
+    
+    <!-- Contenedor para notificaciones Toast -->
+    <div id="toast-container" class="fixed top-4 right-4 z-[200]"></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -1410,7 +1371,6 @@
 
         // =================================================================================
         // CONFIGURACIÓN CENTRALIZADA
-        // Almacena todas las configuraciones y constantes en un solo lugar para fácil acceso y modificación.
         // =================================================================================
         const Config = {
             firebase: {
@@ -1420,6 +1380,8 @@
                 measurementId: "G-RBN8KZPJ5X"
             },
             weather: {
+                // NOTA: La clave de API se muestra aquí temporalmente para permitir el desarrollo.
+                // Para producción, sigue los pasos en 'instrucciones_api_segura.md' para protegerla.
                 apiKey: '9a11de307931b3ba88e6af9048b7f3b1',
                 lat: 19.5437,
                 lon: -96.91
@@ -1436,49 +1398,27 @@
 
         // =================================================================================
         // SERVICIOS EXTERNOS (Firebase, Clima)
-        // Módulos que abstraen la comunicación con APIs externas. No conocen el DOM.
         // =================================================================================
         const FirebaseService = {
             db: null, auth: null,
-            /**
-             * Inicializa los servicios de Firebase y establece el listener de autenticación.
-             * @param {function} onAuthChangeCallback - Función a ejecutar cuando cambia el estado de autenticación.
-             */
             init(onAuthChangeCallback) {
                 const app = initializeApp(Config.firebase);
                 this.db = getFirestore(app);
                 this.auth = getAuth(app);
                 onAuthStateChanged(this.auth, onAuthChangeCallback);
             },
-            /**
-             * Obtiene la ruta completa de una colección en Firestore.
-             * @param {string} type - El nombre de la colección (ej. 'users', 'events').
-             * @returns {string} La ruta completa de la colección.
-             */
             _getCollectionPath(type) {
                 const collectionPath = Config.paths.collections[type];
                 if (!collectionPath) throw new Error(`Collection type "${type}" no definida.`);
                 return `${Config.paths.base}/${collectionPath}`;
             },
-            /**
-             * Escucha cambios en una colección en tiempo real.
-             * @param {string} type - El nombre de la colección.
-             * @param {function} callback - Función que se ejecuta con los datos actualizados.
-             * @returns {function} Una función para cancelar la suscripción (unsubscribe).
-             */
-            onCollectionSnapshot(type, callback) {
+            onCollectionSnapshot(type, onNext, onError) {
                 const path = this._getCollectionPath(type);
+                const defaultOnError = (error) => console.error(`Error en listener de ${type}: `, error);
                 return onSnapshot(collection(this.db, path), (snapshot) => {
-                    callback(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-                }, (error) => console.error(`Error en listener de ${type}: `, error));
+                    onNext(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+                }, onError || defaultOnError);
             },
-            /**
-             * Guarda (crea o actualiza) un documento en una colección.
-             * @param {string} type - El nombre de la colección.
-             * @param {string|null} id - El ID del documento a actualizar, o null para crear uno nuevo.
-             * @param {object} data - Los datos a guardar.
-             * @returns {Promise<void|import("firebase/firestore").DocumentReference>}
-             */
             async saveDoc(type, id, data) {
                 const collectionPath = this._getCollectionPath(type);
                 if (id) {
@@ -1490,40 +1430,20 @@
                     return await addDoc(collection(this.db, collectionPath), data);
                 }
             },
-            /**
-             * Establece (sobrescribe) un documento con un ID específico.
-             * @param {string} type - El nombre de la colección.
-             * @param {string} id - El ID del documento.
-             * @param {object} data - Los datos a establecer.
-             */
             async setDoc(type, id, data) {
                 await setDoc(doc(this.db, this._getCollectionPath(type), id), data);
             },
-            /**
-             * Obtiene un único documento por su ID.
-             * @param {string} type - El nombre de la colección.
-             * @param {string} id - El ID del documento.
-             * @returns {Promise<import("firebase/firestore").DocumentSnapshot>}
-             */
              async getDoc(type, id) {
                 return await getDoc(doc(this.db, this._getCollectionPath(type), id));
             },
-            /**
-             * Elimina un documento por su ID.
-             * @param {string} type - El nombre de la colección.
-             * @param {string} id - El ID del documento a eliminar.
-             */
             async deleteDoc(type, id) {
                 await deleteDoc(doc(this.db, this._getCollectionPath(type), id));
             }
         };
 
         const WeatherService = {
-            /**
-             * Obtiene los datos del clima desde la API de OpenWeatherMap.
-             * @returns {Promise<{temp: number, description: string, location: string}>}
-             */
             async fetch() {
+                // NOTA: Esta es la implementación temporal. La versión segura usa una Cloud Function.
                 const { lat, lon, apiKey } = Config.weather;
                 const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=es`;
                 try {
@@ -1533,21 +1453,16 @@
                     return { temp: data.main.temp, description: data.weather[0].description, location: data.name };
                 } catch (error) {
                     console.error("Error al obtener el clima:", error);
-                    return { description: 'Error de red', location: '' };
+                    throw error;
                 }
             }
         };
         
         // =================================================================================
         // MÓDULO DE UI (Interfaz de Usuario)
-        // Responsable de TODA la manipulación del DOM. No contiene lógica de negocio.
-        // Organizado por componentes para mayor claridad.
         // =================================================================================
         const UI = {
-            elements: {}, // Se llenará en init()
-            /**
-             * Inicializa el módulo UI, cacheando todos los elementos del DOM.
-             */
+            elements: {},
             init() {
                 this.elements = {
                     appLoading: document.getElementById('app-loading'),
@@ -1596,16 +1511,14 @@
                     },
                     modals: {
                         userAuth: document.getElementById('user-auth-modal'),
-                        event: document.getElementById('event-modal'),
-                        parroquiano: document.getElementById('parroquiano-modal'),
-                        news: document.getElementById('news-modal'),
+                        generic: document.getElementById('generic-modal'),
                         newsDetail: document.getElementById('news-detail-modal'),
-                        bloqueManual: document.getElementById('bloque-manual-modal'),
-                        manual: document.getElementById('manual-modal'),
-                        bloqueArchivo: document.getElementById('bloque-archivo-modal'),
-                        archivo: document.getElementById('archivo-modal'),
                         confirm: document.getElementById('confirm-modal'),
                         calendarDay: document.getElementById('calendar-day-modal'),
+                    },
+                    genericModal: {
+                        title: document.getElementById('generic-modal-title'),
+                        form: document.getElementById('generic-modal-form'),
                     },
                     newsDetail: {
                         title: document.getElementById('news-detail-title'),
@@ -1626,17 +1539,36 @@
                         eventsList: document.getElementById('calendar-day-events-list'),
                         birthdaysSection: document.getElementById('calendar-day-birthdays-section'),
                         birthdaysList: document.getElementById('calendar-day-birthdays-list'),
-                    }
+                    },
+                    toastContainer: document.getElementById('toast-container')
                 };
             },
             
-            /** Muestra una página y actualiza las pestañas de navegación. */
+            showToast(message, type = 'info') {
+                const iconSvg = {
+                    success: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`,
+                    error: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`,
+                    info: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`
+                };
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                toast.innerHTML = `
+                    <div class="toast-icon">${iconSvg[type] || iconSvg.info}</div>
+                    <div>${message}</div>
+                `;
+                this.elements.toastContainer.appendChild(toast);
+                
+                setTimeout(() => toast.classList.add('show'), 10);
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    toast.addEventListener('transitionend', () => toast.remove());
+                }, 5000);
+            },
             showPage(pageId) {
                 this.elements.nav.pagesContainer.querySelectorAll('.page').forEach(page => page.classList.toggle('active', page.id === pageId));
                 document.querySelectorAll(`[data-target]`).forEach(tab => tab.classList.toggle('active', tab.dataset.target === pageId));
             },
-
-            /** Renderiza una tabla con datos. */
             renderTable(tbody, data, rowRenderer, emptyMessage) {
                 tbody.innerHTML = '';
                 if (data.length === 0) {
@@ -1647,8 +1579,6 @@
                 const sortedData = [...data].sort((a, b) => (a.nombre || a.name || '').localeCompare(b.nombre || b.name || ''));
                 sortedData.forEach(item => tbody.insertAdjacentHTML('beforeend', rowRenderer(item)));
             },
-            
-            /** Renderiza una cuadrícula de tarjetas. */
             renderGrid(container, data, cardRenderer, emptyMessage) {
                 container.innerHTML = '';
                 if (data.length === 0) {
@@ -1658,8 +1588,6 @@
                 const sortedData = [...data].sort((a, b) => new Date(b.fechaPublicacion) - new Date(a.fechaPublicacion));
                 sortedData.forEach(item => container.insertAdjacentHTML('beforeend', cardRenderer(item)));
             },
-
-            /** Actualiza la UI de administrador (botones, visibilidad de elementos, etc.). */
             updateAdminUI(isSuperAdmin, isAdmin, user, viewAsUser) {
                 document.body.classList.toggle('super-admin-mode', isSuperAdmin && !viewAsUser);
                 document.body.classList.toggle('admin-mode', (isAdmin || isSuperAdmin) && !viewAsUser);
@@ -1691,8 +1619,6 @@
                 }
                 this.nav.initMobileNav();
             },
-
-            // --- Componentes de UI ---
             tablero: {
                 renderUpcomingEvents(events, container) {
                     container.innerHTML = '';
@@ -1806,7 +1732,7 @@
                         </div>`;
                 }
             },
-             acordeon: { // Para Manuales y Recursos
+             acordeon: {
                 render(container, blocks, emptyMessage, typeConfig) {
                     container.innerHTML = '';
                     if (blocks.length === 0) {
@@ -1835,7 +1761,7 @@
                                     <h3 class="text-xl font-bold">${block.nombre}</h3>
                                     <div class="flex items-center gap-4">
                                         <div class="admin-only" data-permission="${typeConfig.permission}" style="gap: 0.5rem;">
-                                            <button data-action="add-item" data-modal-target="${typeConfig.item}-modal" data-block-id="${block.id}" class="neumorphic-btn primary btn-sm">Añadir</button>
+                                            <button data-action="open-modal" data-form-type="${typeConfig.item}" data-block-id="${block.id}" class="neumorphic-btn primary btn-sm">Añadir</button>
                                             <button data-action="edit" data-type="${typeConfig.block}" data-id="${block.id}" class="neumorphic-btn btn-sm">Editar</button>
                                             <button data-action="delete" data-type="${typeConfig.block}" data-id="${block.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
                                         </div>
@@ -1967,7 +1893,6 @@
 
         // =================================================================================
         // CONTROLADOR PRINCIPAL DE LA APLICACIÓN (App)
-        // Orquesta la lógica, maneja el estado y conecta los servicios con la UI.
         // =================================================================================
         const App = {
             state: {
@@ -1977,9 +1902,6 @@
             },
             dataListenersInitialized: false,
             
-            /**
-             * Punto de entrada de la aplicación.
-             */
             async init() {
                 try {
                     UI.init();
@@ -1989,14 +1911,11 @@
                     FirebaseService.init(this.onAuthStateChanged.bind(this));
                 } catch (error) {
                      console.error("Error fatal durante la inicialización:", error);
+                     UI.showToast('Error crítico al iniciar la aplicación.', 'error');
                     document.body.innerHTML = `<div class="fixed inset-0 bg-red-100 text-red-800 p-8 flex flex-col justify-center items-center text-center"><h1 class="text-3xl font-bold mb-4">¡Ups! Ocurrió un error crítico.</h1><p class="mb-4">${error.message}</p></div>`;
                 }
             },
             
-            /**
-             * Se ejecuta cuando cambia el estado de autenticación de Firebase.
-             * @param {import("firebase/auth").User | null} authUser - El objeto de usuario de Firebase.
-             */
             async onAuthStateChanged(authUser) {
                  let userProfile = null;
                  if (authUser) {
@@ -2030,16 +1949,18 @@
                 }
             },
             
-            /**
-             * Configura los listeners de datos de Firestore.
-             */
             setupDataListeners() {
-                FirebaseService.onCollectionSnapshot('events', d => { this.state.data.events = d; this.renderAgenda(); this.renderTablero(); this.renderCalendario(); });
-                FirebaseService.onCollectionSnapshot('parroquianos', d => { this.state.data.parroquianos = d; this.renderDirectorio(); this.renderTablero(); this.renderCalendario(); });
-                FirebaseService.onCollectionSnapshot('news', d => { this.state.data.news = d; UI.renderGrid(UI.elements.pages.noticias.grid, d, UI.noticias.createCard, 'No hay noticias.'); });
-                FirebaseService.onCollectionSnapshot('manuales', d => { this.state.data.manuales = d; UI.acordeon.render(UI.elements.pages.manuales.container, d, 'No hay manuales.', {plural: 'manuales', block: 'bloqueManual', item: 'manual', permission: 'manuales'}); });
-                FirebaseService.onCollectionSnapshot('archivos', d => { this.state.data.archivos = d; UI.acordeon.render(UI.elements.pages.recursos.container, d, 'No hay archivos.', {plural: 'archivos', block: 'bloqueArchivo', item: 'archivo', permission: 'recursos'}); });
-                FirebaseService.onCollectionSnapshot('users', users => { this.state.data.allUsers = users; if(this.state.auth.isSuperAdmin) { UI.userManagement.render(users, UI.elements.pages.userManagement.tableBody); } });
+                const onError = (type) => (error) => {
+                    console.error(`Error al cargar datos de ${type}: `, error);
+                    UI.showToast(`Error al cargar ${type}.`, 'error');
+                };
+
+                FirebaseService.onCollectionSnapshot('events', d => { this.state.data.events = d; this.renderAgenda(); this.renderTablero(); this.renderCalendario(); }, onError('eventos'));
+                FirebaseService.onCollectionSnapshot('parroquianos', d => { this.state.data.parroquianos = d; this.renderDirectorio(); this.renderTablero(); this.renderCalendario(); }, onError('parroquianos'));
+                FirebaseService.onCollectionSnapshot('news', d => { this.state.data.news = d; UI.renderGrid(UI.elements.pages.noticias.grid, d, UI.noticias.createCard, 'No hay noticias.'); }, onError('noticias'));
+                FirebaseService.onCollectionSnapshot('manuales', d => { this.state.data.manuales = d; UI.acordeon.render(UI.elements.pages.manuales.container, d, 'No hay manuales.', {plural: 'manuales', block: 'bloqueManual', item: 'manual', permission: 'manuales'}); }, onError('manuales'));
+                FirebaseService.onCollectionSnapshot('archivos', d => { this.state.data.archivos = d; UI.acordeon.render(UI.elements.pages.recursos.container, d, 'No hay archivos.', {plural: 'archivos', block: 'bloqueArchivo', item: 'archivo', permission: 'recursos'}); }, onError('archivos'));
+                FirebaseService.onCollectionSnapshot('users', users => { this.state.data.allUsers = users; if(this.state.auth.isSuperAdmin) { UI.userManagement.render(users, UI.elements.pages.userManagement.tableBody); } }, onError('usuarios'));
             },
 
             // --- Renderizadores de Páginas Completas ---
@@ -2095,35 +2016,30 @@
                 document.addEventListener('submit', this.handleFormSubmission.bind(this));
                 document.body.addEventListener('change', this.handleGlobalChange.bind(this));
 
-                // --- Event listeners específicos ---
                 UI.elements.lockscreen.unlockSwitch.addEventListener('change', (e) => {
                     if (e.target.checked) setTimeout(() => UI.elements.lockscreen.container.classList.add('fade-out'), 300);
                 });
                 document.getElementById('prev-month-btn').addEventListener('click', () => { this.state.ui.currentCalendarDate.setMonth(this.state.ui.currentCalendarDate.getMonth() - 1); this.renderCalendario(); });
                 document.getElementById('next-month-btn').addEventListener('click', () => { this.state.ui.currentCalendarDate.setMonth(this.state.ui.currentCalendarDate.getMonth() + 1); this.renderCalendario(); });
 
-                // Manejadores para el panel lateral móvil
                 UI.elements.nav.edgeHandle.addEventListener('click', () => UI.nav.toggleSidenav(true));
                 UI.elements.nav.mobileSidenavOverlay.addEventListener('click', () => UI.nav.toggleSidenav(false));
             },
             
             handleGlobalClick(e) {
-                const target = e.target.closest('[data-action], [data-target], [data-modal-target], .accordion-toggle');
+                const target = e.target.closest('[data-action], [data-target], .accordion-toggle');
                 if (!target) return;
 
-                const { action, target: pageTarget, modalTarget, type, id, blockId, itemId } = target.dataset;
+                const { action, target: pageTarget, formType, type, id, blockId, itemId } = target.dataset;
 
                 if (pageTarget) {
                     UI.showPage(pageTarget);
-                    // Si el click fue en un link del menú móvil, ciérralo
-                    if (target.closest('#mobile-nav-links')) {
-                        UI.nav.toggleSidenav(false);
-                    }
+                    if (target.closest('#mobile-nav-links')) UI.nav.toggleSidenav(false);
                 }
-                if (modalTarget) this.openModal(modalTarget, null, blockId);
 
                 if (action) {
                     const actionHandlers = {
+                        'open-modal': () => this.openModal(formType, null, blockId),
                         'logout': this.handleLogout,
                         'close-modal': () => this.closeModal(target.closest('.fixed.inset-0').id),
                         'close-sidenav': () => UI.nav.toggleSidenav(false),
@@ -2131,10 +2047,9 @@
                         'delete': () => this.handleDelete(type, id, blockId, itemId),
                         'delete-user': () => this.handleDeleteUser(target.dataset.userId),
                         'read-more': () => this.handleReadMore(id),
-                        'add-item': () => this.openModal(`${modalTarget.replace('-modal', '')}-modal`, null, blockId),
                         'show-day-details': () => this.handleShowDayDetails(target.dataset.date),
                     };
-                    actionHandlers[action]?.();
+                    if(actionHandlers[action]) actionHandlers[action]();
                 }
                 
                 if (target.matches('.accordion-toggle')) {
@@ -2153,9 +2068,9 @@
                 const formHandlers = {
                     'login-form': this.handleLogin,
                     'register-form': this.handleRegister,
+                    'generic-modal-form': this.handleGenericFormSubmit
                 };
-                // Llama al manejador específico o al genérico
-                (formHandlers[formId] || this.handleGenericFormSubmit).call(this, e.target);
+                if(formHandlers[formId]) formHandlers[formId].call(this, e.target);
             },
             
             handleGlobalChange(e) {
@@ -2167,9 +2082,7 @@
                     const userId = target.dataset.userId;
                     const newRole = target.checked ? 'admin' : 'viewer';
                     const label = document.getElementById(`role-label-${userId}`);
-                    if (label) {
-                        label.textContent = newRole === 'admin' ? 'Admin' : 'Espectador';
-                    }
+                    if (label) label.textContent = newRole === 'admin' ? 'Admin' : 'Espectador';
                     this.updateUserRole(userId, newRole);
                 } else if (target.matches('.user-permission-checkbox')) {
                     this.updateUserPermission(target.dataset.userId, target.dataset.permission, target.checked);
@@ -2177,12 +2090,173 @@
             },
             
             // --- Acciones de la Aplicación ---
-            async handleLogin(form) { /* ... Lógica de inicio de sesión ... */ },
-            async handleRegister(form) { /* ... Lógica de registro ... */ },
-            async handleLogout() { await signOut(FirebaseService.auth); },
-            async handleGenericFormSubmit(form) { /* ... Lógica de envío de formularios ... */ },
-            handleEdit(type, id, blockId, itemId) { /* ... Lógica de edición ... */ },
-            handleDelete(type, id, blockId, itemId) { /* ... Lógica de eliminación ... */ },
+            async handleLogin(form) {
+                const email = form.querySelector('#login-email').value;
+                const password = form.querySelector('#login-password').value;
+                try {
+                    let userCredential;
+                    if (email === 'admin@portal.com' && password === 'admin123') {
+                         userCredential = await signInWithEmailAndPassword(FirebaseService.auth, email, password).catch(err => 
+                            err.code === 'auth/user-not-found' ? createUserWithEmailAndPassword(FirebaseService.auth, email, password) : Promise.reject(err)
+                         );
+                    } else {
+                        userCredential = await signInWithEmailAndPassword(FirebaseService.auth, email, password);
+                    }
+                    this.closeModal('user-auth-modal');
+                    UI.showToast('¡Bienvenido de nuevo!', 'success');
+
+                    const { unlockSwitch } = UI.elements.lockscreen;
+                    if (unlockSwitch.disabled) {
+                        unlockSwitch.disabled = false;
+                        UI.elements.lockscreen.unlockSwitchLabel.classList.remove('disabled');
+                        UI.elements.lockscreen.message.classList.add('hidden');
+                    }
+                    unlockSwitch.checked = true;
+                    unlockSwitch.dispatchEvent(new Event('change'));
+                } catch(error) {
+                    console.error("Error de inicio de sesión:", error);
+                    UI.showToast('Correo o contraseña incorrectos.', 'error');
+                }
+            },
+            async handleRegister(form) {
+                 const name = form.querySelector('#register-name').value;
+                 const email = form.querySelector('#register-email').value;
+                 const password = form.querySelector('#register-password').value;
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(FirebaseService.auth, email, password);
+                    const newUserProfile = { nombre: name, email: email, role: 'viewer', permissions: {} };
+                    await FirebaseService.setDoc('users', userCredential.user.uid, newUserProfile);
+                    this.closeModal('user-auth-modal');
+                    UI.showToast('¡Cuenta creada! Bienvenido.', 'success');
+
+                    const { unlockSwitch } = UI.elements.lockscreen;
+                    if (unlockSwitch.disabled) {
+                        unlockSwitch.disabled = false;
+                        UI.elements.lockscreen.unlockSwitchLabel.classList.remove('disabled');
+                        UI.elements.lockscreen.message.classList.add('hidden');
+                    }
+                    unlockSwitch.checked = true;
+                    unlockSwitch.dispatchEvent(new Event('change'));
+                } catch(error) {
+                     console.error("Error de registro:", error);
+                     if (error.code === 'auth/email-already-in-use') UI.showToast('Este correo ya está registrado.', 'error');
+                     else if (error.code === 'auth/weak-password') UI.showToast('La contraseña debe tener al menos 6 caracteres.', 'error');
+                     else UI.showToast('Error al registrar la cuenta.', 'error');
+                }
+            },
+            async handleLogout() { 
+                await signOut(FirebaseService.auth); 
+                UI.showToast('Has cerrado sesión.', 'info');
+            },
+            async handleGenericFormSubmit(form) {
+                const type = form.dataset.type;
+                const permissionMap = {
+                    event: 'agenda', parroquiano: 'directorio', news: 'noticias',
+                    bloqueManual: 'manuales', manual: 'manuales',
+                    bloqueArchivo: 'recursos', archivo: 'recursos'
+                };
+                if (!this.hasPermission(permissionMap[type])) {
+                    UI.showToast('No tienes permiso para realizar esta acción.', 'error');
+                    return;
+                }
+                
+                const submitButton = form.querySelector('button[type="submit"]');
+                if (submitButton) submitButton.disabled = true;
+
+                try {
+                    const data = Object.fromEntries(new FormData(form).entries());
+                    const id = data.id;
+                    delete data.id;
+
+                    const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos' };
+                    const itemTypes = { manual: { collection: 'manuales' }, archivo: { collection: 'archivos' } };
+
+                    if (blockTypes[type]) {
+                        if (!id) data.items = [];
+                        await FirebaseService.saveDoc(blockTypes[type], id, data);
+                    } else if (itemTypes[type]) {
+                        const config = itemTypes[type];
+                        const { blockId, ...itemData } = data;
+                        const block = this.state.data[config.collection].find(b => b.id === blockId);
+                        if (!block) throw new Error("Bloque no encontrado");
+
+                        const items = block.items || [];
+                        if (itemData.id) {
+                            const index = items.findIndex(item => item.id === itemData.id);
+                            if (index > -1) items[index] = { ...items[index], ...itemData };
+                        } else {
+                             itemData.id = crypto.randomUUID();
+                             items.push(itemData);
+                        }
+                        await FirebaseService.saveDoc(config.collection, blockId, { items });
+                    } else {
+                         if (type === 'news') data.galleryUrls = data.galleryUrls ? data.galleryUrls.split('\n').map(url => url.trim()).filter(Boolean) : [];
+                        await FirebaseService.saveDoc(type === 'news' ? 'news' : type + 's', id, data);
+                    }
+                    this.closeModal('generic-modal');
+                    UI.showToast('¡Operación exitosa!', 'success');
+                } catch (err) {
+                    console.error(`Error al guardar:`, err);
+                    UI.showToast('Hubo un error al guardar. Intenta de nuevo.', 'error');
+                } finally {
+                    if (submitButton) submitButton.disabled = false;
+                }
+            },
+            handleEdit(type, id, blockId, itemId) {
+                const permissionMap = {
+                    event: 'agenda', parroquiano: 'directorio', news: 'noticias',
+                    bloqueManual: 'manuales', manual: 'manuales',
+                    bloqueArchivo: 'recursos', archivo: 'recursos'
+                };
+                if(!this.hasPermission(permissionMap[type])) return;
+
+                const itemTypes = { manual: 'manuales', archivo: 'archivos' };
+                const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos' };
+
+                if (itemTypes[type]) {
+                    const block = this.state.data[itemTypes[type]].find(b => b.id === blockId);
+                    const item = block?.items.find(i => i.id === itemId);
+                    if (item) this.openModal(type, { ...item, blockId });
+                } else {
+                    const collectionName = blockTypes[type] || (type === 'news' ? 'news' : type + 's');
+                    const item = this.state.data[collectionName].find(i => i.id === id);
+                    if (item) this.openModal(type, item);
+                }
+            },
+            handleDelete(type, id, blockId, itemId) {
+                const permissionMap = {
+                    event: 'agenda', parroquiano: 'directorio', news: 'noticias',
+                    bloqueManual: 'manuales', manual: 'manuales',
+                    bloqueArchivo: 'recursos', archivo: 'recursos'
+                };
+                if (!this.hasPermission(permissionMap[type])) return;
+
+                UI.elements.confirmModal.message.textContent = `¿Seguro de eliminar este registro?`;
+                this.openModal('confirm');
+
+                UI.elements.confirmModal.deleteBtn.onclick = async () => {
+                    try {
+                        const itemTypes = { manual: 'manuales', archivo: 'archivos' };
+                        const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos' };
+
+                        if (itemTypes[type]) {
+                            const block = this.state.data[itemTypes[type]].find(b => b.id === blockId);
+                            if (block) {
+                                const items = (block.items || []).filter(item => item.id !== itemId);
+                                await FirebaseService.saveDoc(itemTypes[type], blockId, { items });
+                            }
+                        } else {
+                            await FirebaseService.deleteDoc(blockTypes[type] || (type === 'news' ? 'news' : type + 's'), id);
+                        }
+                        this.closeModal('confirm');
+                        UI.showToast('Registro eliminado con éxito.', 'success');
+                    } catch (err) { 
+                        console.error(`Error al eliminar:`, err); 
+                        UI.showToast('No se pudo eliminar el registro.', 'error');
+                        this.closeModal('confirm');
+                    }
+                };
+            },
             handleDeleteUser(userId) {
                 if (!this.state.auth.isSuperAdmin || this.state.auth.user.id === userId) return;
 
@@ -2194,17 +2268,64 @@
 
                 UI.elements.confirmModal.deleteBtn.onclick = async () => {
                     try {
-                        // Nota: Esto solo elimina el perfil del usuario de Firestore.
-                        // La eliminación completa de la cuenta de Firebase Auth requeriría una Cloud Function
-                        // por razones de seguridad, lo cual está fuera del alcance de este entorno de cliente.
                         await FirebaseService.deleteDoc('users', userId);
                         this.closeModal('confirm');
+                        UI.showToast('Usuario eliminado.', 'success');
                     } catch (err) {
                         console.error(`Error al eliminar usuario:`, err);
+                        UI.showToast('No se pudo eliminar el usuario.', 'error');
+                        this.closeModal('confirm');
                     }
                 };
             },
-            handleReadMore(id) { /* ... Lógica de "Leer más" ... */ },
+            handleReadMore(id) {
+                const item = this.state.data.news.find(i => i.id === id);
+                if (!item) return;
+                const { title, date, content, image, thumbnails, prevBtn, nextBtn } = UI.elements.newsDetail;
+
+                title.textContent = item.titulo;
+                date.textContent = new Date(item.fechaPublicacion).toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'});
+                content.innerHTML = item.contenido.replace(/\n/g,'<br>');
+
+                this.state.ui.currentGalleryImages = [item.imageUrl, ...(item.galleryUrls || [])].filter(Boolean);
+                this.state.ui.currentGalleryIndex = 0;
+
+                const mainImagePlaceholder = 'https://placehold.co/800x600/eef0f4/4b5563?text=No+disponible';
+                image.onerror = function() {
+                    this.onerror = null;
+                    this.src = mainImagePlaceholder;
+                };
+
+                thumbnails.innerHTML = this.state.ui.currentGalleryImages.map((url, index) => 
+                    `<img src="${url}" loading="lazy" data-action="set-gallery-image" data-index="${index}" class="gallery-thumbnail ${index === 0 ? 'active' : ''}" onerror="this.onerror=null; this.src='https://placehold.co/80x60/eef0f4/4b5563?text=Error';">`
+                ).join('');
+
+                const showBtns = this.state.ui.currentGalleryImages.length > 1;
+                prevBtn.classList.toggle('hidden', !showBtns);
+                nextBtn.classList.toggle('hidden', !showBtns);
+
+                const showImage = (index) => {
+                    image.style.opacity = 0;
+                    setTimeout(() => {
+                        image.src = this.state.ui.currentGalleryImages[index] || mainImagePlaceholder;
+                        image.style.opacity = 1;
+                    }, 150);
+                    thumbnails.querySelectorAll('.gallery-thumbnail').forEach((thumb, i) => {
+                        thumb.classList.toggle('active', i === index);
+                        if (i === index) thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    });
+                    this.state.ui.currentGalleryIndex = index;
+                };
+
+                prevBtn.onclick = () => showImage((this.state.ui.currentGalleryIndex - 1 + this.state.ui.currentGalleryImages.length) % this.state.ui.currentGalleryImages.length);
+                nextBtn.onclick = () => showImage((this.state.ui.currentGalleryIndex + 1) % this.state.ui.currentGalleryImages.length);
+                thumbnails.onclick = (e) => {
+                    if(e.target.matches('.gallery-thumbnail')) showImage(parseInt(e.target.dataset.index, 10));
+                };
+
+                showImage(0);
+                this.openModal('newsDetail');
+            },
             handleShowDayDetails(dateString) {
                 const date = new Date(dateString + 'T00:00:00Z');
                 const dailyEvents = this.state.data.events.filter(e => e.date === dateString);
@@ -2230,19 +2351,31 @@
                     birthdaysSection.classList.add('hidden');
                 }
 
-                this.openModal('calendar-day-modal');
+                this.openModal('calendarDay');
             },
 
             async updateUserRole(userId, newRole) {
                 if (!this.state.auth.isSuperAdmin) return;
-                await FirebaseService.saveDoc('users', userId, { role: newRole });
+                try {
+                    await FirebaseService.saveDoc('users', userId, { role: newRole });
+                    UI.showToast('Rol de usuario actualizado.', 'success');
+                } catch (error) {
+                    console.error("Error al actualizar rol:", error);
+                    UI.showToast('No se pudo actualizar el rol.', 'error');
+                }
             },
             async updateUserPermission(userId, permission, isEnabled) {
                  if (!this.state.auth.isSuperAdmin) return;
                  const user = this.state.data.allUsers.find(u => u.id === userId);
                  if (user) {
                      const permissions = { ...(user.permissions || {}), [permission]: isEnabled };
-                     await FirebaseService.saveDoc('users', userId, { permissions });
+                     try {
+                        await FirebaseService.saveDoc('users', userId, { permissions });
+                        UI.showToast('Permiso actualizado.', 'success');
+                     } catch(error) {
+                        console.error("Error al actualizar permiso:", error);
+                        UI.showToast('No se pudo actualizar el permiso.', 'error');
+                     }
                  }
             },
 
@@ -2257,9 +2390,15 @@
                 }, 1000);
             },
             async loadWeather() { 
-                const data = await WeatherService.fetch();
-                const { weatherTemp, weatherDesc, weatherLocation } = UI.elements.pages.tablero;
-                UI.tablero.updateWeather(data, weatherTemp, weatherDesc, weatherLocation);
+                try {
+                    const data = await WeatherService.fetch();
+                    const { weatherTemp, weatherDesc, weatherLocation } = UI.elements.pages.tablero;
+                    UI.tablero.updateWeather(data, weatherTemp, weatherDesc, weatherLocation);
+                } catch(error) {
+                    UI.showToast('No se pudo cargar el clima.', 'error');
+                    const { weatherTemp, weatherDesc, weatherLocation } = UI.elements.pages.tablero;
+                    UI.tablero.updateWeather({ description: 'Error de red', location: '' }, weatherTemp, weatherDesc, weatherLocation);
+                }
             },
             initTheme() {
                 const themeSwitch = UI.elements.header.themeSwitch;
@@ -2278,246 +2417,147 @@
                     applyTheme(newTheme);
                 });
             },
-             openModal(modalId, data = null, blockId = null) {
-                const modal = UI.elements.modals[modalId.replace('-modal','')] || document.getElementById(modalId);
-                if (!modal) return;
-                const form = modal.querySelector('form');
-                if (form) {
-                    form.reset();
-                    const titleEl = modal.querySelector('h2'); 
-                    const type = form.dataset.type;
-                    let typeName = {
-                        'bloqueManual': 'Bloque de Manual', 'manual': 'Manual',
-                        'bloqueArchivo': 'Bloque de Archivo', 'archivo': 'Archivo',
-                        'news': 'Noticia', 'event': 'Evento', 'parroquiano': 'Parroquiano'
-                    }[type] || type;
-
-                    if (modalId !== 'user-auth-modal' && titleEl) {
-                        titleEl.textContent = data ? `Editar ${typeName}` : `Agregar ${typeName}`;
-                    }
-
-                    if (data) {
-                        Object.keys(data).forEach(key => {
-                            const input = form.querySelector(`[name="${key}"]`);
-                            if (input) {
-                                if (key === 'galleryUrls' && Array.isArray(data[key])) input.value = data[key].join('\n');
-                                else input.value = data[key];
-                            }
-                        });
-                    }
-                    const blockIdInput = form.querySelector('input[name="blockId"]');
-                    if (blockId && blockIdInput) blockIdInput.value = blockId;
+            
+            openModal(modalType, data = null, blockId = null) {
+                const nonGenericModals = ['userAuth', 'newsDetail', 'confirm', 'calendarDay'];
+                if (nonGenericModals.includes(modalType)) {
+                    const modal = UI.elements.modals[modalType];
+                    if (modal) modal.classList.remove('hidden');
+                    return;
                 }
-                modal.classList.remove('hidden');
+                this.openGenericModal(modalType, data, blockId);
             },
-            closeModal(modalId) { 
-                const modal = UI.elements.modals[modalId.replace('-modal','')] || document.getElementById(modalId);
-                if (modal) modal.classList.add('hidden');
-            }
-        };
 
-        // Rellenar la implementación de los manejadores que faltan
-        App.handleLogin = async function(form) {
-            const email = form.querySelector('#login-email').value;
-            const password = form.querySelector('#login-password').value;
-            const errorMsg = form.querySelector('#login-error-msg');
-            errorMsg.classList.add('hidden');
-            
-            try {
-                let userCredential;
-                if (email === 'admin@portal.com' && password === 'admin123') {
-                     userCredential = await signInWithEmailAndPassword(FirebaseService.auth, email, password).catch(err => 
-                        err.code === 'auth/user-not-found' ? createUserWithEmailAndPassword(FirebaseService.auth, email, password) : Promise.reject(err)
-                     );
-                } else {
-                    userCredential = await signInWithEmailAndPassword(FirebaseService.auth, email, password);
-                }
-                this.closeModal('user-auth-modal');
+            openGenericModal(formType, data = null, blockId = null) {
+                const { title: titleEl, form: formEl } = UI.elements.genericModal;
+                const definition = this.getFormDefinition(formType);
+                if (!definition) return;
 
-                const { unlockSwitch, container } = UI.elements.lockscreen;
-                if (unlockSwitch.disabled) {
-                    unlockSwitch.disabled = false;
-                    UI.elements.lockscreen.unlockSwitchLabel.classList.remove('disabled');
-                    UI.elements.lockscreen.message.classList.add('hidden');
-                }
-                unlockSwitch.checked = true;
-                unlockSwitch.dispatchEvent(new Event('change'));
-            } catch(error) {
-                errorMsg.textContent = 'Correo o contraseña incorrectos.';
-                errorMsg.classList.remove('hidden');
-            }
-        };
-        App.handleRegister = async function(form) {
-             const name = form.querySelector('#register-name').value;
-             const email = form.querySelector('#register-email').value;
-             const password = form.querySelector('#register-password').value;
-             const errorMsg = form.querySelector('#register-error-msg');
-             errorMsg.classList.add('hidden');
+                const isEdit = data !== null;
+                titleEl.textContent = `${isEdit ? 'Editar' : 'Agregar'} ${definition.title}`;
+                formEl.dataset.type = formType;
+                
+                let formHtml = '<input type="hidden" name="id">';
+                if (definition.requiresBlockId) formHtml += '<input type="hidden" name="blockId">';
 
-            try {
-                const userCredential = await createUserWithEmailAndPassword(FirebaseService.auth, email, password);
-                const newUserProfile = { nombre: name, email: email, role: 'viewer', permissions: {} };
-                await FirebaseService.setDoc('users', userCredential.user.uid, newUserProfile);
-                this.closeModal('user-auth-modal');
-
-                const { unlockSwitch, container } = UI.elements.lockscreen;
-                if (unlockSwitch.disabled) {
-                    unlockSwitch.disabled = false;
-                    UI.elements.lockscreen.unlockSwitchLabel.classList.remove('disabled');
-                    UI.elements.lockscreen.message.classList.add('hidden');
-                }
-                unlockSwitch.checked = true;
-                unlockSwitch.dispatchEvent(new Event('change'));
-            } catch(error) {
-                 if (error.code === 'auth/email-already-in-use') errorMsg.textContent = 'Este correo ya está registrado.';
-                 else if (error.code === 'auth/weak-password') errorMsg.textContent = 'La contraseña debe tener al menos 6 caracteres.';
-                 else errorMsg.textContent = 'Error al registrar la cuenta.';
-                 errorMsg.classList.remove('hidden');
-            }
-        };
-        App.handleGenericFormSubmit = async function(form) {
-            const type = form.dataset.type;
-            const permissionMap = {
-                event: 'agenda', parroquiano: 'directorio', news: 'noticias',
-                bloqueManual: 'manuales', manual: 'manuales',
-                bloqueArchivo: 'recursos', archivo: 'recursos',
-                verAgendaCalendario: 'verAgendaCalendario'
-            };
-            if (!this.hasPermission(permissionMap[type])) return;
-            
-            const submitButton = form.querySelector('button[type="submit"]');
-            if (submitButton) submitButton.disabled = true;
-
-            try {
-                const data = Object.fromEntries(new FormData(form).entries());
-                const id = data.id;
-                delete data.id;
-
-                const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos' };
-                const itemTypes = { manual: { collection: 'manuales' }, archivo: { collection: 'archivos' } };
-
-                if (blockTypes[type]) {
-                    if (!id) data.items = [];
-                    await FirebaseService.saveDoc(blockTypes[type], id, data);
-                } else if (itemTypes[type]) {
-                    const config = itemTypes[type];
-                    const { blockId, ...itemData } = data;
-                    const block = this.state.data[config.collection].find(b => b.id === blockId);
-                    if (!block) throw new Error("Block not found");
-
-                    const items = block.items || [];
-                    if (itemData.id) { // Edit item
-                        const index = items.findIndex(item => item.id === itemData.id);
-                        if (index > -1) items[index] = { ...items[index], ...itemData };
-                    } else { // Add new item
-                         itemData.id = crypto.randomUUID();
-                         items.push(itemData);
+                definition.sections.forEach(section => {
+                    if (section.title) {
+                        formHtml += `<div class="pt-4 border-t border-gray-300/50"><h3 class="text-lg font-semibold mb-2">${section.title}</h3>`;
                     }
-                    await FirebaseService.saveDoc(config.collection, blockId, { items });
-                } else {
-                     if (type === 'news') data.galleryUrls = data.galleryUrls ? data.galleryUrls.split('\n').map(url => url.trim()).filter(Boolean) : [];
-                    await FirebaseService.saveDoc(type === 'news' ? 'news' : type + 's', id, data);
-                }
-                this.closeModal(`${type}-modal`);
-            } catch (err) {
-                console.error(`Error al guardar:`, err);
-            } finally {
-                if (submitButton) submitButton.disabled = false;
-            }
-        };
-        App.handleEdit = function(type, id, blockId, itemId) {
-            const permissionMap = {
-                event: 'agenda', parroquiano: 'directorio', news: 'noticias',
-                bloqueManual: 'manuales', manual: 'manuales',
-                bloqueArchivo: 'recursos', archivo: 'recursos',
-                verAgendaCalendario: 'verAgendaCalendario'
-            };
-            if(!this.hasPermission(permissionMap[type])) return;
-
-            const itemTypes = { manual: 'manuales', archivo: 'archivos' };
-            const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos' };
-
-            if (itemTypes[type]) {
-                const block = this.state.data[itemTypes[type]].find(b => b.id === blockId);
-                const item = block?.items.find(i => i.id === itemId);
-                if (item) this.openModal(`${type}-modal`, { ...item, blockId });
-            } else {
-                const collectionName = blockTypes[type] || (type === 'news' ? 'news' : type + 's');
-                const item = this.state.data[collectionName].find(i => i.id === id);
-                if (item) this.openModal(`${type}-modal`, item);
-            }
-        };
-        App.handleDelete = function(type, id, blockId, itemId) {
-            const permissionMap = {
-                event: 'agenda', parroquiano: 'directorio', news: 'noticias',
-                bloqueManual: 'manuales', manual: 'manuales',
-                bloqueArchivo: 'recursos', archivo: 'recursos',
-                verAgendaCalendario: 'verAgendaCalendario'
-            };
-            if (!this.hasPermission(permissionMap[type])) return;
-
-            UI.elements.confirmModal.message.textContent = `¿Seguro de eliminar este registro?`;
-            this.openModal('confirm');
-
-            UI.elements.confirmModal.deleteBtn.onclick = async () => {
-                try {
-                    const itemTypes = { manual: 'manuales', archivo: 'archivos' };
-                    const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos' };
-
-                    if (itemTypes[type]) {
-                        const block = this.state.data[itemTypes[type]].find(b => b.id === blockId);
-                        if (block) {
-                            const items = (block.items || []).filter(item => item.id !== itemId);
-                            await FirebaseService.saveDoc(itemTypes[type], blockId, { items });
-                        }
-                    } else {
-                        await FirebaseService.deleteDoc(blockTypes[type] || (type === 'news' ? 'news' : type + 's'), id);
-                    }
-                    this.closeModal('confirm');
-                } catch (err) { console.error(`Error al eliminar:`, err); }
-            };
-        };
-        App.handleReadMore = function(id) {
-            const item = this.state.data.news.find(i => i.id === id);
-            if (!item) return;
-            const { title, date, content, image, thumbnails, prevBtn, nextBtn } = UI.elements.newsDetail;
-            
-            title.textContent = item.titulo;
-            date.textContent = new Date(item.fechaPublicacion).toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'});
-            content.innerHTML = item.contenido.replace(/\n/g,'<br>');
-            
-            this.state.ui.currentGalleryImages = [item.imageUrl, ...(item.galleryUrls || [])].filter(Boolean);
-            this.state.ui.currentGalleryIndex = 0;
-            
-            thumbnails.innerHTML = this.state.ui.currentGalleryImages.map((url, index) => 
-                `<img src="${url}" data-action="set-gallery-image" data-index="${index}" class="gallery-thumbnail ${index === 0 ? 'active' : ''}">`
-            ).join('');
-            
-            const showBtns = this.state.ui.currentGalleryImages.length > 1;
-            prevBtn.classList.toggle('hidden', !showBtns);
-            nextBtn.classList.toggle('hidden', !showBtns);
-
-            const showImage = (index) => {
-                image.style.opacity = 0;
-                setTimeout(() => {
-                    image.src = this.state.ui.currentGalleryImages[index] || 'https://placehold.co/800x600/eef0f4/4b5563?text=No+disponible';
-                    image.style.opacity = 1;
-                }, 150);
-                thumbnails.querySelectorAll('.gallery-thumbnail').forEach((thumb, i) => {
-                    thumb.classList.toggle('active', i === index);
-                    if (i === index) thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    section.fields.forEach(field => formHtml += this._createFieldHtml(field));
+                    if (section.title) formHtml += `</div>`;
                 });
-                this.state.ui.currentGalleryIndex = index;
-            };
+                
+                formHtml += `<div class="flex justify-end gap-4 pt-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>`;
+                formEl.innerHTML = formHtml;
+                
+                if (data) {
+                    Object.keys(data).forEach(key => {
+                        const input = formEl.querySelector(`[name="${key}"]`);
+                        if (input) {
+                            if (key === 'galleryUrls' && Array.isArray(data[key])) input.value = data[key].join('\n');
+                            else input.value = data[key];
+                        }
+                    });
+                }
+                if (blockId && formEl.querySelector('[name="blockId"]')) {
+                    formEl.querySelector('[name="blockId"]').value = blockId;
+                }
 
-            prevBtn.onclick = () => showImage((this.state.ui.currentGalleryIndex - 1 + this.state.ui.currentGalleryImages.length) % this.state.ui.currentGalleryImages.length);
-            nextBtn.onclick = () => showImage((this.state.ui.currentGalleryIndex + 1) % this.state.ui.currentGalleryImages.length);
-            thumbnails.onclick = (e) => {
-                if(e.target.matches('.gallery-thumbnail')) showImage(parseInt(e.target.dataset.index, 10));
-            };
+                UI.elements.modals.generic.classList.remove('hidden');
+            },
 
-            showImage(0);
-            this.openModal('news-detail-modal');
+            closeModal(modalId) { 
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.add('hidden');
+                    if (modalId === 'generic-modal') {
+                        UI.elements.genericModal.form.innerHTML = '';
+                    }
+                }
+            },
+
+            _createFieldHtml(field) {
+                const requiredAttr = field.required ? 'required' : '';
+                const placeholderAttr = field.placeholder ? `placeholder="${field.placeholder}"` : '';
+                let inputHtml = '';
+                const inputId = `generic-form-${field.name}`;
+
+                switch (field.type) {
+                    case 'textarea':
+                        inputHtml = `<textarea id="${inputId}" name="${field.name}" rows="${field.rows || 3}" class="neumorphic-input" ${placeholderAttr} ${requiredAttr}></textarea>`;
+                        break;
+                    default:
+                        inputHtml = `<input type="${field.type}" id="${inputId}" name="${field.name}" class="neumorphic-input" ${placeholderAttr} ${requiredAttr}>`;
+                        break;
+                }
+                return `<div><label for="${inputId}" class="block text-sm font-medium mb-1">${field.label}</label>${inputHtml}</div>`;
+            },
+            
+            getFormDefinition(formType) {
+                const definitions = {
+                    event: {
+                        title: 'Evento',
+                        sections: [{ fields: [
+                            { name: 'name', label: 'Nombre del Evento', type: 'text', required: true },
+                            { name: 'date', label: 'Fecha', type: 'date', required: true },
+                            { name: 'time', label: 'Hora', type: 'time', required: true },
+                            { name: 'imageUrl', label: 'URL de la Imagen (Opcional)', type: 'url', placeholder: 'https://ejemplo.com/imagen.jpg' }
+                        ]}]
+                    },
+                    parroquiano: {
+                        title: 'Parroquiano',
+                        sections: [
+                            { fields: [
+                                { name: 'nombre', label: 'Nombre Completo', type: 'text', required: true },
+                                { name: 'telefono', label: 'Teléfono', type: 'tel' },
+                                { name: 'email', label: 'Correo Electrónico', type: 'email' },
+                                { name: 'nacimiento', label: 'Fecha de Nacimiento', type: 'date' },
+                                { name: 'direccion', label: 'Dirección', type: 'text' },
+                            ]},
+                            { title: 'Contacto de Emergencia', fields: [
+                                { name: 'emergencia_nombre', label: 'Nombre de Contacto', type: 'text' },
+                                { name: 'emergencia_telefono', label: 'Teléfono de Contacto', type: 'tel' },
+                            ]}
+                        ]
+                    },
+                    news: {
+                        title: 'Noticia',
+                        sections: [{ fields: [
+                            { name: 'titulo', label: 'Título', type: 'text', required: true },
+                            { name: 'resumen', label: 'Resumen', type: 'text', required: true },
+                            { name: 'contenido', label: 'Contenido Completo', type: 'textarea', rows: 5, required: true },
+                            { name: 'imageUrl', label: 'URL de Imagen Principal', type: 'url', placeholder: 'https://ejemplo.com/imagen.jpg', required: true },
+                            { name: 'galleryUrls', label: 'URLs de Galería Adicional (una por línea)', type: 'textarea', rows: 3, placeholder: 'https://ejemplo.com/foto1.jpg\nhttps://ejemplo.com/foto2.jpg' }
+                        ]}]
+                    },
+                    bloqueManual: {
+                        title: 'Bloque de Manual',
+                        sections: [{ fields: [ { name: 'nombre', label: 'Nombre del Bloque', type: 'text', required: true } ] }]
+                    },
+                    bloqueArchivo: {
+                        title: 'Bloque de Archivo',
+                        sections: [{ fields: [ { name: 'nombre', label: 'Nombre del Bloque', type: 'text', required: true } ] }]
+                    },
+                    manual: {
+                        title: 'Manual',
+                        requiresBlockId: true,
+                        sections: [{ fields: [
+                            { name: 'nombre', label: 'Nombre del Manual', type: 'text', required: true },
+                            { name: 'url', label: 'URL del Manual', type: 'url', placeholder: 'https://ejemplo.com/documento.pdf', required: true }
+                        ]}]
+                    },
+                    archivo: {
+                        title: 'Archivo',
+                        requiresBlockId: true,
+                        sections: [{ fields: [
+                            { name: 'nombre', label: 'Nombre del Archivo', type: 'text', required: true },
+                            { name: 'url', label: 'URL del Archivo', type: 'url', placeholder: 'https://ejemplo.com/recurso.zip', required: true }
+                        ]}]
+                    }
+                };
+                return definitions[formType];
+            }
         };
 
         // Iniciar la aplicación
