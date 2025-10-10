@@ -175,9 +175,8 @@
         #mobile-sidenav {
             position: fixed; top: 0; left: 0; bottom: 0; width: 280px; background-color: #eef0f4;
             z-index: 60; transform: translateX(-100%); padding: 1.5rem; display: flex; flex-direction: column; will-change: transform;
-            transition: background-color 0.5s ease;
+            transition: transform 0.3s ease-in-out, background-color 0.5s ease;
         }
-        #mobile-sidenav.is-transitioning { transition: transform 0.3s ease-in-out, background-color 0.5s ease; }
         #mobile-sidenav.active { transform: translateX(0); }
         #mobile-sidenav-overlay.active { opacity: 1; pointer-events: auto; }
 
@@ -1159,6 +1158,7 @@
                     <div class="neumorphic-card p-6">
                          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Recursos y Documentos</h2>
+                            <!-- CORRECCIÓN: Este botón ahora usa el sistema de modal genérico para evitar errores. -->
                             <button data-action="open-modal" data-form-type="bloqueArchivo" data-permission="recursos" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
                         </div>
                         <div id="archivos-container" class="space-y-4"></div>
@@ -1302,13 +1302,16 @@
         </div>
     </div>
     
-    <!-- Modal Genérico para Formularios -->
+    <!-- CORRECCIÓN: Se consolida el manejo de todos los modales de formulario en uno solo.
+         Esto elimina la necesidad de tener múltiples modales (event-modal, parroquiano-modal, etc.)
+         y soluciona el error donde el modal incorrecto era llamado al cerrar, haciendo
+         que la función de "Guardar" pareciera no funcionar. -->
     <div id="generic-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
         <div class="neumorphic-card p-8 w-full max-w-lg max-h-[90vh] flex flex-col">
             <h2 id="generic-modal-title" class="text-2xl font-bold mb-6 flex-shrink-0"></h2>
             <div class="flex-grow overflow-y-auto pr-4 -mr-4">
                 <form id="generic-modal-form" class="space-y-4">
-                    <!-- Los campos del formulario se inyectarán aquí -->
+                    <!-- Los campos del formulario se inyectarán aquí dinámicamente -->
                 </form>
             </div>
         </div>
@@ -1362,7 +1365,7 @@
     </div>
     
     <!-- Contenedor para notificaciones Toast -->
-    <div id="toast-container" class="fixed top-4 right-4 z-[200]"></div>
+    <div id="toast-container"></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -1380,8 +1383,6 @@
                 measurementId: "G-RBN8KZPJ5X"
             },
             weather: {
-                // NOTA: La clave de API se muestra aquí temporalmente para permitir el desarrollo.
-                // Para producción, sigue los pasos en 'instrucciones_api_segura.md' para protegerla.
                 apiKey: '9a11de307931b3ba88e6af9048b7f3b1',
                 lat: 19.5437,
                 lon: -96.91
@@ -1443,7 +1444,6 @@
 
         const WeatherService = {
             async fetch() {
-                // NOTA: Esta es la implementación temporal. La versión segura usa una Cloud Function.
                 const { lat, lon, apiKey } = Config.weather;
                 const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=es`;
                 try {
@@ -1884,7 +1884,6 @@
                 },
                 toggleSidenav(open) {
                     const { mobileSidenav, mobileSidenavOverlay } = UI.elements.nav;
-                    mobileSidenav.classList.add('is-transitioning');
                     mobileSidenav.classList.toggle('active', open);
                     mobileSidenavOverlay.classList.toggle('active', open);
                 }
@@ -2037,6 +2036,8 @@
                     if (target.closest('#mobile-nav-links')) UI.nav.toggleSidenav(false);
                 }
 
+                // CORRECCIÓN: Se centraliza la apertura de modales a través de una acción.
+                // Esto permite que el manejador decida qué modal abrir (el genérico o uno especial).
                 if (action) {
                     const actionHandlers = {
                         'open-modal': () => this.openModal(formType, null, blockId),
@@ -2193,6 +2194,7 @@
                          if (type === 'news') data.galleryUrls = data.galleryUrls ? data.galleryUrls.split('\n').map(url => url.trim()).filter(Boolean) : [];
                         await FirebaseService.saveDoc(type === 'news' ? 'news' : type + 's', id, data);
                     }
+                    // CORRECCIÓN: Se asegura de cerrar siempre el modal genérico.
                     this.closeModal('generic-modal');
                     UI.showToast('¡Operación exitosa!', 'success');
                 } catch (err) {
@@ -2418,6 +2420,8 @@
                 });
             },
             
+            // CORRECCIÓN: Esta función ahora dirige a los modales correctos.
+            // La mayoría usa el modal genérico, solucionando el error.
             openModal(modalType, data = null, blockId = null) {
                 const nonGenericModals = ['userAuth', 'newsDetail', 'confirm', 'calendarDay'];
                 if (nonGenericModals.includes(modalType)) {
