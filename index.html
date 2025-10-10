@@ -1158,7 +1158,6 @@
                     <div class="neumorphic-card p-6">
                          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Recursos y Documentos</h2>
-                            <!-- CORRECCIÓN: Este botón ahora usa el sistema de modal genérico para evitar errores. -->
                             <button data-action="open-modal" data-form-type="bloqueArchivo" data-permission="recursos" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
                         </div>
                         <div id="archivos-container" class="space-y-4"></div>
@@ -1302,10 +1301,6 @@
         </div>
     </div>
     
-    <!-- CORRECCIÓN: Se consolida el manejo de todos los modales de formulario en uno solo.
-         Esto elimina la necesidad de tener múltiples modales (event-modal, parroquiano-modal, etc.)
-         y soluciona el error donde el modal incorrecto era llamado al cerrar, haciendo
-         que la función de "Guardar" pareciera no funcionar. -->
     <div id="generic-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
         <div class="neumorphic-card p-8 w-full max-w-lg max-h-[90vh] flex flex-col">
             <h2 id="generic-modal-title" class="text-2xl font-bold mb-6 flex-shrink-0"></h2>
@@ -1369,26 +1364,23 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, onSnapshot, addDoc, doc, setDoc, getDoc, updateDoc, deleteDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // =================================================================================
         // CONFIGURACIÓN CENTRALIZADA
         // =================================================================================
         const Config = {
-            firebase: {
-                apiKey: "AIzaSyATCd0jgG2Lo5q8K5bB15eNvkakJBb15RU", authDomain: "ibcgapp.firebaseapp.com",
-                projectId: "ibcgapp", storageBucket: "ibcgapp.appspot.com",
-                messagingSenderId: "548258029551", appId: "1:548258029551:web:9354e4cc79ce4f25f0201a",
-                measurementId: "G-RBN8KZPJ5X"
-            },
             weather: {
                 apiKey: '9a11de307931b3ba88e6af9048b7f3b1',
                 lat: 19.5437,
                 lon: -96.91
             },
             paths: {
-                base: `artifacts/ibcgapp`,
+                getBasePath() {
+                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'ibcgapp';
+                    return `artifacts/${appId}`;
+                },
                 collections: {
                     users: `public/data/users`, events: `public/data/events`, 
                     parroquianos: `public/data/parroquianos`, news: `public/data/news`, 
@@ -1402,16 +1394,10 @@
         // =================================================================================
         const FirebaseService = {
             db: null, auth: null,
-            init(onAuthChangeCallback) {
-                const app = initializeApp(Config.firebase);
-                this.db = getFirestore(app);
-                this.auth = getAuth(app);
-                onAuthStateChanged(this.auth, onAuthChangeCallback);
-            },
             _getCollectionPath(type) {
                 const collectionPath = Config.paths.collections[type];
                 if (!collectionPath) throw new Error(`Collection type "${type}" no definida.`);
-                return `${Config.paths.base}/${collectionPath}`;
+                return `${Config.paths.getBasePath()}/${collectionPath}`;
             },
             onCollectionSnapshot(type, onNext, onError) {
                 const path = this._getCollectionPath(type);
@@ -1907,17 +1893,84 @@
                     this.setupEventListeners();
                     this.initTheme();
                     this.initTimers();
-                    FirebaseService.init(this.onAuthStateChanged.bind(this));
+                    
+                    const firebaseApp = this.initializeFirebase();
+                    if (firebaseApp) {
+                        await this.authenticateUser(firebaseApp);
+                    }
                 } catch (error) {
                      console.error("Error fatal durante la inicialización:", error);
                      UI.showToast('Error crítico al iniciar la aplicación.', 'error');
                     document.body.innerHTML = `<div class="fixed inset-0 bg-red-100 text-red-800 p-8 flex flex-col justify-center items-center text-center"><h1 class="text-3xl font-bold mb-4">¡Ups! Ocurrió un error crítico.</h1><p class="mb-4">${error.message}</p></div>`;
                 }
             },
+
+            initializeFirebase() {
+                try {
+                    const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
+                    const firebaseConfig = JSON.parse(firebaseConfigStr);
+                    
+                    if (!firebaseConfig.apiKey) {
+                        throw new Error("La configuración de Firebase no está disponible.");
+                    }
+
+                    const app = initializeApp(firebaseConfig);
+                    FirebaseService.db = getFirestore(app);
+                    FirebaseService.auth = getAuth(app);
+                    return app;
+                } catch (error) {
+                    console.error("Error al inicializar Firebase:", error);
+                    UI.showToast("Error de configuración. La app no puede conectar.", "error");
+                    return null;
+                }
+            },
+
+            async authenticateUser(app) {
+                if (!app) return;
+                const auth = getAuth(app);
+
+                const authPromise = new Promise((resolve, reject) => {
+                    const unsubscribe = onAuthStateChanged(auth, (user) => {
+                        unsubscribe(); // Nos desuscribimos para que solo se ejecute una vez al inicio
+                        resolve(user);
+                    }, (error) => {
+                        unsubscribe();
+                        reject(error);
+                    });
+                });
+                
+                try {
+                    // Espera a que el estado de autenticación inicial se resuelva.
+                    await authPromise;
+                    
+                    // Si después de la comprobación inicial no hay usuario, intentamos el login.
+                    if (!auth.currentUser) {
+                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                            await signInWithCustomToken(auth, __initial_auth_token);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                    }
+                    
+                    // Ahora que estamos seguros de tener un estado (autenticado o no),
+                    // volvemos a poner el listener principal para futuros cambios (como login/logout manual).
+                    onAuthStateChanged(auth, this.onAuthStateChanged.bind(this));
+
+                } catch (error) {
+                    console.error("Error de autenticación inicial:", error);
+                    if (error.code === 'auth/operation-not-allowed') {
+                         UI.showToast("Error de configuración: Habilita el inicio de sesión anónimo en Firebase.", "error");
+                    } else {
+                        UI.showToast("Fallo en la autenticación.", "error");
+                    }
+                    // Aunque falle, ponemos el listener para que el login manual funcione.
+                    onAuthStateChanged(auth, this.onAuthStateChanged.bind(this));
+                }
+            },
             
             async onAuthStateChanged(authUser) {
                  let userProfile = null;
-                 if (authUser) {
+                 if (authUser && !authUser.isAnonymous) {
                      const userDoc = await FirebaseService.getDoc('users', authUser.uid);
                      if (userDoc.exists()) {
                          userProfile = { id: authUser.uid, ...userDoc.data() };
@@ -1926,6 +1979,9 @@
                          await FirebaseService.setDoc('users', authUser.uid, superAdminProfile);
                          userProfile = { id: authUser.uid, ...superAdminProfile };
                      }
+                 } else if (authUser && authUser.isAnonymous) {
+                    // Creamos un perfil de "invitado" temporal
+                    userProfile = { id: authUser.uid, nombre: 'Invitado', email: '', role: 'viewer', permissions: { verAgendaCalendario: true } };
                  }
                 
                 this.state.auth.user = userProfile;
@@ -1982,7 +2038,7 @@
                 const { viewAsUser, isSuperAdmin, isAdmin, user } = this.state.auth;
                 if (viewAsUser) return false;
                 if (isSuperAdmin) return true;
-                return isAdmin && user.permissions?.[section] === true;
+                return (isAdmin || user?.role === 'viewer') && user.permissions?.[section] === true;
             },
             updateUIPermissions() {
                  UI.updateAdminUI(this.state.auth.isSuperAdmin, this.state.auth.isAdmin, this.state.auth.user, this.state.auth.viewAsUser);
@@ -1992,9 +2048,9 @@
                  UI.nav.initMobileNav();
             },
             updateLockscreenStatus() {
-                const { user, isSuperAdmin, isAdmin } = this.state.auth;
+                const { user } = this.state.auth;
                 const { unlockSwitch, unlockSwitchLabel, message, container } = UI.elements.lockscreen;
-                if (isSuperAdmin || isAdmin || user?.role === 'viewer') {
+                if (user) {
                     unlockSwitch.disabled = false;
                     unlockSwitchLabel.classList.remove('disabled');
                     message.classList.add('hidden');
@@ -2035,9 +2091,7 @@
                     UI.showPage(pageTarget);
                     if (target.closest('#mobile-nav-links')) UI.nav.toggleSidenav(false);
                 }
-
-                // CORRECCIÓN: Se centraliza la apertura de modales a través de una acción.
-                // Esto permite que el manejador decida qué modal abrir (el genérico o uno especial).
+                
                 if (action) {
                     const actionHandlers = {
                         'open-modal': () => this.openModal(formType, null, blockId),
@@ -2148,6 +2202,11 @@
             async handleLogout() { 
                 await signOut(FirebaseService.auth); 
                 UI.showToast('Has cerrado sesión.', 'info');
+                // Forzar el rebloqueo de la pantalla al cerrar sesión
+                const { container, unlockSwitch } = UI.elements.lockscreen;
+                container.classList.remove('fade-out');
+                unlockSwitch.checked = false;
+                this.updateLockscreenStatus();
             },
             async handleGenericFormSubmit(form) {
                 const type = form.dataset.type;
@@ -2194,7 +2253,6 @@
                          if (type === 'news') data.galleryUrls = data.galleryUrls ? data.galleryUrls.split('\n').map(url => url.trim()).filter(Boolean) : [];
                         await FirebaseService.saveDoc(type === 'news' ? 'news' : type + 's', id, data);
                     }
-                    // CORRECCIÓN: Se asegura de cerrar siempre el modal genérico.
                     this.closeModal('generic-modal');
                     UI.showToast('¡Operación exitosa!', 'success');
                 } catch (err) {
@@ -2420,8 +2478,6 @@
                 });
             },
             
-            // CORRECCIÓN: Esta función ahora dirige a los modales correctos.
-            // La mayoría usa el modal genérico, solucionando el error.
             openModal(modalType, data = null, blockId = null) {
                 const nonGenericModals = ['userAuth', 'newsDetail', 'confirm', 'calendarDay'];
                 if (nonGenericModals.includes(modalType)) {
