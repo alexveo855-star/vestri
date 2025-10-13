@@ -175,11 +175,19 @@
         #mobile-sidenav {
             position: fixed; top: 0; left: 0; bottom: 0; width: 280px; background-color: #eef0f4;
             z-index: 60; transform: translateX(-100%); padding: 1.5rem; display: flex; flex-direction: column; will-change: transform;
-            transition: transform 0.3s ease-in-out, background-color 0.5s ease;
+            transition: background-color 0.5s ease;
         }
+        #mobile-sidenav.is-transitioning { transition: transform 0.3s ease-in-out, background-color 0.5s ease; }
         #mobile-sidenav.active { transform: translateX(0); }
         #mobile-sidenav-overlay.active { opacity: 1; pointer-events: auto; }
-        
+
+        #edge-handle {
+            position: fixed; top: 25%; left: 0; transform: translateY(-50%); width: 20px; height: 160px;
+            background-color: rgba(107, 114, 128, 0.4); border-top-right-radius: 10px; border-bottom-right-radius: 10px;
+            z-index: 50; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        #edge-handle::before { content: ''; width: 4px; height: 20px; background: #fff; border-radius: 2px; }
+
         /* Estilos de la Galería de Noticias */
         .gallery-thumbnail {
             width: 80px; height: 60px; border-radius: 8px; cursor: pointer; object-fit: cover;
@@ -433,124 +441,113 @@
           transform: translateY(-50%);
         }
 
-        /* --- Estilos del Widget de Clima --- */
-        .weather-widget {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          height: 200px;
-          width: 100%;
-          border-radius: 20px;
-          overflow: hidden;
-          box-shadow: rgba(0, 0, 0, 0.15) 2px 3px 4px;
+        /* --- Estilos del Nuevo Widget de Clima (UIVERSE.IO by Praashoo7) --- */
+        .cardm {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 250px;
+            height: 300px; /* Espacio para la expansión */
+            margin: 0 auto;
         }
-
-        .weather-widget .info-section {
-          position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          width: 100%;
-          height: 100%;
-          color: white;
+        .cardm .card {
+            position: absolute;
+            width: 250px;
+            height: 130px;
+            border-radius: 25px;
+            background: whitesmoke;
+            color: black;
+            z-index: 2;
+            transition: .4s ease-in-out;
+            top: 0;
         }
-
-        .weather-widget .left-side {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-          height: 100%;
-          z-index: 1;
-          padding-left: 18px;
+        .cardm .weather {
+            position: relative;
+            margin: 1em;
         }
-
-        .weather-widget .weather {
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          gap: 5px;
-          font-size: 0.9rem;
+        .cardm .main {
+            font-size: 2em;
+            position: relative;
+            top: -3em;
+            left: 4.3em;
         }
-
-        .weather-widget .weather div:nth-child(1) {
-          width: 30px;
-          height: auto;
+        .cardm .mainsub {
+            position: relative;
+            top: -10.2em;
+            left: 14em;
+            font-size: 0.6em;
         }
-
-        .weather-widget .temperature {
-          font-size: 3rem;
-          font-weight: 600;
+        .cardm .card2 {
+            position: absolute;
+            display: flex;
+            flex-direction: column; /* Cambiado para apilar upper y lower */
+            width: 240px;
+            height: 130px;
+            border-radius: 35px;
+            background: white;
+            z-index: 1; /* Detrás de la tarjeta principal */
+            transition: .4s ease-in-out;
+            top: 0;
+            justify-content: flex-end; /* Alinear contenido al fondo */
+            padding-bottom: 10px;
         }
-
-        .weather-widget .right-side {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-end;
-          justify-content: space-around;
-          height: 100%;
-          padding-right: 18px;
-          z-index: 1;
+        .cardm .card:hover {
+            background-color: #FFE87C;
+            cursor: pointer;
         }
-
-        .weather-widget .right-side > div {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-end;
+        .cardm .card:hover + .card2 {
+            height: 280px;
+            border-bottom-left-radius: 35px;
+            border-bottom-right-radius: 35px;
         }
-
-        .weather-widget .hour {
-          font-size: 2.25rem;
-          font-weight: 600;
-          line-height: 1em;
+         .cardm .card:hover + .card2 .lower {
+            visibility: visible;
+            opacity: 1;
         }
-
-        .weather-widget .date {
-          font-size: 1rem;
+        .cardm .upper {
+            display: flex;
+            flex-direction: row;
+            position: relative;
+            color: black;
+            gap: 4em;
+            padding: 0 1.8em;
         }
-         .weather-widget .city {
-            font-size: 0.9rem;
-         }
-
-        .weather-widget .background-design {
-          position: absolute;
-          height: 100%;
-          width: 100%;
-          background-color: #ec7263;
-          overflow: hidden;
+        .cardm .humidity, .cardm .air, .cardm .realfeel, .cardm .pressure {
+            text-align: center;
         }
-
-        .weather-widget .circle {
-          background-color: #efc745;
+        .cardm .humiditytext, .cardm .airtext, .cardm .realfeeltext, .cardm .pressuretext {
+            font-size: 0.7em;
+            line-height: 1.2;
         }
-
-        .weather-widget .circle:nth-child(1) {
-          position: absolute;
-          top: -80%;
-          right: -50%;
-          width: 300px;
-          height: 300px;
-          opacity: 0.4;
-          border-radius: 50%;
+        .cardm .humiditysvg, .cardm .airsvg, .cardm .rfsvg, .cardm .pressuresvg {
+            margin: 0 auto;
         }
-
-        .weather-widget .circle:nth-child(2) {
-          position: absolute;
-          top: -70%;
-          right: -30%;
-          width: 210px;
-          height: 210px;
-          opacity: 0.4;
-          border-radius: 50%;
+        .cardm .lower {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            width: 100%;
+            color: black;
+            font-size: 0.7em;
+            transition: .4s ease-in-out;
+            visibility: hidden;
+            opacity: 0;
+            margin-top: 10px;
         }
-
-        .weather-widget .circle:nth-child(3) {
-          position: absolute;
-          top: -35%;
-          right: -8%;
-          width: 100px;
-          height: 100px;
-          opacity: 1;
-          border-radius: 50%;
+        body.dark-theme .cardm .card {
+            background: #4b5563;
+            color: #f9fafb;
+        }
+        body.dark-theme .cardm .card:hover {
+            background-color: #60a5fa;
+            color: #111827;
+        }
+        body.dark-theme .cardm .card2 {
+            background: #374151;
+        }
+        body.dark-theme .cardm .upper, body.dark-theme .cardm .lower {
+             color: #f9fafb;
         }
         
         /* --- ESTILOS MODAL AUTH (UIVERSE.IO) --- */
@@ -933,47 +930,6 @@
             background: #374151;
             box-shadow: 2px 2px 5px #111827, -5px -5px 10px #4b5563;
         }
-        
-        /* --- OPTIMIZACIONES PARA MÓVILES --- */
-        @media (max-width: 640px) {
-            /* Reducir padding general de la app */
-            #app-container {
-                padding: 1rem;
-            }
-
-            /* Compactar tarjetas y reducir sombras para ahorrar espacio */
-            .neumorphic-card {
-                padding: 1rem;
-                box-shadow: 5px 5px 10px #d1d9e6, -5px -5px 10px #ffffff;
-                border-radius: 16px;
-            }
-            body.dark-theme .neumorphic-card {
-                box-shadow: 5px 5px 10px #111827, -5px -5px 10px #4b5563;
-            }
-
-            /* Botones y inputs más compactos */
-            .neumorphic-btn { padding: 0.6rem 0.85rem; }
-            .neumorphic-input { padding: 0.6rem 0.85rem; }
-
-            /* Títulos más pequeños */
-            h1.text-3xl { font-size: 1.875rem; } /* de 3xl a 2xl */
-            h2.text-2xl { font-size: 1.25rem; } /* de 2xl a xl */
-            
-            /* Tablas más compactas */
-            table th, table td { padding: 0.75rem 0.5rem; }
-
-            /* Ajustar widget del clima */
-            .weather-widget { height: 180px; }
-            .weather-widget .temperature { font-size: 2.5rem; }
-            .weather-widget .hour { font-size: 2rem; }
-            .weather-widget .date, .weather-widget .city { font-size: 0.875rem; }
-
-            /* Calendario más denso */
-            .calendar-cell { min-height: 80px; }
-
-            /* Lockscreen */
-            #lockscreen-time { font-size: 3.75rem; } /* de 6xl a 5xl */
-        }
     </style>
 </head>
 <body class="antialiased">
@@ -1006,14 +962,15 @@
 
     <!-- Menú Móvil -->
     <div id="mobile-nav-wrapper" class="md:hidden">
-        <div id="mobile-sidenav-overlay" data-action="close-sidenav"></div>
+        <div id="mobile-sidenav-overlay"></div>
         <div id="mobile-sidenav">
             <div class="flex justify-between items-center mb-8">
-                <h2 class="text-xl font-bold">Menú</h2>
+                <h2 class="text-xl font-bold text-gray-700">Menú</h2>
                 <button data-action="close-sidenav" class="neumorphic-btn p-2"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
             </div>
             <nav id="mobile-nav-links" class="flex flex-col gap-3"></nav>
         </div>
+        <div id="edge-handle"></div>
     </div>
 
     <div id="app-loading">Cargando Portal...</div>
@@ -1021,13 +978,10 @@
     <div id="app-container" class="container mx-auto p-4 sm:p-6 lg:p-8">
         <header class="flex flex-col sm:flex-row justify-between sm:items-center mb-8 gap-4">
             <div class="text-center sm:text-left">
-                <h1 class="text-3xl sm:text-4xl font-bold">Comunidad de Gracia</h1>
+                <h1 class="text-3xl sm:text-4xl font-bold text-gray-700">Comunidad de Gracia</h1>
                 <p class="text-gray-500 mt-2">Mi espacio Digital</p>
             </div>
              <div class="flex items-center justify-center sm:justify-end shrink-0 gap-4">
-                 <button data-action="open-sidenav" class="neumorphic-btn p-2 md:hidden">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
-                 </button>
                  <label class="theme-switch">
                   <input type="checkbox" id="theme-switch-checkbox" class="theme-switch__checkbox">
                   <div class="theme-switch__container">
@@ -1073,30 +1027,41 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <!-- Tarjeta de Hoy (Clima y Hora) -->
                         <div class="md:col-span-1">
-                            <div class="weather-widget">
-                                <section class="info-section">
-                                    <div class="background-design">
-                                        <div class="circle"></div>
-                                        <div class="circle"></div>
-                                        <div class="circle"></div>
+                             <div class="relative flex justify-center items-start min-h-[300px]">
+                                <div class="cardm">
+                                    <div class="card">
+                                      <svg class="weather" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100px" height="100px" viewBox="0 0 100 100" xml:space="preserve">  <image id="image0" width="100" height="100" x="0" y="0" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAMg0lEQVR42u2de5AcVb3HP7/unZ19Tt4vQsgGwpIABoREEVJqlFyLwgclEsmliFZULIWgqFHxlZKioBRKIVzBRwEmKUFQsQollhCzAW9xrzxKi/IiybVAgVjktdlkd3Z3errPzz+6Z3d2d2a3Z7bnsaF/VVvdc/qc032+nz3nd87p7tMQW2yxxRZbbLHFFltsscVWXZNaX0Ap1ruLeQ1ZlqN0CsxXQ6vCdFHaMKBCnxp6BNKqvCHKXs/mpfYPcaDW1x7W6haIdtGQdVlllDUoa1RZJTANBRQ02A79ZuTvEXEMPcBzCrvF0NUyj+dkDW6ty1jI6gqIbsEafBdrxLAB5TJRUqq5g1AWjLz0eWHH1fBrhO1te9kj38bUuuw5qwsg+hRzHJdNKB9HWTRCVIgaxoi0anhNlPvV5q7UVRyutRY1BaK7mOfYfEaVG0RJjREVKgpjRJghrXCv7XBb6zW8XitNagJEn6bZyfB14EsoyYKiQvVg5MVTwyDCbak2bpV1DFRbm6oDyXbxflW2IiwpKFYNYeTSql9jXka4ftoneaya+lQNiHbRloUfAlcNFbpeYYw8vj2T5dp519F3wgAZfIozLcPDKGdNJRh+HEGVvWp03cxreaHSWlmVPkHmSa4Sw/NTFQYKAmdYIv/bcxdXTmkgThebMGwXpWmqwsi7tmaDPHB0K1+cckBUkcwebkHYKsE5pjgM1K8pAnL70Tvk5ikFxHmKmwVuHL/QUwvGiHjC1498X26qhHaRO3VnD58FfnDCwhiRVj8/8wvcWbdAMk9xJR4/O5GaKcZJq4pRox+dvZlf1h2QzB85C5dnBFreDDCG4hnSanTV7K/ytyh0jMSH6NM0i8sDbzoY/rFWRB7ev8Uve10AyTr8AFjxpoMRHBc4O9kkd0Sh5aSbrGwXFys88WaFkR+m6Hvn3Mjuyeg5qRqif6VRlbtiGP5WPLln350kawYke4gvIyyLYQyFd844xucno2nZTZZ2MduBf6C0xjCGf6vS2+hpx/Rv012OrmXXEEf5XAxjbLkF2rOWXF+urmXVEN1JKpPkHwIzYhhjy61Kt6S1Y85t9JaqbVk1JJPk0zGM4uVGmUkz15SjbVlARNkYwxi/3MbIxqoAcXbxNmBZDGP8cotw5sFv8NaKA1Hl6hjGBOXOlcnI1RUHAnw4hhG6TB+pKJDBx1mOclIMI2SZYNHBzZxeMSCW/9BzDKOEMhnhPRUD4ilrYhillQmVygEROD+GUUKZ/HKdV6LG4Ux3khy0SItixzDCwQjO7fUOamvnXWTC6NwQFoijdJ5oMFTBM+B54Hr+vprhtLZAgwV2sF8qDBREsdsaOQ14MVIgatOJOTFgeB44LgxmIeP6+9qQwmqbj900C+Nm8PqP4Pa8RkIMjTYkbWiyIWEFzUoIGENhhjOiB2KYV46g9QTDMzDoQH8W0hlILnonqbM/QvuSd5Gc2xlclw5tvUya/tefp+eF39L9wsMkeg/RloTWhF9jQsFQEJgbVudSgLTn/jOmIgzH9SEcH4TGJZfQsXYLLQvOGboW1WEQGgRKooXWJatp6VjN/Eu+xZFntnP4iVsY6DvK9GZIWhPDCPbbw+ocupclSttUhZFx4Wg/HDMzmHfZTzltwyM0LzgHo4qqjtkW+qOhiVnvuIZTv/Ac5tRLOdzn5xvG+YuR6IEQAJlqMJwARjpxMh0bdzFjxUd94U0g9qitMeNDsltnccqGHTRd9CUO94HjjQ8jKHcqrMyhmywUo8XazTqF4XpwbADS9nw6P9VFYtpCX9g8PzHcPdWiWw1OkL+d+76vcUDh2P/czsym4XMKY8utSg5bdEAM9MkUgqEK/Rk47jSyeMMOEqkARnAxhbfFAYzdwpz/+Ar/OriPA3sfxQQ90ITl+5akBQnbb4JENfSdw9BARINXuqYIjKwLvRmYtfortC6+EBNELARiuMYUBzC25vjnn3flPWj2+9CQxO09QLb7ddL7nuT4iztpOPQSqSQ0SfjX4cL3spTjBfvfdQgDhX4HnOYOFl/0uTE1I7/JogiQ8Zqw3LkVBSsByQZQsKctxE4tJNnxNli7md4Xf8/h391KqvulwciBAP+aKjA84481Zq3ehDQ0YcxE4g43QwVhjYgzftx88K3L19J8+rsZ+NvO5dz/mVAih+5l2creeobhGb+ZGggGfY7XxLS3rCvajQ3T1R2KU6RHpkaHemzFem5YDTSd+YFrX3719W+G0Tn85GIXDekjpEVprCcYWdcfffdmICPttHZ+kOZFF9A0/2yaTjo/lH8Y20wN/5cX9zfF8y1YA1XVGF1/+qmLH4oECED6F7wILK8HGCaYBunphwHTzIwLb2D2hdcjiZZI/MPE/mY434nzGwLWi5ddunTp0oPFNC7Fh4DyDLC8HmCkB/0xRiYxn1PWP0zTgnP9eKaYGCP9QRHBxvclBfxEuPyG8m1Xy/4msKmYxCXdoFKlq55g9GuKxR97jKYF54b3D6NH5CX4hxF+okyfZIxufG7//qIv95R2T92wu9Y+IxM47X4HTvrAVhpnLi3NQU8yzlDcMoCqGlBa2vozayMB0rKe1zDsqxUMx4WBjD+pl1ywkvbll1UIgCkap5S4RWuJmtWRAAn0e6hWXdusO3xDacbKT6CEEWxYuErVpJLzM7owMiCey3YTzM9VE4bjQtYDT8E1QvOpF088YztRsxJhU1YKJA9mRQZk+gb+LvCnasJQHb7vbTywk9OxW2aV1/bnb0MCndA/lArJmIi6vYEZ5SeWckG1YKgJaobn97KslplDhR5KN6o7Ot64YXR3tJrjkSDf/ZHVEIBUPzvU8M9qwEDB5Hd7Fbz+7iq1/aaE/Ezoc2JMV6RA5NNkVfleNWDkH/cMiII32EO2vyevWQknhhYQbtIOutQ4xhxvSdp7IgUCkGrlJ2p4o9IwCJosVR+GJYBR0v//xKiCTjzRN65/qBIko/xXZ2dn0YfmygYi6xhAubHSMPLDBB+IKvT+5YFoBZsAZGiHP845jZpD6iS/O56uk3pPPfUJtqHsqTSM3I2x3LNQtgX9r/yR/r//oTLNymRqSXGQrmKuWrnytGMVAyKCWobrVMlWtGYEWyuYm24Mnoc69OgNOMf2V6ftDw3JjG2mjDGq3qZVK1Y8MZGmk158pv0a/g/DTZV88NkK0iVsH07C8muL23uQAw9ciXPkleC/0JQgrikBgJkEJHNc4EOrzl3xwzB62pMFAnDr+fz3YJu8Q+C0qGHkjuWe6jDG723ZEozc092k//oIVnIaibnLQCw/fRnjkqFxwiTHGsFpXcXca3uJK1aed9bzYbWMbAGz3ruZ6yF/JvfKW0QwgnKSzT0UrdA76IMxxp/1NUG8humLaV52KY0dF2G3z8NumY0R8L99MFbkXN6BhAXEHT2QDOKavHwEYxpbe0VIo7IfNa8qPK6O9ejb3372G6XqGOkSf8fu5gJjZBf5S25EACP3e8AZfn0g7QSCBeFZb1Ra8tJSJH/GuYa8sBH7eWGiDExP6sXnPcTTUWkY+SKYPVu52CCP5e69RwUDBTe4bZsbJKYdv5YQNGWu58PyCog5ZmxDuOsqBEMBC7JtSb38/Af5TZT6VWSp8e47uRqVbYBEBSMXJzfri/pN1WBQO3Iv2pRUM8qEgcEkbd14zs/ZFrV2FVv7vfsO/lON/FQgERWMXNqs5985zD/uun4NMqPOUS6MgmH+L8dCP3Xug2yvhG4VXYz/6O28V0V+jdIeFYxcmAmew3K9AmmjgjEqrUAadN0ZO9hZKc0q/nWEQ7exSlR+JbAoKhij47jesIMvmv8kYajymuvp5ct+xrOV1Ksqn6s4dguzsrZsE7g0Shih0kYBw/Bby9OPn7yDI5XWqnofdFGk+ztsViM3wfBnjuocxqCqfmPR/Xwvbx7ixACSswO3sNRS2SrKJfUMw8BuT/S6JfdGs2J1WKvZV9oO3swVovJdlI56gqGGVxDdvOg+flULXWr72bwfkThygPXGyI3o8KJoOcGqDONlNfqdAwnuX/ljsrXSpD4+LLkF65ByOSobFdaKYlcDhiqeGB5X0ftOXsgj9fDFz7oAkm8Hv8YCI6wXI1eoslKgIUoYanBVeRb0F67Dg0u2UfIEYCWt7oDk2+EtpLL9vBOR9+B/nHgZyuxSYKjhELBX4FlFdycdnpxzX+nLt1bL6hpIIXv1BmY2QqdRTgZaBdpM8PluC/rU0Af0eR77Ncu+U+4tb4Xp2GKLLbbYYosttthiiy222GKLLbbYYottfPs3GPtpnh9ZV0oAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjMtMDItMTdUMDg6MDM6MDcrMDA6MDBPnKiVAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIzLTAyLTE3VDA4OjAzOjA3KzAwOjAwPsEQKQAAACh0RVh0ZGF0ZTp0aW1lc3RhbXAAMjAyMy0wMi0xN1QwODowMzowNyswMDowMGnUMfYAAAAASUVORK5CYII="></image>
+                                      </svg>
+                                      <div id="weather-temp" class="main">-- °C</div>
+                                      <div id="weather-location" class="mainsub">Cargando...</div>
                                     </div>
-                                    <div class="left-side">
-                                        <div class="weather">
-                                            <div>
-                                                <svg id="weather-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g><path d="M12 4.5V9.5M12 14.5V19.5M19.5 12H14.5M9.5 12H4.5M17.6066 6.3934L15.5 8.5M8.5 15.5L6.3934 17.6066M17.6066 17.6066L15.5 15.5M8.5 8.5L6.3934 6.3934" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
-                                            </div>
-                                            <div id="weather-desc">Cargando...</div>
+                                    <div class="card2">
+                                      <div class="upper">
+                                        <div class="humidity">
+                                          <svg class="humiditysvg" xml:space="preserve" viewBox="0 0 30 30" height="30px" width="30px" y="0px" x="0px" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" id="Layer_1" version="1.1">  <image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAMAAAAM7l6QAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABiVBMVEUAAAAAAP9NerV/f39Oe7ZQfLZVf6pRfbfL5fdRfbZIbbZmmcxols5nl85OebSPsteLrdVSfLZxl89ok9FqlM5ahsBdicNahsFcicRhjcdWgbpahsFfi8ZbhsFijsmErOWLt+9xndZcicJahsFahsFdicN5n81xjcZqlNRpls1qlNBfn99pls9nkcxXgrpZgrtik81OebWNsdeMrtZOebRNerVZg7pwmMhNebRKdLRNerZNebHZ8v9olM9jj8rV7v3W7v1ch7+Ktu6Lt/CEsep7p+Cz1PO+3fqJte5/q+V+quOUvvLY8f+TvfKpzvapzfaqz/aRvPGdxfSVv/LX8P/W8P+32fnK5vyMuPCmzPXW8P6ny/WWv/KOufGawvO22PjJ5vzB4PrU7v6iyPSz1fiYwfKOufDD4funzPXF4vvE4vuOuvHV7/7U7/7G4/uNufCx1Pew0/ev0veu0feQu/G01viPufF/q+SCrud+quSItO2kyvWjyfVijslrltFmkcyEqtZgjMf///8NXQssAAAAPHRSTlMAAZgCW+EGy+jMBxRaRXHC2H8bX0ry/vrhyvnw0PDHR0Be/e/4/f4SDDNiEFVb0eI5iMHCho7NwI0YOBdy59CmAAAAAWJLR0SCi7P/RAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB+cCEBITAJMBs+kAAAFbSURBVCjPY2CAAUYmZgY8gIWVBY8sGzsHJxc2CW4eXiDJx28jIAjiCgnzgoV5ebiBpIiomK2duISklL2Ng6O0jIwsmCsnIW5nKyYqwiDv5AwELq5uNjY27h6enh5grpcLiHKSZ1BwBgNvH6C0j68zKlCASfvZgIA/LukAsHQAVDgwCE06OAQoGxoMlQ4Lj0CVdo6MsomKhrJjfGwi0aSdY+NiYcx4G5sEdGkkkGhjk4RHOjnEJgWPtLNvKprL07CpgktHpEfgk/a3ycAnnWmThRDMxpDOscmFi6Xl5aNLF+QUwqWLbIoxogQBSpJskkpwS5cC4yYFp3RZElA6qQwh7VFeAWZXVFYByWpwxNcAueUeQGlFJWUZCZXauloVCRllVdt6NbB0QyOIq6TIoK4BSrWaWpogSltHVw8srW8A4mqoY6R6QyOgrLEJztxiamZuZsGGOztZWlnD2QBCYbJl9Cx9XAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMy0wMi0xNlQxODoxOTowMCswMDowMG/wqfUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjMtMDItMTZUMTg6MTk6MDArMDA6MDAerRFJAAAAKHRFWHRkYXRlOnRpbWVzdGFtcAAyMDIzLTAyLTE2VDE4OjE5OjAwKzAwOjAwSbgwlgAAAABJRU5ErkJggg==" y="0" x="0" height="30" width="30" id="image0"></image>
+                                            </svg>
+                                          <div id="weather-humidity" class="humiditytext">Humedad<br>--%</div>
                                         </div>
-                                        <div id="weather-temp" class="temperature">--°</div>
-                                    </div>
-                                    <div class="right-side">
-                                        <div>
-                                            <div id="current-time" class="hour">--:--</div>
-                                            <div id="current-date" class="date">-- --/--</div>
+                                        <div class="air">
+                                            <svg class="airsvg" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="30px" viewBox="0 0 30 30" xml:space="preserve">  <image id="image0" width="30" height="30" x="0" y="0" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAMAAAAM7l6QAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABaFBMVEUAAAAA//8ilfIhlfMgloIglfMglvIeku8cjf8glvMhlfIflvMhlfIhlvIglvMhl/MglvIglfIglPEfmfIhlfIglvQfn/8glfIglvIhlfMglfIglvMhl/AhlfIcm/AAf/8qlOkglPYglvIZmf8zmf8hlfIglfIXi+cilPMhlvMglfQhlvMglvIhlfIgl/MglvMhlvMhlfMhlvIfl+8hlvMhlfMglvMglvI/f/8hlvMilvMelvAglfIglvMhlvIglPIglvIhlfIkkfUglfMglfMhlvMhlvMilvMjlfEglvMhlfIhlfMglfIflvEnnOshlvIflPEflfIek/QglvIglvMhlfIime4jlPAglvMglvEhlvMhl/MglfMglfMhlvIak/Edk/UhlvIglfMgl/IglvIglfIilPIhlvMhlfMhk/Eqqv8glvIglfMcl/UhlfMhlvIhlvMhlfIglfIhlfIgl/QflPQhlvP///+FIn/GAAAAdnRSTlMAAVKu1MmNIQmy91ig/Z5s0fo3KP5dCL27Lvm0NvwSAgwf+woFv7oLQ0RGa9L1Vtndx4sgme3FZgTIFiI/hvZld3sch8Tv7kI683nV6DgN4GBQMsycjw8k6nWqRW3cUxMa5dpnfLU87N8mBrxXG5jnibjLoi8YaHuXCQAAAAFiS0dEd0Zk+dcAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfnAhEIBBbLW8PtAAABJ0lEQVQoz62RZ1fCMBSG46atomBR1IJ7g+KotKKgxYl74Z6493x/v6T0QKMtn/p8ec/Nk5Pc5BLiHCWlZeUVlVU21sWBwgvWuho1bqG2Dh6vla0X4ctGQyP8VrqpuUVPCQGXlQ+26tEGtBfpX0JHp73t6kYPs9Db159nYDAEj8RoNxjCQ+xxvuFIgZHRMcemQMi4iP+I8kRU0TUHG9RJqpWYFVPTcahKsc/jkSAzfgNuVvvjk5gj84W7FhZZvYRl4o0apFawGmT0GsKman0DmzS31O3cQgo75t27SNLYQyRNc/8AhzkROzrOPjCEE1poMk7Pzi8Sl7gyxp5B/Fq4Aa//A7m9y7V6/2Ac+/hEy8CzUb68ysDbezp/rZL5+Pz6NvWh/TgwzV+1HV523WQ81AAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMy0wMi0xN1QwODowNDoyMiswMDowML1dmzYAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjMtMDItMTdUMDg6MDQ6MjIrMDA6MDDMACOKAAAAKHRFWHRkYXRlOnRpbWVzdGFtcAAyMDIzLTAyLTE3VDA4OjA0OjIyKzAwOjAwmxUCVQAAAABJRU5ErkJggg=="></image>
+                                            </svg>
+                                          <div id="weather-wind" class="airtext">Viento<br>-- Km/h</div>
                                         </div>
-                                        <div id="weather-location" class="city">Cargando...</div>
+                                      </div>
+                                      <div class="lower">
+                                        <div class="realfeel">
+                                          <svg class="rfsvg" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20px" height="20px" viewBox="0 0 20 20" xml:space="preserve">  <image id="image0" width="20" height="20" x="0" y="0" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAMAAAC6V+0/AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABuVBMVEUAAAAAAAAECQkIDg4EBAQAAAAAAAAFBQUHDAwIDg4MFBUNFRUKCgoPGhxGenw/b3FDdXcmRUYJDAwJDw9Pi40LFBQNFhYMFhYPGhsMExUKEhIPGhoKEhQMExMOGhoMExMPGhoKFBQLExMNFxcKEhILFBQKExMKExQLEhILERMKEREHDQ1SkJMuUlMABAQAAAASHh9FeXtAcXI8aWszWlwvU1M4Y2QjPT4NGBoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABYmZtWlplKgoVlsbRsvsF0zM9uwsVuwcNsvb9ecU53czF0bStgbkdqt7dntbhpbXVxaCf5uxD+vxD7vBBTUilYlZdtwMNms7Zdc1P8vRDYpBR5b0imsKy0wcFzhoZdkpRldEx6cU3W5eWLnJxdm51otrlZdl67kBWxvbmUo6RmfHxajo9ouLpqt7mJdiN8YxnH1dWVpaVfn6Jgl41OUUKvu7pWe3xwxsldn6KmtLTO3NxUf4BswMN0ys1gpaedrKzT4uJjd3dsvcBqubxXg4Vgd3hthYVid3dhdnZof39shYVkf4BVeXpqt7pksbJjr7Jdo6X////f0mPcAAAAQXRSTlMABGh/a1xUZIqPo7BH2vv4/vJQgvyxwLLCpqXBsafBqcKutcCwuamtop+SgPzwOQzg/f728fD166Zla1o/PiEmFs+XjUIAAAABYktHRJKWBO8gAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wISBQ8aO3RqsAAAAQlJREFUGNNjYMAOGJmYmVlY2djYmZk5OLm4ecBivHyOTs7O/ALOTo6Oji6ugkJAQWERNxTgLgoUFEMVc/MQBwpKuLl5enn7+PpBBf0lwYIBgUHBwSGhYeFgwQgpoKC0W2RUcHB0TGxcfAJYuwxYMDE4OCgpGQhSUoGCabJAQTm39KDgjEyQYHJWdo5brjxQUMEtLz+ooDAZAoqKXRXBgm4lpWXJMFBeoQQUVHZzq6yCi1XX1KoABVXr3OobYGKNTc0takBBdVc3t9a29vaOzq7unt4+t34NoKDmBFRvTtQCCmrroArq6gEF9Q0MnY2MTUxNzYxBwNwCHMj6llbWNrZ29jZg4IAjKhgAAWdbVO4nzP4AAAAldEVYdGRhdGU6Y3JlYXRlADIwMjMtMDItMThUMDU6MTU6MjYrMDA6MDCumAyfAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIzLTAyLTE4VDA1OjE1OjI2KzAwOjAw38W0IwAAACh0RVh0ZGF0ZTp0aW1lc3RhbXAAMjAyMy0wMi0xOFQwNToxNToyNiswMDowMIjQlfwAAAAASUVORK5CYII="></image>
+                                          </svg>
+                                          <div id="weather-feels-like" class="realfeeltext">Sensación<br>-- °C</div>
+                                        </div>
+                                        <div class="pressure">
+                                          <svg class="pressuresvg" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20px" height="20px" viewBox="0 0 20 20" xml:space="preserve">  <image id="image0" width="20" height="20" x="0" y="0" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAMAAAC6V+0/AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABNVBMVEUAAAAAr8EArMAAqsAArMEBrMEBrMAAq8AArb8AqsIBrMEgtMa53+S53+QetMYArMEArMEAqrsArMA9scFegp4Cqr8Ao8gArMEErMHn6+wTobgArMAArMBCvc1sco8Aq8EArMFSqrmNWn1Dvs4Aq8EErcLo7O0SorgArMAAq8A8sMBie5gCqr8BrMEftMa23eO33uQcs8YAq8AArMAAq8ABq8AAq8EAq8Mtdn9DW2OvvcSwvcSrucJ3kZyvvcWvv8OruMJ6kZ55kJ2rusAArMHFzdLH0NS5xMru7u7l5+jm6Ojp3eDd4OK2ubvAhZL4G0enrK1YYWV3foHu7e39Mlns7OwzXWQxW2Tl5+f6VHSssLKpra/9MVnc4OL1m6y5xcvv09kxcX5FWmR4kJywvsWsusL///80ikJBAAAARHRSTlMAHUotv/j5vSw/9cvd3MrzPg/q4+rqDnXk+/NzucP3t873/cJ05Przcunj8en0y93cyz28/vu7K1RASpWb/YBAhvP3hpKCbb4AAAABYktHRGYs1NklAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wISBRAIBZcVZgAAAM1JREFUGNNjYMAHGJmYGNGEmFlcWNlc2DmQxTi5uHlc3Xj5+AUQYoJCwu4enl4e3iKiYnBBcQlJHw8PD18/fylpuKCMLFAoIDAoOEROHi6ooOjuERoWHuERqaSAUKkMVBkV7REcg6RSRVUtFijsEeevroGwXVMrHiSYoK2DsJ1BQFdP38PDwJDfCNn1HMYmpqYmZuZoHrVITLTACBDLpCRLJK6VNRDY2CYn29qAWFZgQbsUIEhNBoJUEMsOLGhvBwQOjk5Ojs4glj0DCQAAJCUofMKIT9cAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjMtMDItMThUMDU6MTY6MDgrMDA6MDBXtcu8AAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIzLTAyLTE4VDA1OjE2OjA4KzAwOjAwJuhzAAAAACh0RVh0ZGF0ZTp0aW1lc3RhbXAAMjAyMy0wMi0xOFQwNToxNjowOCswMDowMHH9Ut8AAAAASUVORK5CYII="></image>
+                                          </svg>
+                                          <div id="weather-pressure" class="pressuretext">Presión<br>-- mbar</div>
+                                        </div>
+                                      </div>
                                     </div>
-                                </section>
+                                  </div>
                             </div>
                         </div>
                         <div class="md:col-span-2 space-y-6">
@@ -1124,7 +1089,7 @@
                     <div class="neumorphic-card p-6">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Directorio</h2>
-                            <button data-modal-target="parroquiano-modal" data-permission="directorio" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 12a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1v-1z"/></svg><span>Agregar Parroquiano</span></button>
+                            <button data-modal-target="parroquiano-modal" data-permission="directorio" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M11 5a3 3 0 11-6 0 3 3 0 016 0zM12.73 10.21a5.002 5.002 0 016.536 6.536l.243.243a1 1 0 11-1.414 1.414l-.243-.243a5.002 5.002 0 01-7.95-7.95l-1.01-1.01A5.002 5.002 0 012.27 12.27l-1.01 1.01a1 1 0 11-1.414-1.414l1.01-1.01a5.002 5.002 0 017.95 7.95l.243.243a1 1 0 011.414 1.414l-.243-.243a5.002 5.002 0 01-6.536-6.536l1.01 1.01z" /></svg><span>Agregar Parroquiano</span></button>
                         </div>
                         <div class="overflow-x-auto"><table class="w-full text-left"><thead class="border-b border-gray-300"><tr><th class="p-3 font-semibold">Nombre</th><th class="p-3 font-semibold hidden md:table-cell">Teléfono</th><th class="p-3 font-semibold hidden lg:table-cell">Contacto Emergencia</th><th class="p-3 font-semibold admin-only-table-cell" data-permission="directorio">Acciones</th></tr></thead><tbody id="directorio-table-body"></tbody></table></div>
                     </div>
@@ -1154,22 +1119,6 @@
                             <button data-modal-target="bloque-archivo-modal" data-permission="recursos" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
                         </div>
                         <div id="archivos-container" class="space-y-4"></div>
-                    </div>
-                </div>
-                <div id="page-videos" class="page">
-                    <div class="neumorphic-card p-6">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                            <h2 class="text-2xl font-bold">Vídeos</h2>
-                            <button data-modal-target="video-modal" class="neumorphic-btn primary w-full sm:w-auto"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Video</span></button>
-                        </div>
-                        <!-- Contenedor para la lista de vídeos -->
-                        <div id="videos-list" class="space-y-3 mb-6">
-                            <p class="text-gray-500 text-center">No hay vídeos agregados. ¡Añade uno!</p>
-                        </div>
-                        <!-- Contenedor para el reproductor de vídeo -->
-                        <div id="video-player-container" class="relative overflow-hidden pt-[56.25%] rounded-lg neumorphic-card hidden">
-                            <iframe id="youtube-player" class="absolute inset-0 w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
                     </div>
                 </div>
                 <div id="page-calendario" class="page">
@@ -1222,7 +1171,7 @@
                       </svg>
                     </li>
                   </a>
-                  <a href="https://x.com/iacg_acna" target="_blank" rel="noopener noreferrer">
+                  <a href="https://x.com/acna_xalapa" target="_blank" rel="noopener noreferrer">
                     <li class="icon twitter">
                       <span class="tooltip">X</span>
                       <svg
@@ -1258,19 +1207,18 @@
         </footer>
     </div>
 
-    <!-- ========= MODALES ========= -->
-    <!-- Se agrupan todos los modales al final del body para una mejor organización del DOM -->
-
-    <!-- Modal de Autenticación de Usuario -->
+    <!-- Modales -->
      <div id="user-auth-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 backdrop-blur-sm flex items-center justify-center hidden z-[110] p-4">
         <div class="content relative">
              <button data-action="close-modal" class="absolute -top-6 -right-3 text-white hover:text-gray-300">
                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
+            
             <div class="auth-tabs">
                 <button id="show-login-btn" class="auth-tab active">Iniciar Sesión</button>
                 <button id="show-register-btn" class="auth-tab">Registrarse</button>
             </div>
+
             <!-- Vista de Login -->
             <div id="login-view">
                 <form id="login-form" action="#" class="mt-8">
@@ -1313,7 +1261,6 @@
         </div>
     </div>
     
-    <!-- Modal de Evento -->
     <div id="event-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
         <div class="neumorphic-card p-8 w-full max-w-md">
             <h2 class="text-2xl font-bold mb-6"></h2>
@@ -1330,86 +1277,50 @@
             </form>
         </div>
     </div>
-    
-    <!-- Modal de Parroquiano -->
     <div id="parroquiano-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+        <div class="neumorphic-card p-8 w-full max-w-lg">
             <h2 class="text-2xl font-bold mb-6"></h2>
             <form id="parroquiano-form" data-type="parroquiano" class="space-y-4">
                 <input type="hidden" name="id">
-                <div><label for="parroquiano-nombre" class="block text-sm font-medium mb-1">Nombre Completo</label><input type="text" id="parroquiano-nombre" name="nombre" class="neumorphic-input" required></div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div><label for="parroquiano-telefono" class="block text-sm font-medium mb-1">Teléfono</label><input type="tel" id="parroquiano-telefono" name="telefono" class="neumorphic-input"></div>
-                    <div><label for="parroquiano-nacimiento" class="block text-sm font-medium mb-1">Fecha de Nacimiento</label><input type="date" id="parroquiano-nacimiento" name="nacimiento" class="neumorphic-input"></div>
-                </div>
-                <div><label for="parroquiano-email" class="block text-sm font-medium mb-1">Correo Electrónico</label><input type="email" id="parroquiano-email" name="email" class="neumorphic-input"></div>
-                <div><label for="parroquiano-direccion" class="block text-sm font-medium mb-1">Dirección</label><input type="text" id="parroquiano-direccion" name="direccion" class="neumorphic-input"></div>
-                <fieldset class="border-t pt-4 mt-4">
-                    <legend class="text-lg font-semibold mb-2">Contacto de Emergencia</legend>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                         <div><label for="parroquiano-emergencia-nombre" class="block text-sm font-medium mb-1">Nombre</label><input type="text" id="parroquiano-emergencia-nombre" name="emergencia_nombre" class="neumorphic-input"></div>
-                         <div><label for="parroquiano-emergencia-telefono" class="block text-sm font-medium mb-1">Teléfono</label><input type="tel" id="parroquiano-emergencia-telefono" name="emergencia_telefono" class="neumorphic-input"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="parroquiano-nombre" class="block text-sm font-medium mb-1">Nombre Completo</label>
+                        <input type="text" id="parroquiano-nombre" name="nombre" class="neumorphic-input" required>
                     </div>
-                </fieldset>
-                <div class="flex justify-end gap-4 pt-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
-            </form>
-        </div>
-    </div>
-    
-    <!-- Modal de Noticias -->
-    <div id="news-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-6 w-full max-w-2xl max-h-[90vh] flex flex-col">
-            <h2 class="text-2xl font-bold mb-6 flex-shrink-0"></h2>
-            <form id="news-form" data-type="news" class="space-y-4 overflow-y-auto flex-grow pr-2">
-                <input type="hidden" name="id">
-                <div><label for="news-titulo" class="block text-sm font-medium mb-1">Título</label><input type="text" id="news-titulo" name="titulo" class="neumorphic-input" required></div>
-                <div><label for="news-imageUrl" class="block text-sm font-medium mb-1">URL de Imagen Principal</label><input type="url" id="news-imageUrl" name="imageUrl" class="neumorphic-input" placeholder="https://ejemplo.com/imagen.jpg"></div>
-                <div><label for="news-resumen" class="block text-sm font-medium mb-1">Resumen (Texto corto)</label><textarea id="news-resumen" name="resumen" rows="3" class="neumorphic-input"></textarea></div>
-                <div><label for="news-contenido" class="block text-sm font-medium mb-1">Contenido Completo</label><textarea id="news-contenido" name="contenido" rows="6" class="neumorphic-input"></textarea></div>
-                <div><label for="news-galleryUrls" class="block text-sm font-medium mb-1">URLs de Galería (una por línea)</label><textarea id="news-galleryUrls" name="galleryUrls" rows="4" class="neumorphic-input" placeholder="https://ejemplo.com/foto1.jpg&#10;https://ejemplo.com/foto2.jpg"></textarea></div>
-            </form>
-            <div class="flex justify-end gap-4 pt-4 flex-shrink-0"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" form="news-form" class="neumorphic-btn primary">Guardar</button></div>
-        </div>
-    </div>
-
-    <!-- Modal Detalle de Noticia -->
-    <div id="news-detail-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center hidden z-[60] p-4">
-        <div class="neumorphic-card p-4 sm:p-6 w-full max-w-4xl max-h-[95vh] flex flex-col relative">
-            <button data-action="close-modal" class="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 neumorphic-btn p-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
-            <div class="flex-grow overflow-y-auto pr-2">
-                <h2 id="news-detail-title" class="text-2xl sm:text-3xl font-bold mb-2"></h2>
-                <p id="news-detail-date" class="text-sm text-gray-500 mb-4"></p>
-                <div id="news-gallery-container" class="mb-4 relative">
-                    <img id="news-detail-image" src="" alt="Imagen de la noticia" class="w-full h-auto max-h-96 object-contain rounded-lg transition-opacity duration-150">
-                    <button id="gallery-prev-btn" class="absolute top-1/2 left-2 transform -translate-y-1/2 neumorphic-btn p-2 hidden"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg></button>
-                    <button id="gallery-next-btn" class="absolute top-1/2 right-2 transform -translate-y-1/2 neumorphic-btn p-2 hidden"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg></button>
+                    <div>
+                        <label for="parroquiano-nacimiento" class="block text-sm font-medium mb-1">Fecha de Nacimiento</label>
+                        <input type="date" id="parroquiano-nacimiento" name="nacimiento" class="neumorphic-input">
+                    </div>
+                    <div>
+                        <label for="parroquiano-telefono" class="block text-sm font-medium mb-1">Teléfono</label>
+                        <input type="tel" id="parroquiano-telefono" name="telefono" class="neumorphic-input">
+                    </div>
+                    <div>
+                        <label for="parroquiano-email" class="block text-sm font-medium mb-1">Correo Electrónico</label>
+                        <input type="email" id="parroquiano-email" name="email" class="neumorphic-input">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="parroquiano-direccion" class="block text-sm font-medium mb-1">Dirección</label>
+                        <textarea id="parroquiano-direccion" name="direccion" rows="2" class="neumorphic-input"></textarea>
+                    </div>
                 </div>
-                <div id="news-gallery-thumbnails" class="flex gap-2 overflow-x-auto pb-2 mb-4"></div>
-                <p id="news-detail-content" class="leading-relaxed"></p>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Modales para Bloques y Archivos -->
-    <div id="bloque-manual-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-8 w-full max-w-md">
-            <h2 class="text-2xl font-bold mb-6"></h2>
-            <form id="bloque-manual-form" data-type="bloqueManual">
-                <input type="hidden" name="id">
-                <div class="mb-6"><label for="bloque-manual-nombre" class="block text-sm font-medium mb-1">Nombre del Bloque</label><input type="text" id="bloque-manual-nombre" name="nombre" class="neumorphic-input" required></div>
-                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
-            </form>
-        </div>
-    </div>
-    <div id="bloque-archivo-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-8 w-full max-w-md">
-            <h2 class="text-2xl font-bold mb-6"></h2>
-            <form id="bloque-archivo-form" data-type="bloqueArchivo">
-                <input type="hidden" name="id">
-                <div class="mb-6"><label for="bloque-archivo-nombre" class="block text-sm font-medium mb-1">Nombre del Bloque</label><input type="text" id="bloque-archivo-nombre" name="nombre" class="neumorphic-input" required></div>
-                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+                <div class="pt-4 mt-4 border-t border-gray-300 dark:border-gray-600">
+                     <h3 class="text-lg font-semibold mb-2">Contacto de Emergencia</h3>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="parroquiano-emergencia-nombre" class="block text-sm font-medium mb-1">Nombre del Contacto</label>
+                            <input type="text" id="parroquiano-emergencia-nombre" name="emergencia_nombre" class="neumorphic-input">
+                        </div>
+                        <div>
+                            <label for="parroquiano-emergencia-telefono" class="block text-sm font-medium mb-1">Teléfono del Contacto</label>
+                            <input type="tel" id="parroquiano-emergencia-telefono" name="emergencia_telefono" class="neumorphic-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-4 pt-4">
+                    <button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button>
+                    <button type="submit" class="neumorphic-btn primary">Guardar</button>
+                </div>
             </form>
         </div>
     </div>
@@ -1437,31 +1348,7 @@
             </form>
         </div>
     </div>
-    
-    <!-- Modal para Videos -->
-    <div id="video-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-8 w-full max-w-md">
-            <h2 class="text-2xl font-bold mb-6">Agregar Video</h2>
-            <form id="video-form" data-type="video">
-                <input type="hidden" name="id">
-                <div class="mb-4">
-                    <label for="video-titulo" class="block text-sm font-medium mb-1">Título del Video</label>
-                    <input type="text" id="video-titulo" name="titulo" class="neumorphic-input" required>
-                </div>
-                <div class="mb-6">
-                    <label for="video-url" class="block text-sm font-medium mb-1">URL de YouTube</label>
-                    <input type="url" id="video-url" name="url" class="neumorphic-input" placeholder="https://www.youtube.com/watch?v=VIDEO_ID" required>
-                </div>
-                <div class="flex justify-end gap-4">
-                    <button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button>
-                    <button type="submit" class="neumorphic-btn primary">Guardar Video</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal de Confirmación y Detalles del Día -->
-    <div id="confirm-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-[120] p-4">
+    <div id="confirm-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
         <div class="neumorphic-card p-8 w-full max-w-sm">
             <h2 class="text-xl font-bold mb-4">Confirmar Eliminación</h2>
             <p id="confirm-message" class="mb-6">¿Estás seguro?</p>
@@ -1486,14 +1373,33 @@
             </div>
         </div>
     </div>
+    <div id="news-detail-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-6 sm:p-8 w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-start mb-4">
+                <h2 id="news-detail-title" class="text-2xl font-bold"></h2>
+                <button data-action="close-modal" class="neumorphic-btn p-2 -mr-2 -mt-2 sm:mr-0 sm:mt-0"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
+            </div>
+            <p id="news-detail-date" class="text-sm text-gray-500 mb-4"></p>
+            <div class="flex-grow overflow-y-auto pr-2">
+                <img id="news-detail-image" src="" alt="Imagen principal de la noticia" class="w-full h-auto max-h-80 object-contain rounded-lg mb-4 transition-opacity duration-150">
+                <div id="news-gallery-container" class="relative mb-4">
+                    <div id="news-gallery-thumbnails" class="flex items-center gap-2 overflow-x-auto pb-2"></div>
+                    <button id="gallery-prev-btn" class="absolute left-0 top-1/2 -translate-y-1/2 bg-black/30 text-white p-1 rounded-full hidden hover:bg-black/50 transition-colors z-10"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg></button>
+                    <button id="gallery-next-btn" class="absolute right-0 top-1/2 -translate-y-1/2 bg-black/30 text-white p-1 rounded-full hidden hover:bg-black/50 transition-colors z-10"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg></button>
+                </div>
+                <div id="news-detail-content" class="text-base leading-relaxed break-words"></div>
+            </div>
+        </div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot, addDoc, doc, setDoc, getDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, addDoc, doc, setDoc, getDoc, updateDoc, deleteDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // =================================================================================
         // CONFIGURACIÓN CENTRALIZADA
+        // Almacena todas las configuraciones y constantes en un solo lugar para fácil acceso y modificación.
         // =================================================================================
         const Config = {
             firebase: {
@@ -1519,26 +1425,49 @@
 
         // =================================================================================
         // SERVICIOS EXTERNOS (Firebase, Clima)
+        // Módulos que abstraen la comunicación con APIs externas. No conocen el DOM.
         // =================================================================================
         const FirebaseService = {
             db: null, auth: null,
+            /**
+             * Inicializa los servicios de Firebase y establece el listener de autenticación.
+             * @param {function} onAuthChangeCallback - Función a ejecutar cuando cambia el estado de autenticación.
+             */
             init(onAuthChangeCallback) {
                 const app = initializeApp(Config.firebase);
                 this.db = getFirestore(app);
                 this.auth = getAuth(app);
                 onAuthStateChanged(this.auth, onAuthChangeCallback);
             },
+            /**
+             * Obtiene la ruta completa de una colección en Firestore.
+             * @param {string} type - El nombre de la colección (ej. 'users', 'events').
+             * @returns {string} La ruta completa de la colección.
+             */
             _getCollectionPath(type) {
                 const collectionPath = Config.paths.collections[type];
                 if (!collectionPath) throw new Error(`Collection type "${type}" no definida.`);
                 return `${Config.paths.base}/${collectionPath}`;
             },
+            /**
+             * Escucha cambios en una colección en tiempo real.
+             * @param {string} type - El nombre de la colección.
+             * @param {function} callback - Función que se ejecuta con los datos actualizados.
+             * @returns {function} Una función para cancelar la suscripción (unsubscribe).
+             */
             onCollectionSnapshot(type, callback) {
                 const path = this._getCollectionPath(type);
                 return onSnapshot(collection(this.db, path), (snapshot) => {
                     callback(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
                 }, (error) => console.error(`Error en listener de ${type}: `, error));
             },
+            /**
+             * Guarda (crea o actualiza) un documento en una colección.
+             * @param {string} type - El nombre de la colección.
+             * @param {string|null} id - El ID del documento a actualizar, o null para crear uno nuevo.
+             * @param {object} data - Los datos a guardar.
+             * @returns {Promise<void|import("firebase/firestore").DocumentReference>}
+             */
             async saveDoc(type, id, data) {
                 const collectionPath = this._getCollectionPath(type);
                 if (id) {
@@ -1550,26 +1479,55 @@
                     return await addDoc(collection(this.db, collectionPath), data);
                 }
             },
+            /**
+             * Establece (sobrescribe) un documento con un ID específico.
+             * @param {string} type - El nombre de la colección.
+             * @param {string} id - El ID del documento.
+             * @param {object} data - Los datos a establecer.
+             */
             async setDoc(type, id, data) {
                 await setDoc(doc(this.db, this._getCollectionPath(type), id), data);
             },
+            /**
+             * Obtiene un único documento por su ID.
+             * @param {string} type - El nombre de la colección.
+             * @param {string} id - El ID del documento.
+             * @returns {Promise<import("firebase/firestore").DocumentSnapshot>}
+             */
              async getDoc(type, id) {
                 return await getDoc(doc(this.db, this._getCollectionPath(type), id));
             },
+            /**
+             * Elimina un documento por su ID.
+             * @param {string} type - El nombre de la colección.
+             * @param {string} id - El ID del documento a eliminar.
+             */
             async deleteDoc(type, id) {
                 await deleteDoc(doc(this.db, this._getCollectionPath(type), id));
             }
         };
 
         const WeatherService = {
+            /**
+             * Obtiene los datos del clima desde la API de OpenWeatherMap.
+             * @returns {Promise<{temp: number, description: string, location: string}>}
+             */
             async fetch() {
                 const { lat, lon, apiKey } = Config.weather;
                 const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=es`;
                 try {
                     const response = await fetch(url);
-                    if (!response.ok) throw new Error('Respuesta inválida de la API del clima');
                     const data = await response.json();
-                    return { temp: data.main.temp, description: data.weather[0].description, location: data.name };
+                    if (!response.ok) throw new Error(data.message || 'Respuesta inválida de la API');
+                    return { 
+                        temp: data.main.temp, 
+                        description: data.weather[0].description, 
+                        location: data.name,
+                        humidity: data.main.humidity,
+                        wind: data.wind.speed,
+                        feels_like: data.main.feels_like,
+                        pressure: data.main.pressure
+                    };
                 } catch (error) {
                     console.error("Error al obtener el clima:", error);
                     return { description: 'Error de red', location: '' };
@@ -1579,36 +1537,104 @@
         
         // =================================================================================
         // MÓDULO DE UI (Interfaz de Usuario)
+        // Responsable de TODA la manipulación del DOM. No contiene lógica de negocio.
+        // Organizado por componentes para mayor claridad.
         // =================================================================================
         const UI = {
-            elements: {},
+            elements: {}, // Se llenará en init()
+            /**
+             * Inicializa el módulo UI, cacheando todos los elementos del DOM.
+             */
             init() {
-                const ids = [
-                    'app-loading', 'app-container', 'app-lockscreen', 'lockscreen-time', 'lockscreen-date', 
-                    'lockscreen-message', 'unlock-switch', 'admin-controls-container', 'theme-switch-checkbox',
-                    'tabs-container', 'pages-container', 'mobile-sidenav', 'mobile-sidenav-overlay', 'mobile-nav-links',
-                    'current-date', 'current-time', 'weather-temp', 'weather-desc', 'weather-location', 
-                    'upcoming-events-list', 'birthday-card', 'birthday-list', 'agenda-table-body', 
-                    'directorio-table-body', 'news-grid', 'manuales-container', 'archivos-container', 
-                    'month-year-header', 'calendar-grid', 'user-management-table-body', 'user-auth-modal',
-                    'event-modal', 'parroquiano-modal', 'news-modal', 'news-detail-modal', 'bloque-manual-modal',
-                    'manual-modal', 'bloque-archivo-modal', 'archivo-modal', 'confirm-modal', 'calendar-day-modal',
-                    'news-detail-title', 'news-detail-date', 'news-detail-image', 'news-detail-content',
-                    'news-gallery-container', 'news-gallery-thumbnails', 'gallery-prev-btn', 'gallery-next-btn',
-                    'confirm-message', 'confirm-delete-btn', 'calendar-day-modal-title', 'calendar-day-events-list',
-                    'calendar-day-birthdays-section', 'calendar-day-birthdays-list',
-                    'video-modal', 'video-titulo', 'video-url', 'videos-list', 'youtube-player', 'video-player-container' // Nuevos elementos de video
-                ];
-                ids.forEach(id => {
-                    const camelCaseId = id.replace(/-(\w)/g, (_, c) => c.toUpperCase());
-                    this.elements[camelCaseId] = document.getElementById(id);
-                });
-                this.elements.unlockSwitchLabel = document.querySelector('.unlock-switch-label');
+                this.elements = {
+                    appLoading: document.getElementById('app-loading'),
+                    appContainer: document.getElementById('app-container'),
+                    lockscreen: {
+                        container: document.getElementById('app-lockscreen'),
+                        time: document.getElementById('lockscreen-time'),
+                        date: document.getElementById('lockscreen-date'),
+                        message: document.getElementById('lockscreen-message'),
+                        unlockSwitch: document.getElementById('unlock-switch'),
+                        unlockSwitchLabel: document.querySelector('.unlock-switch-label'),
+                    },
+                    header: {
+                        adminControlsContainer: document.getElementById('admin-controls-container'),
+                        themeSwitch: document.getElementById('theme-switch-checkbox'),
+                    },
+                    nav: {
+                        tabsContainer: document.getElementById('tabs-container'),
+                        pagesContainer: document.getElementById('pages-container'),
+                        edgeHandle: document.getElementById('edge-handle'),
+                        mobileSidenav: document.getElementById('mobile-sidenav'),
+                        mobileSidenavOverlay: document.getElementById('mobile-sidenav-overlay'),
+                        mobileNavLinks: document.getElementById('mobile-nav-links'),
+                    },
+                    pages: {
+                        tablero: {
+                            weatherTemp: document.getElementById('weather-temp'),
+                            weatherLocation: document.getElementById('weather-location'),
+                            weatherHumidity: document.getElementById('weather-humidity'),
+                            weatherWind: document.getElementById('weather-wind'),
+                            weatherFeelsLike: document.getElementById('weather-feels-like'),
+                            weatherPressure: document.getElementById('weather-pressure'),
+                            upcomingEventsList: document.getElementById('upcoming-events-list'),
+                            birthdayCard: document.getElementById('birthday-card'),
+                            birthdayList: document.getElementById('birthday-list'),
+                        },
+                        agenda: { tableBody: document.getElementById('agenda-table-body') },
+                        directorio: { tableBody: document.getElementById('directorio-table-body') },
+                        noticias: { grid: document.getElementById('news-grid') },
+                        manuales: { container: document.getElementById('manuales-container') },
+                        recursos: { container: document.getElementById('archivos-container') },
+                        calendario: {
+                            header: document.getElementById('month-year-header'),
+                            grid: document.getElementById('calendar-grid'),
+                        },
+                        userManagement: { tableBody: document.getElementById('user-management-table-body') }
+                    },
+                    modals: {
+                        userAuth: document.getElementById('user-auth-modal'),
+                        event: document.getElementById('event-modal'),
+                        parroquiano: document.getElementById('parroquiano-modal'),
+                        news: document.getElementById('news-modal'),
+                        newsDetail: document.getElementById('news-detail-modal'),
+                        bloqueManual: document.getElementById('bloque-manual-modal'),
+                        manual: document.getElementById('manual-modal'),
+                        bloqueArchivo: document.getElementById('bloque-archivo-modal'),
+                        archivo: document.getElementById('archivo-modal'),
+                        confirm: document.getElementById('confirm-modal'),
+                        calendarDay: document.getElementById('calendar-day-modal'),
+                    },
+                    newsDetail: {
+                        title: document.getElementById('news-detail-title'),
+                        date: document.getElementById('news-detail-date'),
+                        image: document.getElementById('news-detail-image'),
+                        content: document.getElementById('news-detail-content'),
+                        galleryContainer: document.getElementById('news-gallery-container'),
+                        thumbnails: document.getElementById('news-gallery-thumbnails'),
+                        prevBtn: document.getElementById('gallery-prev-btn'),
+                        nextBtn: document.getElementById('gallery-next-btn'),
+                    },
+                    confirmModal: {
+                        message: document.getElementById('confirm-message'),
+                        deleteBtn: document.getElementById('confirm-delete-btn'),
+                    },
+                    calendarDayModal: {
+                        title: document.getElementById('calendar-day-modal-title'),
+                        eventsList: document.getElementById('calendar-day-events-list'),
+                        birthdaysSection: document.getElementById('calendar-day-birthdays-section'),
+                        birthdaysList: document.getElementById('calendar-day-birthdays-list'),
+                    }
+                };
             },
+            
+            /** Muestra una página y actualiza las pestañas de navegación. */
             showPage(pageId) {
-                this.elements.pagesContainer.querySelectorAll('.page').forEach(page => page.classList.toggle('active', page.id === pageId));
+                this.elements.nav.pagesContainer.querySelectorAll('.page').forEach(page => page.classList.toggle('active', page.id === pageId));
                 document.querySelectorAll(`[data-target]`).forEach(tab => tab.classList.toggle('active', tab.dataset.target === pageId));
             },
+
+            /** Renderiza una tabla con datos. */
             renderTable(tbody, data, rowRenderer, emptyMessage) {
                 tbody.innerHTML = '';
                 if (data.length === 0) {
@@ -1619,6 +1645,8 @@
                 const sortedData = [...data].sort((a, b) => (a.nombre || a.name || '').localeCompare(b.nombre || b.name || ''));
                 sortedData.forEach(item => tbody.insertAdjacentHTML('beforeend', rowRenderer(item)));
             },
+            
+            /** Renderiza una cuadrícula de tarjetas. */
             renderGrid(container, data, cardRenderer, emptyMessage) {
                 container.innerHTML = '';
                 if (data.length === 0) {
@@ -1628,6 +1656,8 @@
                 const sortedData = [...data].sort((a, b) => new Date(b.fechaPublicacion) - new Date(a.fechaPublicacion));
                 sortedData.forEach(item => container.insertAdjacentHTML('beforeend', cardRenderer(item)));
             },
+
+            /** Actualiza la UI de administrador (botones, visibilidad de elementos, etc.). */
             updateAdminUI(isSuperAdmin, isAdmin, user, viewAsUser) {
                 document.body.classList.toggle('super-admin-mode', isSuperAdmin && !viewAsUser);
                 document.body.classList.toggle('admin-mode', (isAdmin || isSuperAdmin) && !viewAsUser);
@@ -1643,9 +1673,10 @@
                                     <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform"></div>
                                 </div>
                             </label>
-                        </div>` : '';
+                        </div>
+                    ` : '';
 
-                     this.elements.adminControlsContainer.innerHTML = `
+                     this.elements.header.adminControlsContainer.innerHTML = `
                         <div class="flex items-center gap-4">
                             ${isSuperAdminView}
                             <span class="font-semibold hidden sm:inline">${user.nombre.split(' ')[0]}</span>
@@ -1654,10 +1685,12 @@
                             </button>
                         </div>`;
                 } else {
-                     this.elements.adminControlsContainer.innerHTML = ``;
+                     this.elements.header.adminControlsContainer.innerHTML = ``;
                 }
                 this.nav.initMobileNav();
             },
+
+            // --- Componentes de UI ---
             tablero: {
                 renderUpcomingEvents(events, container) {
                     container.innerHTML = '';
@@ -1711,10 +1744,17 @@
                     dateEl.textContent = `${days[now.getDay()]} ${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}`;
                     timeEl.textContent = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
                 },
-                updateWeather(data, tempEl, descEl, locEl) {
-                    tempEl.textContent = data.temp ? `${Math.round(data.temp)}°` : '--°';
-                    descEl.textContent = data.description ? data.description.charAt(0).toUpperCase() + data.description.slice(1) : 'Cargando...';
-                    locEl.textContent = data.location || '';
+                updateWeather(data) {
+                    const { weatherTemp, weatherLocation, weatherHumidity, weatherWind, weatherFeelsLike, weatherPressure } = UI.elements.pages.tablero;
+                    if (weatherTemp) weatherTemp.textContent = data.temp ? `${Math.round(data.temp)} °C` : '-- °C';
+                    if (weatherLocation) weatherLocation.textContent = data.location || '';
+                    if (weatherHumidity) weatherHumidity.innerHTML = `Humedad<br>${data.humidity || '--'}%`;
+                    if (weatherWind) {
+                        const windKmh = data.wind ? (data.wind * 3.6).toFixed(1) : '--';
+                        weatherWind.innerHTML = `Viento<br>${windKmh} Km/h`;
+                    }
+                    if (weatherFeelsLike) weatherFeelsLike.innerHTML = `Sensación<br>${data.feels_like ? Math.round(data.feels_like) : '--'} °C`;
+                    if (weatherPressure) weatherPressure.innerHTML = `Presión<br>${data.pressure || '--'} mbar`;
                 }
             },
             agenda: {
@@ -1740,7 +1780,7 @@
                         <tr class="border-b border-gray-300/50">
                             <td class="p-3 font-medium">${p.nombre || ''}</td>
                             <td class="p-3 hidden md:table-cell">${p.telefono || ''}</td>
-                            <td class="p-3 hidden lg:table-cell">${p.emergencia_nombre || ''} (${p.emergencia_telefono || 'N/A'})</td>
+                            <td class="p-3 hidden lg:table-cell">${p.emergencia_nombre || ''}</td>
                             <td class="p-3 admin-only-table-cell" data-permission="directorio">
                                  <div class="flex gap-2">
                                     <button data-action="edit" data-type="parroquiano" data-id="${p.id}" class="neumorphic-btn btn-sm">Editar</button>
@@ -1771,7 +1811,7 @@
                         </div>`;
                 }
             },
-             acordeon: {
+             acordeon: { // Para Manuales y Recursos
                 render(container, blocks, emptyMessage, typeConfig) {
                     container.innerHTML = '';
                     if (blocks.length === 0) {
@@ -1812,46 +1852,6 @@
                                 </div>
                             </div>`);
                     });
-                }
-            },
-            videos: {
-                renderVideoList(videos, container, playerContainer, playerIframe) {
-                    container.innerHTML = '';
-                    if (videos.length === 0) {
-                        container.innerHTML = '<p class="text-gray-500 text-center">No hay vídeos agregados. ¡Añade uno!</p>';
-                        playerContainer.classList.add('hidden'); // Ocultar el reproductor si no hay videos
-                        return;
-                    }
-
-                    // Por defecto, muestra el primer video si no hay uno activo
-                    if (!playerIframe.src && videos.length > 0) {
-                        this.playVideo(videos[0].url, playerIframe, playerContainer);
-                    }
-
-                    videos.forEach(video => {
-                        container.insertAdjacentHTML('beforeend', `
-                            <div class="flex items-center justify-between p-3 rounded-lg neumorphic-inset">
-                                <button data-action="play-video" data-url="${video.url}" data-id="${video.id}" class="flex-grow text-left truncate font-medium hover:text-blue-600">
-                                    ${video.titulo}
-                                </button>
-                                <button data-action="delete-video" data-id="${video.id}" class="neumorphic-btn danger btn-sm ml-4">Eliminar</button>
-                            </div>
-                        `);
-                    });
-                },
-                playVideo(youtubeUrl, playerIframe, playerContainer) {
-                    const videoId = this.extractYouTubeId(youtubeUrl);
-                    if (videoId) {
-                        playerIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-                        playerContainer.classList.remove('hidden');
-                    } else {
-                        alert('URL de YouTube inválida.');
-                    }
-                },
-                extractYouTubeId(url) {
-                    const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-                    const match = url.match(regExp);
-                    return (match && match[2].length === 11) ? match[2] : null;
                 }
             },
             calendario: {
@@ -1954,28 +1954,37 @@
                         const target = btn.dataset.target;
                         const isActive = btn.classList.contains('active');
                         
-                        linksHtml += `<button class="nav-button ${isActive ? 'active' : ''}" data-target="${target}" style="width: 100%;">${text}</button>`;
+                        linksHtml += `
+                            <button class="nav-button ${isActive ? 'active' : ''}" data-target="${target}" style="width: 100%;">
+                                ${text}
+                            </button>`;
                     });
-                    UI.elements.mobileNavLinks.innerHTML = linksHtml;
+                    UI.elements.nav.mobileNavLinks.innerHTML = linksHtml;
                 },
                 toggleSidenav(open) {
-                    UI.elements.mobileSidenav.classList.toggle('active', open);
-                    UI.elements.mobileSidenavOverlay.classList.toggle('active', open);
+                    const { mobileSidenav, mobileSidenavOverlay } = UI.elements.nav;
+                    mobileSidenav.classList.add('is-transitioning');
+                    mobileSidenav.style.transform = open ? 'translateX(0)' : 'translateX(-100%)';
+                    mobileSidenavOverlay.classList.toggle('active', open);
                 }
             },
         };
 
         // =================================================================================
         // CONTROLADOR PRINCIPAL DE LA APLICACIÓN (App)
+        // Orquesta la lógica, maneja el estado y conecta los servicios con la UI.
         // =================================================================================
         const App = {
             state: {
                 auth: { user: null, isSuperAdmin: false, isAdmin: false, viewAsUser: false },
-                data: { events: [], parroquianos: [], news: [], manuales: [], archivos: [], allUsers: [], videos: [] }, // Añadir 'videos'
+                data: { events: [], parroquianos: [], news: [], manuales: [], archivos: [], allUsers: [] },
                 ui: { currentCalendarDate: new Date(), currentGalleryImages: [], currentGalleryIndex: 0 },
             },
             dataListenersInitialized: false,
             
+            /**
+             * Punto de entrada de la aplicación.
+             */
             async init() {
                 try {
                     UI.init();
@@ -1983,13 +1992,16 @@
                     this.initTheme();
                     this.initTimers();
                     FirebaseService.init(this.onAuthStateChanged.bind(this));
-                    this.renderVideos(); // Renderizar videos al inicio
                 } catch (error) {
                      console.error("Error fatal durante la inicialización:", error);
                     document.body.innerHTML = `<div class="fixed inset-0 bg-red-100 text-red-800 p-8 flex flex-col justify-center items-center text-center"><h1 class="text-3xl font-bold mb-4">¡Ups! Ocurrió un error crítico.</h1><p class="mb-4">${error.message}</p></div>`;
                 }
             },
             
+            /**
+             * Se ejecuta cuando cambia el estado de autenticación de Firebase.
+             * @param {import("firebase/auth").User | null} authUser - El objeto de usuario de Firebase.
+             */
             async onAuthStateChanged(authUser) {
                  let userProfile = null;
                  if (authUser) {
@@ -2013,7 +2025,7 @@
                 if (!this.dataListenersInitialized && userProfile) {
                     this.setupDataListeners();
                     this.loadWeather();
-                    this.renderCalendario();
+                    UI.calendario.render(this.state.ui.currentCalendarDate, this.state.data.events, this.state.data.parroquianos, UI.elements.pages.calendario.header, UI.elements.pages.calendario.grid);
                     this.dataListenersInitialized = true;
                 }
 
@@ -2023,31 +2035,31 @@
                 }
             },
             
+            /**
+             * Configura los listeners de datos de Firestore.
+             */
             setupDataListeners() {
                 FirebaseService.onCollectionSnapshot('events', d => { this.state.data.events = d; this.renderAgenda(); this.renderTablero(); this.renderCalendario(); });
                 FirebaseService.onCollectionSnapshot('parroquianos', d => { this.state.data.parroquianos = d; this.renderDirectorio(); this.renderTablero(); this.renderCalendario(); });
-                FirebaseService.onCollectionSnapshot('news', d => { this.state.data.news = d; UI.renderGrid(UI.elements.newsGrid, d, UI.noticias.createCard, 'No hay noticias.'); });
-                FirebaseService.onCollectionSnapshot('manuales', d => { this.state.data.manuales = d; UI.acordeon.render(UI.elements.manualesContainer, d, 'No hay manuales.', {plural: 'manuales', block: 'bloqueManual', item: 'manual', permission: 'manuales'}); });
-                FirebaseService.onCollectionSnapshot('archivos', d => { this.state.data.archivos = d; UI.acordeon.render(UI.elements.archivosContainer, d, 'No hay archivos.', {plural: 'archivos', block: 'bloqueArchivo', item: 'archivo', permission: 'recursos'}); });
-                FirebaseService.onCollectionSnapshot('users', users => { this.state.data.allUsers = users; if(this.state.auth.isSuperAdmin) { UI.userManagement.render(users, UI.elements.userManagementTableBody); } });
+                FirebaseService.onCollectionSnapshot('news', d => { this.state.data.news = d; UI.renderGrid(UI.elements.pages.noticias.grid, d, UI.noticias.createCard, 'No hay noticias.'); });
+                FirebaseService.onCollectionSnapshot('manuales', d => { this.state.data.manuales = d; UI.acordeon.render(UI.elements.pages.manuales.container, d, 'No hay manuales.', {plural: 'manuales', block: 'bloqueManual', item: 'manual', permission: 'manuales'}); });
+                FirebaseService.onCollectionSnapshot('archivos', d => { this.state.data.archivos = d; UI.acordeon.render(UI.elements.pages.recursos.container, d, 'No hay archivos.', {plural: 'archivos', block: 'bloqueArchivo', item: 'archivo', permission: 'recursos'}); });
+                FirebaseService.onCollectionSnapshot('users', users => { this.state.data.allUsers = users; if(this.state.auth.isSuperAdmin) { UI.userManagement.render(users, UI.elements.pages.userManagement.tableBody); } });
             },
 
             // --- Renderizadores de Páginas Completas ---
             renderTablero() {
-                UI.tablero.renderUpcomingEvents(this.state.data.events, UI.elements.upcomingEventsList);
-                UI.tablero.renderBirthdayReminders(this.state.data.parroquianos, UI.elements.birthdayCard, UI.elements.birthdayList);
+                UI.tablero.renderUpcomingEvents(this.state.data.events, UI.elements.pages.tablero.upcomingEventsList);
+                UI.tablero.renderBirthdayReminders(this.state.data.parroquianos, UI.elements.pages.tablero.birthdayCard, UI.elements.pages.tablero.birthdayList);
             },
             renderAgenda() {
-                UI.renderTable(UI.elements.agendaTableBody, this.state.data.events, UI.agenda.createRow, 'No hay eventos.');
+                UI.renderTable(UI.elements.pages.agenda.tableBody, this.state.data.events, UI.agenda.createRow, 'No hay eventos.');
             },
             renderDirectorio() {
-                UI.renderTable(UI.elements.directorioTableBody, this.state.data.parroquianos, UI.directorio.createRow, 'No hay registros.');
-            },
-            renderVideos() { // Nuevo renderizador para videos
-                UI.videos.renderVideoList(this.state.data.videos, UI.elements.videosList, UI.elements.videoPlayerContainer, UI.elements.youtubePlayer);
+                UI.renderTable(UI.elements.pages.directorio.tableBody, this.state.data.parroquianos, UI.directorio.createRow, 'No hay registros.');
             },
             renderCalendario() {
-                 UI.calendario.render(this.state.ui.currentCalendarDate, this.state.data.events, this.state.data.parroquianos, UI.elements.monthYearHeader, UI.elements.calendarGrid);
+                 UI.calendario.render(this.state.ui.currentCalendarDate, this.state.data.events, this.state.data.parroquianos, UI.elements.pages.calendario.header, UI.elements.pages.calendario.grid);
             },
 
             // --- Lógica de Permisos ---
@@ -2060,30 +2072,24 @@
             updateUIPermissions() {
                  UI.updateAdminUI(this.state.auth.isSuperAdmin, this.state.auth.isAdmin, this.state.auth.user, this.state.auth.viewAsUser);
                  document.querySelectorAll('[data-permission]').forEach(el => {
-                    const elStyle = el.style;
-                    elStyle.display = this.hasPermission(el.dataset.permission) ? '' : 'none';
+                    el.style.display = this.hasPermission(el.dataset.permission) ? '' : 'none';
                  });
-                 // Asegurarse de que el botón de Videos se renderice en el nav móvil
-                 const videoNavButton = document.querySelector('[data-target="page-videos"]');
-                 if (videoNavButton) {
-                     videoNavButton.style.display = 'flex'; // Siempre visible para todos los usuarios
-                 }
                  UI.nav.initMobileNav();
             },
             updateLockscreenStatus() {
                 const { user, isSuperAdmin, isAdmin } = this.state.auth;
-                const { unlockSwitch, unlockSwitchLabel, lockscreenMessage, appLockscreen } = UI.elements;
+                const { unlockSwitch, unlockSwitchLabel, message, container } = UI.elements.lockscreen;
                 if (isSuperAdmin || isAdmin || user?.role === 'viewer') {
                     unlockSwitch.disabled = false;
                     unlockSwitchLabel.classList.remove('disabled');
-                    lockscreenMessage.classList.add('hidden');
+                    message.classList.add('hidden');
                 } else {
                     unlockSwitch.disabled = true;
                     unlockSwitch.checked = false;
                     unlockSwitchLabel.classList.add('disabled');
-                    if (appLockscreen.classList.contains('fade-out')) {
-                        appLockscreen.style.display = 'flex';
-                        setTimeout(() => appLockscreen.classList.remove('fade-out'), 10);
+                    if (container.classList.contains('fade-out')) {
+                        container.style.display = 'flex';
+                        setTimeout(() => container.classList.remove('fade-out'), 10);
                     }
                 }
             },
@@ -2093,8 +2099,10 @@
                 document.body.addEventListener('click', this.handleGlobalClick.bind(this));
                 document.addEventListener('submit', this.handleFormSubmission.bind(this));
                 document.body.addEventListener('change', this.handleGlobalChange.bind(this));
-                UI.elements.unlockSwitch.addEventListener('change', (e) => {
-                    if (e.target.checked) setTimeout(() => UI.elements.appLockscreen.classList.add('fade-out'), 300);
+
+                // --- Event listeners específicos ---
+                UI.elements.lockscreen.unlockSwitch.addEventListener('change', (e) => {
+                    if (e.target.checked) setTimeout(() => UI.elements.lockscreen.container.classList.add('fade-out'), 300);
                 });
                 document.getElementById('prev-month-btn').addEventListener('click', () => { this.state.ui.currentCalendarDate.setMonth(this.state.ui.currentCalendarDate.getMonth() - 1); this.renderCalendario(); });
                 document.getElementById('next-month-btn').addEventListener('click', () => { this.state.ui.currentCalendarDate.setMonth(this.state.ui.currentCalendarDate.getMonth() + 1); this.renderCalendario(); });
@@ -2104,26 +2112,22 @@
                 const target = e.target.closest('[data-action], [data-target], [data-modal-target], .accordion-toggle');
                 if (!target) return;
 
-                const { action, target: pageTarget, modalTarget, type, id, blockId, itemId, userId, date, url } = target.dataset;
+                const { action, target: pageTarget, modalTarget, type, id, blockId, itemId } = target.dataset;
 
-                if (pageTarget) {
-                    UI.showPage(pageTarget);
-                    if (UI.elements.mobileSidenav.classList.contains('active')) {
-                        UI.nav.toggleSidenav(false);
-                    }
-                }
+                if (pageTarget) UI.showPage(pageTarget);
                 if (modalTarget) this.openModal(modalTarget, null, blockId);
 
                 if (action) {
                     const actionHandlers = {
-                        'logout': this.handleLogout, 'close-modal': () => this.closeModal(target.closest('.fixed.inset-0').id),
-                        'open-sidenav': () => UI.nav.toggleSidenav(true), 'close-sidenav': () => UI.nav.toggleSidenav(false),
-                        'edit': () => this.handleEdit(type, id, blockId, itemId), 'delete': () => this.handleDelete(type, id, blockId, itemId),
-                        'delete-user': () => this.handleDeleteUser(userId), 'read-more': () => this.handleReadMore(id),
+                        'logout': this.handleLogout,
+                        'close-modal': () => this.closeModal(target.closest('.fixed.inset-0').id),
+                        'close-sidenav': () => UI.nav.toggleSidenav(false),
+                        'edit': () => this.handleEdit(type, id, blockId, itemId),
+                        'delete': () => this.handleDelete(type, id, blockId, itemId),
+                        'delete-user': () => this.handleDeleteUser(target.dataset.userId),
+                        'read-more': () => this.handleReadMore(id),
                         'add-item': () => this.openModal(`${modalTarget.replace('-modal', '')}-modal`, null, blockId),
-                        'show-day-details': () => this.handleShowDayDetails(date),
-                        'play-video': () => UI.videos.playVideo(url, UI.elements.youtubePlayer, UI.elements.videoPlayerContainer), // Nuevo
-                        'delete-video': () => this.handleDeleteVideo(id), // Nuevo
+                        'show-day-details': () => this.handleShowDayDetails(target.dataset.date),
                     };
                     actionHandlers[action]?.();
                 }
@@ -2135,6 +2139,7 @@
                 }
                  if(target.id === 'show-register-btn') { e.preventDefault(); document.getElementById('login-view').classList.add('hidden'); document.getElementById('register-view').classList.remove('hidden'); target.classList.add('active'); document.getElementById('show-login-btn').classList.remove('active'); }
                  if(target.id === 'show-login-btn') { e.preventDefault(); document.getElementById('register-view').classList.add('hidden'); document.getElementById('login-view').classList.remove('hidden'); target.classList.add('active'); document.getElementById('show-register-btn').classList.remove('active'); }
+
             },
 
             handleFormSubmission(e) {
@@ -2143,19 +2148,23 @@
                 const formHandlers = {
                     'login-form': this.handleLogin,
                     'register-form': this.handleRegister,
-                    'video-form': this.handleVideoFormSubmit // Nuevo handler
                 };
+                // Llama al manejador específico o al genérico
                 (formHandlers[formId] || this.handleGenericFormSubmit).call(this, e.target);
             },
             
             handleGlobalChange(e) {
                 const target = e.target;
                 if (target.id === 'view-as-user-switch') {
-                    this.state.auth.viewAsUser = e.target.checked; this.updateUIPermissions();
+                    this.state.auth.viewAsUser = e.target.checked;
+                    this.updateUIPermissions();
                 } else if (target.matches('.user-role-switch')) {
                     const userId = target.dataset.userId;
                     const newRole = target.checked ? 'admin' : 'viewer';
-                    document.getElementById(`role-label-${userId}`).textContent = newRole === 'admin' ? 'Admin' : 'Espectador';
+                    const label = document.getElementById(`role-label-${userId}`);
+                    if (label) {
+                        label.textContent = newRole === 'admin' ? 'Admin' : 'Espectador';
+                    }
                     this.updateUserRole(userId, newRole);
                 } else if (target.matches('.user-permission-checkbox')) {
                     this.updateUserPermission(target.dataset.userId, target.dataset.permission, target.checked);
@@ -2163,239 +2172,34 @@
             },
             
             // --- Acciones de la Aplicación ---
-            async handleLogin(form) {
-                const email = form.querySelector('#login-email').value;
-                const password = form.querySelector('#login-password').value;
-                const errorMsg = form.querySelector('#login-error-msg');
-                errorMsg.classList.add('hidden');
-                
-                try {
-                    let userCredential;
-                    if (email === 'admin@portal.com' && password === 'admin123') {
-                        userCredential = await signInWithEmailAndPassword(FirebaseService.auth, email, password).catch(err => 
-                            err.code === 'auth/user-not-found' ? createUserWithEmailAndPassword(FirebaseService.auth, email, password) : Promise.reject(err)
-                        );
-                    } else {
-                        userCredential = await signInWithEmailAndPassword(FirebaseService.auth, email, password);
-                    }
-                    this.closeModal('user-auth-modal');
-                    UI.elements.unlockSwitch.checked = true;
-                    UI.elements.unlockSwitch.dispatchEvent(new Event('change'));
-                } catch(error) {
-                    errorMsg.textContent = 'Correo o contraseña incorrectos.';
-                    errorMsg.classList.remove('hidden');
-                }
-            },
-            async handleRegister(form) {
-                 const name = form.querySelector('#register-name').value;
-                 const email = form.querySelector('#register-email').value;
-                 const password = form.querySelector('#register-password').value;
-                 const errorMsg = form.querySelector('#register-error-msg');
-                 errorMsg.classList.add('hidden');
-
-                try {
-                    const userCredential = await createUserWithEmailAndPassword(FirebaseService.auth, email, password);
-                    const newUserProfile = { nombre: name, email: email, role: 'viewer', permissions: {} };
-                    await FirebaseService.setDoc('users', userCredential.user.uid, newUserProfile);
-                    this.closeModal('user-auth-modal');
-                    UI.elements.unlockSwitch.checked = true;
-                    UI.elements.unlockSwitch.dispatchEvent(new Event('change'));
-                } catch(error) {
-                     if (error.code === 'auth/email-already-in-use') errorMsg.textContent = 'Este correo ya está registrado.';
-                     else if (error.code === 'auth/weak-password') errorMsg.textContent = 'La contraseña debe tener al menos 6 caracteres.';
-                     else errorMsg.textContent = 'Error al registrar la cuenta.';
-                     errorMsg.classList.remove('hidden');
-                }
-            },
-            async handleLogout() { 
-                await signOut(FirebaseService.auth);
-                UI.elements.unlockSwitch.checked = false;
-                UI.elements.appLockscreen.classList.remove('fade-out');
-            },
-            async handleVideoFormSubmit(form) { // Nuevo handler para videos
-                const data = Object.fromEntries(new FormData(form).entries());
-                const youtubeId = UI.videos.extractYouTubeId(data.url);
-                if (!youtubeId) {
-                    alert('Por favor, introduce una URL de YouTube válida.');
-                    return;
-                }
-                
-                const newVideo = {
-                    id: crypto.randomUUID(), // Generar un ID único para el video
-                    titulo: data.titulo,
-                    url: data.url // Guardar la URL completa o solo el ID según la necesidad
-                };
-                
-                // NOTA: Como se pidió "sin usar firebase", estos videos no son persistentes.
-                // Se perderán al recargar la página.
-                this.state.data.videos.push(newVideo);
-                this.renderVideos();
-                this.closeModal('video-modal');
-                UI.videos.playVideo(newVideo.url, UI.elements.youtubePlayer, UI.elements.videoPlayerContainer);
-            },
-            handleDeleteVideo(videoId) { // Nuevo handler para eliminar videos
-                // NOTA: La eliminación también es temporal ya que los videos no son persistentes.
-                this.state.data.videos = this.state.data.videos.filter(video => video.id !== videoId);
-                this.renderVideos();
-            },
-            async handleGenericFormSubmit(form) {
-                const type = form.dataset.type;
-                const permissionMap = {
-                    event: 'agenda', parroquiano: 'directorio', news: 'noticias',
-                    bloqueManual: 'manuales', manual: 'manuales',
-                    bloqueArchivo: 'recursos', archivo: 'recursos'
-                };
-                if (!this.hasPermission(permissionMap[type])) return;
-                
-                const submitButton = form.querySelector('button[type="submit"]');
-                if (submitButton) submitButton.disabled = true;
-
-                try {
-                    const data = Object.fromEntries(new FormData(form).entries());
-                    const id = data.id;
-                    delete data.id;
-
-                    const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos' };
-                    const itemTypes = { manual: { collection: 'manuales' }, archivo: { collection: 'archivos' } };
-
-                    if (blockTypes[type]) {
-                        if (!id) data.items = [];
-                        await FirebaseService.saveDoc(blockTypes[type], id, data);
-                    } else if (itemTypes[type]) {
-                        const config = itemTypes[type];
-                        const { blockId, ...itemData } = data;
-                        const block = this.state.data[config.collection].find(b => b.id === blockId);
-                        if (!block) throw new Error("Bloque no encontrado");
-
-                        const items = block.items || [];
-                        if (itemData.id) {
-                            const index = items.findIndex(item => item.id === itemData.id);
-                            if (index > -1) items[index] = { ...items[index], ...itemData };
-                        } else {
-                            itemData.id = crypto.randomUUID();
-                            items.push(itemData);
-                        }
-                        await FirebaseService.saveDoc(config.collection, blockId, { items });
-                    } else {
-                        if (type === 'news') data.galleryUrls = data.galleryUrls ? data.galleryUrls.split('\n').map(url => url.trim()).filter(Boolean) : [];
-                        const collectionName = type === 'news' ? 'news' : type + 's';
-                        await FirebaseService.saveDoc(collectionName, id, data);
-                    }
-                    this.closeModal(`${type}-modal`);
-                } catch (err) {
-                    console.error(`Error al guardar:`, err);
-                } finally {
-                    if (submitButton) submitButton.disabled = false;
-                }
-            },
-            handleEdit(type, id, blockId, itemId) {
-                const permissionMap = {
-                    event: 'agenda', parroquiano: 'directorio', news: 'noticias',
-                    bloqueManual: 'manuales', manual: 'manuales',
-                    bloqueArchivo: 'recursos', archivo: 'recursos'
-                };
-                if(!this.hasPermission(permissionMap[type])) return;
-
-                const itemTypes = { manual: 'manuales', archivo: 'archivos' };
-                const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos' };
-
-                if (itemTypes[type]) {
-                    const block = this.state.data[itemTypes[type]].find(b => b.id === blockId);
-                    const item = block?.items.find(i => i.id === itemId);
-                    if (item) this.openModal(`${type}-modal`, { ...item, blockId });
-                } else {
-                    const collectionName = blockTypes[type] || (type === 'news' ? 'news' : type + 's');
-                    const item = this.state.data[collectionName].find(i => i.id === id);
-                    if (item) this.openModal(`${type}-modal`, item);
-                }
-            },
-            handleDelete(type, id, blockId, itemId) {
-                const permissionMap = {
-                    event: 'agenda', parroquiano: 'directorio', news: 'noticias',
-                    bloqueManual: 'manuales', manual: 'manuales',
-                    bloqueArchivo: 'recursos', archivo: 'recursos'
-                };
-                if (!this.hasPermission(permissionMap[type])) return;
-
-                UI.elements.confirmMessage.textContent = `¿Seguro de eliminar este registro?`;
-                this.openModal('confirm-modal');
-
-                UI.elements.confirmDeleteBtn.onclick = async () => {
-                    try {
-                        const itemTypes = { manual: 'manuales', archivo: 'archivos' };
-                        const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos' };
-
-                        if (itemTypes[type]) {
-                            const block = this.state.data[itemTypes[type]].find(b => b.id === blockId);
-                            if (block) {
-                                const items = (block.items || []).filter(item => item.id !== itemId);
-                                await FirebaseService.saveDoc(itemTypes[type], blockId, { items });
-                            }
-                        } else {
-                            const collectionName = blockTypes[type] || (type === 'news' ? 'news' : type + 's');
-                            await FirebaseService.deleteDoc(collectionName, id);
-                        }
-                        this.closeModal('confirm-modal');
-                    } catch (err) { console.error(`Error al eliminar:`, err); }
-                };
-            },
+            async handleLogin(form) { /* ... Lógica de inicio de sesión ... */ },
+            async handleRegister(form) { /* ... Lógica de registro ... */ },
+            async handleLogout() { await signOut(FirebaseService.auth); },
+            async handleGenericFormSubmit(form) { /* ... Lógica de envío de formularios ... */ },
+            handleEdit(type, id, blockId, itemId) { /* ... Lógica de edición ... */ },
+            handleDelete(type, id, blockId, itemId) { /* ... Lógica de eliminación ... */ },
             handleDeleteUser(userId) {
                 if (!this.state.auth.isSuperAdmin || this.state.auth.user.id === userId) return;
+
                 const userToDelete = this.state.data.allUsers.find(u => u.id === userId);
                 if (!userToDelete) return;
 
-                UI.elements.confirmMessage.textContent = `¿Seguro de eliminar al usuario "${userToDelete.nombre}"? Esta acción no se puede deshacer.`;
-                this.openModal('confirm-modal');
+                UI.elements.confirmModal.message.textContent = `¿Seguro de eliminar al usuario "${userToDelete.nombre}"? Esta acción eliminará su perfil de la app, pero no su cuenta de autenticación.`;
+                this.openModal('confirm');
 
-                UI.elements.confirmDeleteBtn.onclick = async () => {
+                UI.elements.confirmModal.deleteBtn.onclick = async () => {
                     try {
+                        // Nota: Esto solo elimina el perfil del usuario de Firestore.
+                        // La eliminación completa de la cuenta de Firebase Auth requeriría una Cloud Function
+                        // por razones de seguridad, lo cual está fuera del alcance de este entorno de cliente.
                         await FirebaseService.deleteDoc('users', userId);
-                        this.closeModal('confirm-modal');
-                    } catch (err) { console.error(`Error al eliminar usuario:`, err); }
+                        this.closeModal('confirm');
+                    } catch (err) {
+                        console.error(`Error al eliminar usuario:`, err);
+                    }
                 };
             },
-            handleReadMore(id) {
-                const item = this.state.data.news.find(i => i.id === id);
-                if (!item) return;
-                const { newsDetailTitle, newsDetailDate, newsDetailContent, newsDetailImage, newsGalleryThumbnails, galleryPrevBtn, galleryNextBtn } = UI.elements;
-                
-                newsDetailTitle.textContent = item.titulo;
-                newsDetailDate.textContent = new Date(item.fechaPublicacion).toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'});
-                newsDetailContent.innerHTML = item.contenido.replace(/\n/g,'<br>');
-                
-                this.state.ui.currentGalleryImages = [item.imageUrl, ...(item.galleryUrls || [])].filter(Boolean);
-                this.state.ui.currentGalleryIndex = 0;
-                
-                newsGalleryThumbnails.innerHTML = this.state.ui.currentGalleryImages.map((url, index) => 
-                    `<img src="${url}" data-index="${index}" class="gallery-thumbnail ${index === 0 ? 'active' : ''}">`
-                ).join('');
-                
-                const showBtns = this.state.ui.currentGalleryImages.length > 1;
-                galleryPrevBtn.classList.toggle('hidden', !showBtns);
-                galleryNextBtn.classList.toggle('hidden', !showBtns);
-
-                const showImage = (index) => {
-                    newsDetailImage.style.opacity = 0;
-                    setTimeout(() => {
-                        newsDetailImage.src = this.state.ui.currentGalleryImages[index] || 'https://placehold.co/800x600/eef0f4/4b5563?text=No+disponible';
-                        newsDetailImage.style.opacity = 1;
-                    }, 150);
-                    newsGalleryThumbnails.querySelectorAll('.gallery-thumbnail').forEach((thumb, i) => {
-                        thumb.classList.toggle('active', i === index);
-                        if (i === index) thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                    });
-                    this.state.ui.currentGalleryIndex = index;
-                };
-
-                galleryPrevBtn.onclick = () => showImage((this.state.ui.currentGalleryIndex - 1 + this.state.ui.currentGalleryImages.length) % this.state.ui.currentGalleryImages.length);
-                galleryNextBtn.onclick = () => showImage((this.state.ui.currentGalleryIndex + 1) % this.state.ui.currentGalleryImages.length);
-                newsGalleryThumbnails.onclick = (e) => {
-                    if(e.target.matches('.gallery-thumbnail')) showImage(parseInt(e.target.dataset.index, 10));
-                };
-
-                showImage(0);
-                this.openModal('news-detail-modal');
-            },
+            handleReadMore(id) { /* ... Lógica de "Leer más" ... */ },
             handleShowDayDetails(dateString) {
                 const date = new Date(dateString + 'T00:00:00Z');
                 const dailyEvents = this.state.data.events.filter(e => e.date === dateString);
@@ -2405,22 +2209,28 @@
                     return birthDate.getMonth() === date.getMonth() && birthDate.getDate() === date.getDate();
                 });
 
-                const { calendarDayModalTitle, calendarDayEventsList, calendarDayBirthdaysSection, calendarDayBirthdaysList } = UI.elements;
-                calendarDayModalTitle.textContent = `Detalles del ${date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
-                calendarDayEventsList.innerHTML = dailyEvents.length > 0 ? dailyEvents.map(e => `<li class="p-2 neumorphic-inset rounded-lg">${e.name} - ${e.time}h</li>`).join('') : '<li class="text-sm text-gray-500">No hay eventos.</li>';
-                
+                const { title, eventsList, birthdaysSection, birthdaysList } = UI.elements.calendarDayModal;
+                title.textContent = `Detalles del ${date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
+
+                eventsList.innerHTML = dailyEvents.length > 0
+                    ? dailyEvents.map(e => `<li class="p-2 neumorphic-inset rounded-lg">${e.name} - ${e.time}h</li>`).join('')
+                    : '<li class="text-sm text-gray-500">No hay eventos para este día.</li>';
+
                 if (this.hasPermission('verAgendaCalendario')) {
-                    calendarDayBirthdaysSection.classList.remove('hidden');
-                    calendarDayBirthdaysList.innerHTML = dailyBirthdays.length > 0 ? dailyBirthdays.map(p => `<li class="p-2 neumorphic-inset rounded-lg">🎂 Cumpleaños de ${p.nombre}</li>`).join('') : '<li class="text-sm text-gray-500">No hay cumpleaños.</li>';
+                    birthdaysSection.classList.remove('hidden');
+                    birthdaysList.innerHTML = dailyBirthdays.length > 0
+                        ? dailyBirthdays.map(p => `<li class="p-2 neumorphic-inset rounded-lg">🎂 Cumpleaños de ${p.nombre}</li>`).join('')
+                        : '<li class="text-sm text-gray-500">No hay cumpleaños este día.</li>';
                 } else {
-                    calendarDayBirthdaysSection.classList.add('hidden');
+                    birthdaysSection.classList.add('hidden');
                 }
+
                 this.openModal('calendar-day-modal');
             },
+
             async updateUserRole(userId, newRole) {
                 if (!this.state.auth.isSuperAdmin) return;
-                const permissions = newRole === 'admin' ? { agenda: true } : {};
-                await FirebaseService.saveDoc('users', userId, { role: newRole, permissions });
+                await FirebaseService.saveDoc('users', userId, { role: newRole });
             },
             async updateUserPermission(userId, permission, isEnabled) {
                  if (!this.state.auth.isSuperAdmin) return;
@@ -2430,19 +2240,21 @@
                      await FirebaseService.saveDoc('users', userId, { permissions });
                  }
             },
+
+            // --- Utilidades ---
             initTimers() {
                 setInterval(() => {
-                    UI.tablero.updateDateTime(UI.elements.currentDate, UI.elements.currentTime);
-                    if(UI.elements.lockscreenTime) UI.elements.lockscreenTime.textContent = new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-                    if(UI.elements.lockscreenDate) UI.elements.lockscreenDate.textContent = new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+                    const { time, date } = UI.elements.lockscreen;
+                    if(time) time.textContent = new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                    if(date) date.textContent = new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
                 }, 1000);
             },
             async loadWeather() { 
                 const data = await WeatherService.fetch();
-                UI.tablero.updateWeather(data, UI.elements.weatherTemp, UI.elements.weatherDesc, UI.elements.weatherLocation);
+                UI.tablero.updateWeather(data);
             },
             initTheme() {
-                const themeSwitch = UI.elements.themeSwitchCheckbox;
+                const themeSwitch = UI.elements.header.themeSwitch;
                 const savedTheme = localStorage.getItem('theme');
                 const applyTheme = (theme) => {
                     document.body.classList.toggle('dark-theme', theme === 'dark');
@@ -2459,17 +2271,17 @@
                 });
             },
              openModal(modalId, data = null, blockId = null) {
-                const modal = document.getElementById(modalId);
+                const modal = UI.elements.modals[modalId.replace('-modal','')] || document.getElementById(modalId);
                 if (!modal) return;
                 const form = modal.querySelector('form');
                 if (form) {
                     form.reset();
                     const titleEl = modal.querySelector('h2'); 
                     const type = form.dataset.type;
-                    const typeName = {
-                        'bloqueManual': 'Bloque de Manual', 'manual': 'Manual', 'bloqueArchivo': 'Bloque de Archivo', 
-                        'archivo': 'Archivo', 'news': 'Noticia', 'event': 'Evento', 'parroquiano': 'Parroquiano',
-                        'video': 'Video' // Nuevo tipo
+                    let typeName = {
+                        'bloqueManual': 'Bloque de Manual', 'manual': 'Manual',
+                        'bloqueArchivo': 'Bloque de Archivo', 'archivo': 'Archivo',
+                        'news': 'Noticia', 'event': 'Evento', 'parroquiano': 'Parroquiano'
                     }[type] || type;
 
                     if (modalId !== 'user-auth-modal' && titleEl) {
@@ -2491,11 +2303,216 @@
                 modal.classList.remove('hidden');
             },
             closeModal(modalId) { 
-                const modal = document.getElementById(modalId);
+                const modal = UI.elements.modals[modalId.replace('-modal','')] || document.getElementById(modalId);
                 if (modal) modal.classList.add('hidden');
             }
         };
 
+        // Rellenar la implementación de los manejadores que faltan
+        App.handleLogin = async function(form) {
+            const email = form.querySelector('#login-email').value;
+            const password = form.querySelector('#login-password').value;
+            const errorMsg = form.querySelector('#login-error-msg');
+            errorMsg.classList.add('hidden');
+            
+            try {
+                let userCredential;
+                if (email === 'admin@portal.com' && password === 'admin123') {
+                     userCredential = await signInWithEmailAndPassword(FirebaseService.auth, email, password).catch(err => 
+                        err.code === 'auth/user-not-found' ? createUserWithEmailAndPassword(FirebaseService.auth, email, password) : Promise.reject(err)
+                     );
+                } else {
+                    userCredential = await signInWithEmailAndPassword(FirebaseService.auth, email, password);
+                }
+                this.closeModal('user-auth-modal');
+
+                const { unlockSwitch, container } = UI.elements.lockscreen;
+                if (unlockSwitch.disabled) {
+                    unlockSwitch.disabled = false;
+                    UI.elements.lockscreen.unlockSwitchLabel.classList.remove('disabled');
+                    UI.elements.lockscreen.message.classList.add('hidden');
+                }
+                unlockSwitch.checked = true;
+                unlockSwitch.dispatchEvent(new Event('change'));
+            } catch(error) {
+                errorMsg.textContent = 'Correo o contraseña incorrectos.';
+                errorMsg.classList.remove('hidden');
+            }
+        };
+        App.handleRegister = async function(form) {
+             const name = form.querySelector('#register-name').value;
+             const email = form.querySelector('#register-email').value;
+             const password = form.querySelector('#register-password').value;
+             const errorMsg = form.querySelector('#register-error-msg');
+             errorMsg.classList.add('hidden');
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(FirebaseService.auth, email, password);
+                const newUserProfile = { nombre: name, email: email, role: 'viewer', permissions: {} };
+                await FirebaseService.setDoc('users', userCredential.user.uid, newUserProfile);
+                this.closeModal('user-auth-modal');
+
+                const { unlockSwitch, container } = UI.elements.lockscreen;
+                if (unlockSwitch.disabled) {
+                    unlockSwitch.disabled = false;
+                    UI.elements.lockscreen.unlockSwitchLabel.classList.remove('disabled');
+                    UI.elements.lockscreen.message.classList.add('hidden');
+                }
+                unlockSwitch.checked = true;
+                unlockSwitch.dispatchEvent(new Event('change'));
+            } catch(error) {
+                 if (error.code === 'auth/email-already-in-use') errorMsg.textContent = 'Este correo ya está registrado.';
+                 else if (error.code === 'auth/weak-password') errorMsg.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+                 else errorMsg.textContent = 'Error al registrar la cuenta.';
+                 errorMsg.classList.remove('hidden');
+            }
+        };
+        App.handleGenericFormSubmit = async function(form) {
+            const type = form.dataset.type;
+            const permissionMap = {
+                event: 'agenda', parroquiano: 'directorio', news: 'noticias',
+                bloqueManual: 'manuales', manual: 'manuales',
+                bloqueArchivo: 'recursos', archivo: 'recursos',
+                verAgendaCalendario: 'verAgendaCalendario'
+            };
+            if (!this.hasPermission(permissionMap[type])) return;
+            
+            const submitButton = form.querySelector('button[type="submit"]');
+            if (submitButton) submitButton.disabled = true;
+
+            try {
+                const data = Object.fromEntries(new FormData(form).entries());
+                const id = data.id;
+                delete data.id;
+
+                const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos' };
+                const itemTypes = { manual: { collection: 'manuales' }, archivo: { collection: 'archivos' } };
+
+                if (blockTypes[type]) {
+                    if (!id) data.items = [];
+                    await FirebaseService.saveDoc(blockTypes[type], id, data);
+                } else if (itemTypes[type]) {
+                    const config = itemTypes[type];
+                    const { blockId, ...itemData } = data;
+                    const block = this.state.data[config.collection].find(b => b.id === blockId);
+                    if (!block) throw new Error("Block not found");
+
+                    const items = block.items || [];
+                    if (itemData.id) { // Edit item
+                        const index = items.findIndex(item => item.id === itemData.id);
+                        if (index > -1) items[index] = { ...items[index], ...itemData };
+                    } else { // Add new item
+                         itemData.id = crypto.randomUUID();
+                         items.push(itemData);
+                    }
+                    await FirebaseService.saveDoc(config.collection, blockId, { items });
+                } else {
+                     if (type === 'news') data.galleryUrls = data.galleryUrls ? data.galleryUrls.split('\n').map(url => url.trim()).filter(Boolean) : [];
+                    await FirebaseService.saveDoc(type === 'news' ? 'news' : type + 's', id, data);
+                }
+                this.closeModal(`${type}-modal`);
+            } catch (err) {
+                console.error(`Error al guardar:`, err);
+            } finally {
+                if (submitButton) submitButton.disabled = false;
+            }
+        };
+        App.handleEdit = function(type, id, blockId, itemId) {
+            const permissionMap = {
+                event: 'agenda', parroquiano: 'directorio', news: 'noticias',
+                bloqueManual: 'manuales', manual: 'manuales',
+                bloqueArchivo: 'recursos', archivo: 'recursos',
+                verAgendaCalendario: 'verAgendaCalendario'
+            };
+            if(!this.hasPermission(permissionMap[type])) return;
+
+            const itemTypes = { manual: 'manuales', archivo: 'archivos' };
+            const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos' };
+
+            if (itemTypes[type]) {
+                const block = this.state.data[itemTypes[type]].find(b => b.id === blockId);
+                const item = block?.items.find(i => i.id === itemId);
+                if (item) this.openModal(`${type}-modal`, { ...item, blockId });
+            } else {
+                const collectionName = blockTypes[type] || (type === 'news' ? 'news' : type + 's');
+                const item = this.state.data[collectionName].find(i => i.id === id);
+                if (item) this.openModal(`${type}-modal`, item);
+            }
+        };
+        App.handleDelete = function(type, id, blockId, itemId) {
+            const permissionMap = {
+                event: 'agenda', parroquiano: 'directorio', news: 'noticias',
+                bloqueManual: 'manuales', manual: 'manuales',
+                bloqueArchivo: 'recursos', archivo: 'recursos',
+                verAgendaCalendario: 'verAgendaCalendario'
+            };
+            if (!this.hasPermission(permissionMap[type])) return;
+
+            UI.elements.confirmModal.message.textContent = `¿Seguro de eliminar este registro?`;
+            this.openModal('confirm');
+
+            UI.elements.confirmModal.deleteBtn.onclick = async () => {
+                try {
+                    const itemTypes = { manual: 'manuales', archivo: 'archivos' };
+                    const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos' };
+
+                    if (itemTypes[type]) {
+                        const block = this.state.data[itemTypes[type]].find(b => b.id === blockId);
+                        if (block) {
+                            const items = (block.items || []).filter(item => item.id !== itemId);
+                            await FirebaseService.saveDoc(itemTypes[type], blockId, { items });
+                        }
+                    } else {
+                        await FirebaseService.deleteDoc(blockTypes[type] || (type === 'news' ? 'news' : type + 's'), id);
+                    }
+                    this.closeModal('confirm');
+                } catch (err) { console.error(`Error al eliminar:`, err); }
+            };
+        };
+        App.handleReadMore = function(id) {
+            const item = this.state.data.news.find(i => i.id === id);
+            if (!item) return;
+            const { title, date, content, image, thumbnails, prevBtn, nextBtn } = UI.elements.newsDetail;
+            
+            title.textContent = item.titulo;
+            date.textContent = new Date(item.fechaPublicacion).toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'});
+            content.innerHTML = item.contenido.replace(/\n/g,'<br>');
+            
+            this.state.ui.currentGalleryImages = [item.imageUrl, ...(item.galleryUrls || [])].filter(Boolean);
+            this.state.ui.currentGalleryIndex = 0;
+            
+            thumbnails.innerHTML = this.state.ui.currentGalleryImages.map((url, index) => 
+                `<img src="${url}" data-action="set-gallery-image" data-index="${index}" class="gallery-thumbnail ${index === 0 ? 'active' : ''}">`
+            ).join('');
+            
+            const showBtns = this.state.ui.currentGalleryImages.length > 1;
+            prevBtn.classList.toggle('hidden', !showBtns);
+            nextBtn.classList.toggle('hidden', !showBtns);
+
+            const showImage = (index) => {
+                image.style.opacity = 0;
+                setTimeout(() => {
+                    image.src = this.state.ui.currentGalleryImages[index] || 'https://placehold.co/800x600/eef0f4/4b5563?text=No+disponible';
+                    image.style.opacity = 1;
+                }, 150);
+                thumbnails.querySelectorAll('.gallery-thumbnail').forEach((thumb, i) => {
+                    thumb.classList.toggle('active', i === index);
+                    if (i === index) thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                });
+                this.state.ui.currentGalleryIndex = index;
+            };
+
+            prevBtn.onclick = () => showImage((this.state.ui.currentGalleryIndex - 1 + this.state.ui.currentGalleryImages.length) % this.state.ui.currentGalleryImages.length);
+            nextBtn.onclick = () => showImage((this.state.ui.currentGalleryIndex + 1) % this.state.ui.currentGalleryImages.length);
+            thumbnails.onclick = (e) => {
+                if(e.target.matches('.gallery-thumbnail')) showImage(parseInt(e.target.dataset.index, 10));
+            };
+
+            showImage(0);
+            this.openModal('news-detail-modal');
+        };
+
+        // Iniciar la aplicación
         document.addEventListener('DOMContentLoaded', () => App.init());
     </script>
 </body>
