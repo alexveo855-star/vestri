@@ -1990,6 +1990,10 @@
                 });
                 document.getElementById('prev-month-btn').addEventListener('click', () => { this.state.ui.currentCalendarDate.setMonth(this.state.ui.currentCalendarDate.getMonth() - 1); this.renderCalendario(); });
                 document.getElementById('next-month-btn').addEventListener('click', () => { this.state.ui.currentCalendarDate.setMonth(this.state.ui.currentCalendarDate.getMonth() + 1); this.renderCalendario(); });
+                
+                // --- Panel lateral móvil ---
+                UI.elements.nav.edgeHandle.addEventListener('click', () => UI.nav.toggleSidenav(true));
+                UI.elements.nav.mobileSidenavOverlay.addEventListener('click', () => UI.nav.toggleSidenav(false));
             },
             
             handleGlobalClick(e) {
@@ -1998,7 +2002,12 @@
 
                 const { action, target: pageTarget, modalTarget, type, id, blockId, itemId } = target.dataset;
 
-                if (pageTarget) UI.showPage(pageTarget);
+                if (pageTarget) {
+                    UI.showPage(pageTarget);
+                    if (target.closest('#mobile-nav-links')) {
+                        UI.nav.toggleSidenav(false);
+                    }
+                }
                 if (modalTarget) this.openModal(modalTarget, null, blockId);
 
                 if (action) {
@@ -2404,5 +2413,4 @@
     </script>
 </body>
 </html>
-
 
