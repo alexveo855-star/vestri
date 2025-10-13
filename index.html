@@ -1156,6 +1156,22 @@
                         <div id="archivos-container" class="space-y-4"></div>
                     </div>
                 </div>
+                <div id="page-videos" class="page">
+                    <div class="neumorphic-card p-6">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                            <h2 class="text-2xl font-bold">Vídeos</h2>
+                            <button data-modal-target="video-modal" class="neumorphic-btn primary w-full sm:w-auto"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Video</span></button>
+                        </div>
+                        <!-- Contenedor para la lista de vídeos -->
+                        <div id="videos-list" class="space-y-3 mb-6">
+                            <p class="text-gray-500 text-center">No hay vídeos agregados. ¡Añade uno!</p>
+                        </div>
+                        <!-- Contenedor para el reproductor de vídeo -->
+                        <div id="video-player-container" class="relative overflow-hidden pt-[56.25%] rounded-lg neumorphic-card hidden">
+                            <iframe id="youtube-player" class="absolute inset-0 w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
                 <div id="page-calendario" class="page">
                     <div class="neumorphic-card p-6">
                         <div id="calendar-header" class="flex justify-between items-center mb-6">
@@ -1206,7 +1222,7 @@
                       </svg>
                     </li>
                   </a>
-                  <a href="https://x.com/acna_xalapa" target="_blank" rel="noopener noreferrer">
+                  <a href="https://x.com/iacg_acna" target="_blank" rel="noopener noreferrer">
                     <li class="icon twitter">
                       <span class="tooltip">X</span>
                       <svg
@@ -1421,6 +1437,28 @@
             </form>
         </div>
     </div>
+    
+    <!-- Modal para Videos -->
+    <div id="video-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6">Agregar Video</h2>
+            <form id="video-form" data-type="video">
+                <input type="hidden" name="id">
+                <div class="mb-4">
+                    <label for="video-titulo" class="block text-sm font-medium mb-1">Título del Video</label>
+                    <input type="text" id="video-titulo" name="titulo" class="neumorphic-input" required>
+                </div>
+                <div class="mb-6">
+                    <label for="video-url" class="block text-sm font-medium mb-1">URL de YouTube</label>
+                    <input type="url" id="video-url" name="url" class="neumorphic-input" placeholder="https://www.youtube.com/watch?v=VIDEO_ID" required>
+                </div>
+                <div class="flex justify-end gap-4">
+                    <button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button>
+                    <button type="submit" class="neumorphic-btn primary">Guardar Video</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- Modal de Confirmación y Detalles del Día -->
     <div id="confirm-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-[120] p-4">
@@ -1558,7 +1596,8 @@
                     'news-detail-title', 'news-detail-date', 'news-detail-image', 'news-detail-content',
                     'news-gallery-container', 'news-gallery-thumbnails', 'gallery-prev-btn', 'gallery-next-btn',
                     'confirm-message', 'confirm-delete-btn', 'calendar-day-modal-title', 'calendar-day-events-list',
-                    'calendar-day-birthdays-section', 'calendar-day-birthdays-list'
+                    'calendar-day-birthdays-section', 'calendar-day-birthdays-list',
+                    'video-modal', 'video-titulo', 'video-url', 'videos-list', 'youtube-player', 'video-player-container' // Nuevos elementos de video
                 ];
                 ids.forEach(id => {
                     const camelCaseId = id.replace(/-(\w)/g, (_, c) => c.toUpperCase());
@@ -1775,6 +1814,46 @@
                     });
                 }
             },
+            videos: {
+                renderVideoList(videos, container, playerContainer, playerIframe) {
+                    container.innerHTML = '';
+                    if (videos.length === 0) {
+                        container.innerHTML = '<p class="text-gray-500 text-center">No hay vídeos agregados. ¡Añade uno!</p>';
+                        playerContainer.classList.add('hidden'); // Ocultar el reproductor si no hay videos
+                        return;
+                    }
+
+                    // Por defecto, muestra el primer video si no hay uno activo
+                    if (!playerIframe.src && videos.length > 0) {
+                        this.playVideo(videos[0].url, playerIframe, playerContainer);
+                    }
+
+                    videos.forEach(video => {
+                        container.insertAdjacentHTML('beforeend', `
+                            <div class="flex items-center justify-between p-3 rounded-lg neumorphic-inset">
+                                <button data-action="play-video" data-url="${video.url}" data-id="${video.id}" class="flex-grow text-left truncate font-medium hover:text-blue-600">
+                                    ${video.titulo}
+                                </button>
+                                <button data-action="delete-video" data-id="${video.id}" class="neumorphic-btn danger btn-sm ml-4">Eliminar</button>
+                            </div>
+                        `);
+                    });
+                },
+                playVideo(youtubeUrl, playerIframe, playerContainer) {
+                    const videoId = this.extractYouTubeId(youtubeUrl);
+                    if (videoId) {
+                        playerIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                        playerContainer.classList.remove('hidden');
+                    } else {
+                        alert('URL de YouTube inválida.');
+                    }
+                },
+                extractYouTubeId(url) {
+                    const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                    const match = url.match(regExp);
+                    return (match && match[2].length === 11) ? match[2] : null;
+                }
+            },
             calendario: {
                 render(date, events, parroquianos, headerEl, gridEl) {
                     const year = date.getFullYear();
@@ -1892,7 +1971,7 @@
         const App = {
             state: {
                 auth: { user: null, isSuperAdmin: false, isAdmin: false, viewAsUser: false },
-                data: { events: [], parroquianos: [], news: [], manuales: [], archivos: [], allUsers: [] },
+                data: { events: [], parroquianos: [], news: [], manuales: [], archivos: [], allUsers: [], videos: [] }, // Añadir 'videos'
                 ui: { currentCalendarDate: new Date(), currentGalleryImages: [], currentGalleryIndex: 0 },
             },
             dataListenersInitialized: false,
@@ -1904,6 +1983,7 @@
                     this.initTheme();
                     this.initTimers();
                     FirebaseService.init(this.onAuthStateChanged.bind(this));
+                    this.renderVideos(); // Renderizar videos al inicio
                 } catch (error) {
                      console.error("Error fatal durante la inicialización:", error);
                     document.body.innerHTML = `<div class="fixed inset-0 bg-red-100 text-red-800 p-8 flex flex-col justify-center items-center text-center"><h1 class="text-3xl font-bold mb-4">¡Ups! Ocurrió un error crítico.</h1><p class="mb-4">${error.message}</p></div>`;
@@ -1963,6 +2043,9 @@
             renderDirectorio() {
                 UI.renderTable(UI.elements.directorioTableBody, this.state.data.parroquianos, UI.directorio.createRow, 'No hay registros.');
             },
+            renderVideos() { // Nuevo renderizador para videos
+                UI.videos.renderVideoList(this.state.data.videos, UI.elements.videosList, UI.elements.videoPlayerContainer, UI.elements.youtubePlayer);
+            },
             renderCalendario() {
                  UI.calendario.render(this.state.ui.currentCalendarDate, this.state.data.events, this.state.data.parroquianos, UI.elements.monthYearHeader, UI.elements.calendarGrid);
             },
@@ -1980,6 +2063,11 @@
                     const elStyle = el.style;
                     elStyle.display = this.hasPermission(el.dataset.permission) ? '' : 'none';
                  });
+                 // Asegurarse de que el botón de Videos se renderice en el nav móvil
+                 const videoNavButton = document.querySelector('[data-target="page-videos"]');
+                 if (videoNavButton) {
+                     videoNavButton.style.display = 'flex'; // Siempre visible para todos los usuarios
+                 }
                  UI.nav.initMobileNav();
             },
             updateLockscreenStatus() {
@@ -2016,7 +2104,7 @@
                 const target = e.target.closest('[data-action], [data-target], [data-modal-target], .accordion-toggle');
                 if (!target) return;
 
-                const { action, target: pageTarget, modalTarget, type, id, blockId, itemId, userId, date } = target.dataset;
+                const { action, target: pageTarget, modalTarget, type, id, blockId, itemId, userId, date, url } = target.dataset;
 
                 if (pageTarget) {
                     UI.showPage(pageTarget);
@@ -2034,6 +2122,8 @@
                         'delete-user': () => this.handleDeleteUser(userId), 'read-more': () => this.handleReadMore(id),
                         'add-item': () => this.openModal(`${modalTarget.replace('-modal', '')}-modal`, null, blockId),
                         'show-day-details': () => this.handleShowDayDetails(date),
+                        'play-video': () => UI.videos.playVideo(url, UI.elements.youtubePlayer, UI.elements.videoPlayerContainer), // Nuevo
+                        'delete-video': () => this.handleDeleteVideo(id), // Nuevo
                     };
                     actionHandlers[action]?.();
                 }
@@ -2053,6 +2143,7 @@
                 const formHandlers = {
                     'login-form': this.handleLogin,
                     'register-form': this.handleRegister,
+                    'video-form': this.handleVideoFormSubmit // Nuevo handler
                 };
                 (formHandlers[formId] || this.handleGenericFormSubmit).call(this, e.target);
             },
@@ -2120,6 +2211,32 @@
                 await signOut(FirebaseService.auth);
                 UI.elements.unlockSwitch.checked = false;
                 UI.elements.appLockscreen.classList.remove('fade-out');
+            },
+            async handleVideoFormSubmit(form) { // Nuevo handler para videos
+                const data = Object.fromEntries(new FormData(form).entries());
+                const youtubeId = UI.videos.extractYouTubeId(data.url);
+                if (!youtubeId) {
+                    alert('Por favor, introduce una URL de YouTube válida.');
+                    return;
+                }
+                
+                const newVideo = {
+                    id: crypto.randomUUID(), // Generar un ID único para el video
+                    titulo: data.titulo,
+                    url: data.url // Guardar la URL completa o solo el ID según la necesidad
+                };
+                
+                // NOTA: Como se pidió "sin usar firebase", estos videos no son persistentes.
+                // Se perderán al recargar la página.
+                this.state.data.videos.push(newVideo);
+                this.renderVideos();
+                this.closeModal('video-modal');
+                UI.videos.playVideo(newVideo.url, UI.elements.youtubePlayer, UI.elements.videoPlayerContainer);
+            },
+            handleDeleteVideo(videoId) { // Nuevo handler para eliminar videos
+                // NOTA: La eliminación también es temporal ya que los videos no son persistentes.
+                this.state.data.videos = this.state.data.videos.filter(video => video.id !== videoId);
+                this.renderVideos();
             },
             async handleGenericFormSubmit(form) {
                 const type = form.dataset.type;
@@ -2351,7 +2468,8 @@
                     const type = form.dataset.type;
                     const typeName = {
                         'bloqueManual': 'Bloque de Manual', 'manual': 'Manual', 'bloqueArchivo': 'Bloque de Archivo', 
-                        'archivo': 'Archivo', 'news': 'Noticia', 'event': 'Evento', 'parroquiano': 'Parroquiano'
+                        'archivo': 'Archivo', 'news': 'Noticia', 'event': 'Evento', 'parroquiano': 'Parroquiano',
+                        'video': 'Video' // Nuevo tipo
                     }[type] || type;
 
                     if (modalId !== 'user-auth-modal' && titleEl) {
