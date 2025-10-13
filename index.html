@@ -179,14 +179,7 @@
         }
         #mobile-sidenav.active { transform: translateX(0); }
         #mobile-sidenav-overlay.active { opacity: 1; pointer-events: auto; }
-
-        #edge-handle {
-            position: fixed; top: 25%; left: 0; transform: translateY(-50%); width: 20px; height: 160px;
-            background-color: rgba(107, 114, 128, 0.4); border-top-right-radius: 10px; border-bottom-right-radius: 10px;
-            z-index: 50; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-        }
-        #edge-handle::before { content: ''; width: 4px; height: 20px; background: #fff; border-radius: 2px; }
-
+        
         /* Estilos de la Galería de Noticias */
         .gallery-thumbnail {
             width: 80px; height: 60px; border-radius: 8px; cursor: pointer; object-fit: cover;
@@ -940,46 +933,47 @@
             background: #374151;
             box-shadow: 2px 2px 5px #111827, -5px -5px 10px #4b5563;
         }
+        
+        /* --- OPTIMIZACIONES PARA MÓVILES --- */
+        @media (max-width: 640px) {
+            /* Reducir padding general de la app */
+            #app-container {
+                padding: 1rem;
+            }
 
-        /* --- Estilos de Notificaciones (Toast) --- */
-        #toast-container {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            z-index: 200;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            align-items: flex-end;
+            /* Compactar tarjetas y reducir sombras para ahorrar espacio */
+            .neumorphic-card {
+                padding: 1rem;
+                box-shadow: 5px 5px 10px #d1d9e6, -5px -5px 10px #ffffff;
+                border-radius: 16px;
+            }
+            body.dark-theme .neumorphic-card {
+                box-shadow: 5px 5px 10px #111827, -5px -5px 10px #4b5563;
+            }
+
+            /* Botones y inputs más compactos */
+            .neumorphic-btn { padding: 0.6rem 0.85rem; }
+            .neumorphic-input { padding: 0.6rem 0.85rem; }
+
+            /* Títulos más pequeños */
+            h1.text-3xl { font-size: 1.875rem; } /* de 3xl a 2xl */
+            h2.text-2xl { font-size: 1.25rem; } /* de 2xl a xl */
+            
+            /* Tablas más compactas */
+            table th, table td { padding: 0.75rem 0.5rem; }
+
+            /* Ajustar widget del clima */
+            .weather-widget { height: 180px; }
+            .weather-widget .temperature { font-size: 2.5rem; }
+            .weather-widget .hour { font-size: 2rem; }
+            .weather-widget .date, .weather-widget .city { font-size: 0.875rem; }
+
+            /* Calendario más denso */
+            .calendar-cell { min-height: 80px; }
+
+            /* Lockscreen */
+            #lockscreen-time { font-size: 3.75rem; } /* de 6xl a 5xl */
         }
-        .toast {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            border-radius: 10px;
-            color: #fff;
-            background-color: #4b5563;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            opacity: 0;
-            transform: translateX(120%);
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-            min-width: 250px;
-            max-width: 350px;
-        }
-        body.dark-theme .toast {
-             background-color: #374151;
-        }
-        .toast.show {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        .toast-icon {
-            flex-shrink: 0;
-            margin-right: 0.75rem;
-        }
-        .toast-success { background-color: #22c55e; }
-        .toast-error { background-color: #ef4444; }
-        .toast-info { background-color: #3b82f6; }
     </style>
 </head>
 <body class="antialiased">
@@ -1003,7 +997,7 @@
         </div>
 
         <div class="mt-8">
-            <button data-action="open-modal" data-form-type="userAuth" class="neumorphic-btn primary">
+            <button data-modal-target="user-auth-modal" class="neumorphic-btn primary">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
                 <span>Registrarse o Iniciar Sesión</span>
             </button>
@@ -1012,29 +1006,28 @@
 
     <!-- Menú Móvil -->
     <div id="mobile-nav-wrapper" class="md:hidden">
-        <div id="mobile-sidenav-overlay"></div>
+        <div id="mobile-sidenav-overlay" data-action="close-sidenav"></div>
         <div id="mobile-sidenav">
             <div class="flex justify-between items-center mb-8">
-                <h2 class="text-xl font-bold text-gray-700">Menú</h2>
+                <h2 class="text-xl font-bold">Menú</h2>
                 <button data-action="close-sidenav" class="neumorphic-btn p-2"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
             </div>
             <nav id="mobile-nav-links" class="flex flex-col gap-3"></nav>
         </div>
-        <div id="edge-handle"></div>
     </div>
 
     <div id="app-loading">Cargando Portal...</div>
 
     <div id="app-container" class="container mx-auto p-4 sm:p-6 lg:p-8">
         <header class="flex flex-col sm:flex-row justify-between sm:items-center mb-8 gap-4">
-            <div class="flex items-center justify-center sm:justify-start gap-4">
-                <img src="https://raw.githubusercontent.com/alexveo855-star/vestri/main/recursos/Emblema%20de%20la%20Iglesia%20Anglicana.png" alt="Logo Comunidad de Gracia" class="h-16 w-16 object-contain rounded-md" onerror="this.onerror=null; this.src='https://placehold.co/64x64/eef0f4/4b5563?text=Logo';">
-                <div>
-                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-700">Comunidad de Gracia</h1>
-                    <p class="text-gray-500 mt-2">Mi espacio Digital</p>
-                </div>
+            <div class="text-center sm:text-left">
+                <h1 class="text-3xl sm:text-4xl font-bold">Comunidad de Gracia</h1>
+                <p class="text-gray-500 mt-2">Mi espacio Digital</p>
             </div>
              <div class="flex items-center justify-center sm:justify-end shrink-0 gap-4">
+                 <button data-action="open-sidenav" class="neumorphic-btn p-2 md:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                 </button>
                  <label class="theme-switch">
                   <input type="checkbox" id="theme-switch-checkbox" class="theme-switch__checkbox">
                   <div class="theme-switch__container">
@@ -1122,7 +1115,7 @@
                     <div class="neumorphic-card p-6">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Eventos</h2>
-                            <button data-action="open-modal" data-form-type="event" data-permission="agenda" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Evento</span></button>
+                            <button data-modal-target="event-modal" data-permission="agenda" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Evento</span></button>
                         </div>
                         <div class="overflow-x-auto"><table class="w-full text-left"><thead class="border-b border-gray-300"><tr><th class="p-3 font-semibold">Fecha</th><th class="p-3 font-semibold hidden sm:table-cell">Hora</th><th class="p-3 font-semibold">Nombre del Evento</th><th class="p-3 font-semibold admin-only-table-cell" data-permission="agenda">Acciones</th></tr></thead><tbody id="agenda-table-body"></tbody></table></div>
                     </div>
@@ -1131,7 +1124,7 @@
                     <div class="neumorphic-card p-6">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Directorio</h2>
-                            <button data-action="open-modal" data-form-type="parroquiano" data-permission="directorio" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M11 5a3 3 0 11-6 0 3 3 0 016 0zM12.73 10.21a5.002 5.002 0 016.536 6.536l.243.243a1 1 0 11-1.414 1.414l-.243-.243a5.002 5.002 0 01-7.95-7.95l-1.01-1.01A5.002 5.002 0 012.27 12.27l-1.01 1.01a1 1 0 11-1.414-1.414l1.01-1.01a5.002 5.002 0 017.95 7.95l.243.243a1 1 0 011.414 1.414l-.243-.243a5.002 5.002 0 01-6.536-6.536l1.01 1.01z" /></svg><span>Agregar Parroquiano</span></button>
+                            <button data-modal-target="parroquiano-modal" data-permission="directorio" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 12a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1v-1z"/></svg><span>Agregar Parroquiano</span></button>
                         </div>
                         <div class="overflow-x-auto"><table class="w-full text-left"><thead class="border-b border-gray-300"><tr><th class="p-3 font-semibold">Nombre</th><th class="p-3 font-semibold hidden md:table-cell">Teléfono</th><th class="p-3 font-semibold hidden lg:table-cell">Contacto Emergencia</th><th class="p-3 font-semibold admin-only-table-cell" data-permission="directorio">Acciones</th></tr></thead><tbody id="directorio-table-body"></tbody></table></div>
                     </div>
@@ -1140,7 +1133,7 @@
                     <div class="neumorphic-card p-6">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Noticias Parroquiales</h2>
-                            <button data-action="open-modal" data-form-type="news" data-permission="noticias" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Noticia</span></button>
+                            <button data-modal-target="news-modal" data-permission="noticias" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Noticia</span></button>
                         </div>
                         <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
                     </div>
@@ -1149,7 +1142,7 @@
                     <div class="neumorphic-card p-6">
                          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Manuales y Guías</h2>
-                            <button data-action="open-modal" data-form-type="bloqueManual" data-permission="manuales" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
+                            <button data-modal-target="bloque-manual-modal" data-permission="manuales" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
                         </div>
                         <div id="manuales-container" class="space-y-4"></div>
                     </div>
@@ -1158,7 +1151,7 @@
                     <div class="neumorphic-card p-6">
                          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h2 class="text-2xl font-bold">Recursos y Documentos</h2>
-                            <button data-action="open-modal" data-form-type="bloqueArchivo" data-permission="recursos" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
+                            <button data-modal-target="bloque-archivo-modal" data-permission="recursos" class="neumorphic-btn primary w-full sm:w-auto admin-only"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg><span>Agregar Bloque</span></button>
                         </div>
                         <div id="archivos-container" class="space-y-4"></div>
                     </div>
@@ -1249,18 +1242,19 @@
         </footer>
     </div>
 
-    <!-- Modales -->
+    <!-- ========= MODALES ========= -->
+    <!-- Se agrupan todos los modales al final del body para una mejor organización del DOM -->
+
+    <!-- Modal de Autenticación de Usuario -->
      <div id="user-auth-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 backdrop-blur-sm flex items-center justify-center hidden z-[110] p-4">
         <div class="content relative">
              <button data-action="close-modal" class="absolute -top-6 -right-3 text-white hover:text-gray-300">
                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
-            
             <div class="auth-tabs">
                 <button id="show-login-btn" class="auth-tab active">Iniciar Sesión</button>
                 <button id="show-register-btn" class="auth-tab">Registrarse</button>
             </div>
-
             <!-- Vista de Login -->
             <div id="login-view">
                 <form id="login-form" action="#" class="mt-8">
@@ -1274,6 +1268,7 @@
                        <span class="span"><svg class="" xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" y="0" x="0" height="20" width="50" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg"><g><path class="" data-original="#000000" fill="#595959" d="M336 192h-16v-64C320 57.406 262.594 0 192 0S64 57.406 64 128v64H48c-26.453 0-48 21.523-48 48v224c0 26.477 21.547 48 48 48h288c26.453 0 48-21.523 48-48V240c0-26.477-21.547-48-48-48zm-229.332-64c0-47.063 38.27-85.332 85.332-85.332s85.332 38.27 85.332 85.332v64H106.668zm0 0"></path></g></svg></span>
                        <label class="label">Contraseña</label>
                     </div>
+                    <p id="login-error-msg" class="text-red-500 text-sm my-4 text-center hidden">Credenciales incorrectas.</p>
                     <button class="button" type="submit">Ingresar</button>
                 </form>
             </div>
@@ -1295,45 +1290,140 @@
                        <span class="span"><svg class="" xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" y="0" x="0" height="20" width="50" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg"><g><path class="" data-original="#000000" fill="#595959" d="M336 192h-16v-64C320 57.406 262.594 0 192 0S64 57.406 64 128v64H48c-26.453 0-48 21.523-48 48v224c0 26.477 21.547 48 48 48h288c26.453 0 48-21.523 48-48V240c0-26.477-21.547-48-48-48zm-229.332-64c0-47.063 38.27-85.332 85.332-85.332s85.332 38.27 85.332 85.332v64H106.668zm0 0"></path></g></svg></span>
                        <label class="label">Contraseña</label>
                     </div>
+                    <p id="register-error-msg" class="text-red-500 text-sm my-4 text-center hidden"></p>
                     <button class="button" type="submit">Crear Cuenta</button>
                 </form>
             </div>
         </div>
     </div>
     
-    <div id="generic-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
-        <div class="neumorphic-card p-8 w-full max-w-lg max-h-[90vh] flex flex-col">
-            <h2 id="generic-modal-title" class="text-2xl font-bold mb-6 flex-shrink-0"></h2>
-            <div class="flex-grow overflow-y-auto pr-4 -mr-4">
-                <form id="generic-modal-form" class="space-y-4">
-                    <!-- Los campos del formulario se inyectarán aquí dinámicamente -->
-                </form>
+    <!-- Modal de Evento -->
+    <div id="event-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="event-form" data-type="event">
+                <input type="hidden" name="id">
+                <div class="mb-4"><label for="event-name" class="block text-sm font-medium mb-1">Nombre del Evento</label><input type="text" id="event-name" name="name" class="neumorphic-input" required></div>
+                <div class="mb-4"><label for="event-date" class="block text-sm font-medium mb-1">Fecha</label><input type="date" id="event-date" name="date" class="neumorphic-input" required></div>
+                <div class="mb-4"><label for="event-time" class="block text-sm font-medium mb-1">Hora</label><input type="time" id="event-time" name="time" class="neumorphic-input" required></div>
+                <div class="mb-6">
+                    <label for="event-imageUrl" class="block text-sm font-medium mb-1">URL de la Imagen (Opcional)</label>
+                    <input type="url" id="event-imageUrl" name="imageUrl" class="neumorphic-input" placeholder="https://ejemplo.com/imagen.jpg">
+                </div>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal de Parroquiano -->
+    <div id="parroquiano-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="parroquiano-form" data-type="parroquiano" class="space-y-4">
+                <input type="hidden" name="id">
+                <div><label for="parroquiano-nombre" class="block text-sm font-medium mb-1">Nombre Completo</label><input type="text" id="parroquiano-nombre" name="nombre" class="neumorphic-input" required></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div><label for="parroquiano-telefono" class="block text-sm font-medium mb-1">Teléfono</label><input type="tel" id="parroquiano-telefono" name="telefono" class="neumorphic-input"></div>
+                    <div><label for="parroquiano-nacimiento" class="block text-sm font-medium mb-1">Fecha de Nacimiento</label><input type="date" id="parroquiano-nacimiento" name="nacimiento" class="neumorphic-input"></div>
+                </div>
+                <div><label for="parroquiano-email" class="block text-sm font-medium mb-1">Correo Electrónico</label><input type="email" id="parroquiano-email" name="email" class="neumorphic-input"></div>
+                <div><label for="parroquiano-direccion" class="block text-sm font-medium mb-1">Dirección</label><input type="text" id="parroquiano-direccion" name="direccion" class="neumorphic-input"></div>
+                <fieldset class="border-t pt-4 mt-4">
+                    <legend class="text-lg font-semibold mb-2">Contacto de Emergencia</legend>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                         <div><label for="parroquiano-emergencia-nombre" class="block text-sm font-medium mb-1">Nombre</label><input type="text" id="parroquiano-emergencia-nombre" name="emergencia_nombre" class="neumorphic-input"></div>
+                         <div><label for="parroquiano-emergencia-telefono" class="block text-sm font-medium mb-1">Teléfono</label><input type="tel" id="parroquiano-emergencia-telefono" name="emergencia_telefono" class="neumorphic-input"></div>
+                    </div>
+                </fieldset>
+                <div class="flex justify-end gap-4 pt-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal de Noticias -->
+    <div id="news-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-6 w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <h2 class="text-2xl font-bold mb-6 flex-shrink-0"></h2>
+            <form id="news-form" data-type="news" class="space-y-4 overflow-y-auto flex-grow pr-2">
+                <input type="hidden" name="id">
+                <div><label for="news-titulo" class="block text-sm font-medium mb-1">Título</label><input type="text" id="news-titulo" name="titulo" class="neumorphic-input" required></div>
+                <div><label for="news-imageUrl" class="block text-sm font-medium mb-1">URL de Imagen Principal</label><input type="url" id="news-imageUrl" name="imageUrl" class="neumorphic-input" placeholder="https://ejemplo.com/imagen.jpg"></div>
+                <div><label for="news-resumen" class="block text-sm font-medium mb-1">Resumen (Texto corto)</label><textarea id="news-resumen" name="resumen" rows="3" class="neumorphic-input"></textarea></div>
+                <div><label for="news-contenido" class="block text-sm font-medium mb-1">Contenido Completo</label><textarea id="news-contenido" name="contenido" rows="6" class="neumorphic-input"></textarea></div>
+                <div><label for="news-galleryUrls" class="block text-sm font-medium mb-1">URLs de Galería (una por línea)</label><textarea id="news-galleryUrls" name="galleryUrls" rows="4" class="neumorphic-input" placeholder="https://ejemplo.com/foto1.jpg&#10;https://ejemplo.com/foto2.jpg"></textarea></div>
+            </form>
+            <div class="flex justify-end gap-4 pt-4 flex-shrink-0"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" form="news-form" class="neumorphic-btn primary">Guardar</button></div>
+        </div>
+    </div>
+
+    <!-- Modal Detalle de Noticia -->
+    <div id="news-detail-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center hidden z-[60] p-4">
+        <div class="neumorphic-card p-4 sm:p-6 w-full max-w-4xl max-h-[95vh] flex flex-col relative">
+            <button data-action="close-modal" class="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 neumorphic-btn p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <div class="flex-grow overflow-y-auto pr-2">
+                <h2 id="news-detail-title" class="text-2xl sm:text-3xl font-bold mb-2"></h2>
+                <p id="news-detail-date" class="text-sm text-gray-500 mb-4"></p>
+                <div id="news-gallery-container" class="mb-4 relative">
+                    <img id="news-detail-image" src="" alt="Imagen de la noticia" class="w-full h-auto max-h-96 object-contain rounded-lg transition-opacity duration-150">
+                    <button id="gallery-prev-btn" class="absolute top-1/2 left-2 transform -translate-y-1/2 neumorphic-btn p-2 hidden"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg></button>
+                    <button id="gallery-next-btn" class="absolute top-1/2 right-2 transform -translate-y-1/2 neumorphic-btn p-2 hidden"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg></button>
+                </div>
+                <div id="news-gallery-thumbnails" class="flex gap-2 overflow-x-auto pb-2 mb-4"></div>
+                <p id="news-detail-content" class="leading-relaxed"></p>
             </div>
         </div>
     </div>
     
-     <div id="news-detail-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden z-[60] p-4">
-        <div class="neumorphic-card w-full max-w-3xl max-h-[90vh] flex flex-col">
-            <div class="p-4 sm:p-6 flex justify-between items-center border-b border-gray-300/50 flex-shrink-0">
-                <h2 id="news-detail-title" class="text-2xl font-bold"></h2>
-                <button data-action="close-modal" class="neumorphic-btn p-2"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
-            </div>
-            <div class="p-4 sm:p-6 flex-grow overflow-y-auto">
-                <p id="news-detail-date" class="text-sm text-gray-500 mb-4"></p>
-                <div class="relative mb-4">
-                     <img id="news-detail-image" src="" alt="Imagen de la noticia" class="w-full h-auto max-h-96 object-contain rounded-lg transition-opacity duration-150">
-                     <button id="gallery-prev-btn" class="absolute top-1/2 left-2 transform -translate-y-1/2 neumorphic-btn p-2 rounded-full hidden"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg></button>
-                     <button id="gallery-next-btn" class="absolute top-1/2 right-2 transform -translate-y-1/2 neumorphic-btn p-2 rounded-full hidden"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></button>
-                </div>
-                <div id="news-gallery-container" class="mb-4">
-                    <div id="news-gallery-thumbnails" class="flex gap-2 overflow-x-auto p-2"></div>
-                </div>
-                <div id="news-detail-content" class="prose dark:prose-invert max-w-none"></div>
-            </div>
+    <!-- Modales para Bloques y Archivos -->
+    <div id="bloque-manual-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="bloque-manual-form" data-type="bloqueManual">
+                <input type="hidden" name="id">
+                <div class="mb-6"><label for="bloque-manual-nombre" class="block text-sm font-medium mb-1">Nombre del Bloque</label><input type="text" id="bloque-manual-nombre" name="nombre" class="neumorphic-input" required></div>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+    <div id="bloque-archivo-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="bloque-archivo-form" data-type="bloqueArchivo">
+                <input type="hidden" name="id">
+                <div class="mb-6"><label for="bloque-archivo-nombre" class="block text-sm font-medium mb-1">Nombre del Bloque</label><input type="text" id="bloque-archivo-nombre" name="nombre" class="neumorphic-input" required></div>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+    <div id="manual-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="manual-form" data-type="manual">
+                <input type="hidden" name="id">
+                <input type="hidden" name="blockId">
+                <div class="mb-4"><label for="manual-nombre" class="block text-sm font-medium mb-1">Nombre del Manual</label><input type="text" id="manual-nombre" name="nombre" class="neumorphic-input" required></div>
+                <div class="mb-6"><label for="manual-url" class="block text-sm font-medium mb-1">URL del Manual</label><input type="url" id="manual-url" name="url" class="neumorphic-input" placeholder="https://ejemplo.com/documento.pdf" required></div>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
+    <div id="archivo-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="archivo-form" data-type="archivo">
+                <input type="hidden" name="id">
+                <input type="hidden" name="blockId">
+                <div class="mb-4"><label for="archivo-nombre" class="block text-sm font-medium mb-1">Nombre del Archivo</label><input type="text" id="archivo-nombre" name="nombre" class="neumorphic-input" required></div>
+                <div class="mb-6"><label for="archivo-url" class="block text-sm font-medium mb-1">URL del Archivo</label><input type="url" id="archivo-url" name="url" class="neumorphic-input" placeholder="https://ejemplo.com/recurso.zip" required></div>
+                <div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
         </div>
     </div>
 
-    <div id="confirm-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+    <!-- Modal de Confirmación y Detalles del Día -->
+    <div id="confirm-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-[120] p-4">
         <div class="neumorphic-card p-8 w-full max-w-sm">
             <h2 class="text-xl font-bold mb-4">Confirmar Eliminación</h2>
             <p id="confirm-message" class="mb-6">¿Estás seguro?</p>
@@ -1358,29 +1448,29 @@
             </div>
         </div>
     </div>
-    
-    <!-- Contenedor para notificaciones Toast -->
-    <div id="toast-container"></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot, addDoc, doc, setDoc, getDoc, updateDoc, deleteDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, addDoc, doc, setDoc, getDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // =================================================================================
         // CONFIGURACIÓN CENTRALIZADA
         // =================================================================================
         const Config = {
+            firebase: {
+                apiKey: "AIzaSyATCd0jgG2Lo5q8K5bB15eNvkakJBb15RU", authDomain: "ibcgapp.firebaseapp.com",
+                projectId: "ibcgapp", storageBucket: "ibcgapp.appspot.com",
+                messagingSenderId: "548258029551", appId: "1:548258029551:web:9354e4cc79ce4f25f0201a",
+                measurementId: "G-RBN8KZPJ5X"
+            },
             weather: {
                 apiKey: '9a11de307931b3ba88e6af9048b7f3b1',
                 lat: 19.5437,
                 lon: -96.91
             },
             paths: {
-                getBasePath() {
-                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'ibcgapp';
-                    return `artifacts/${appId}`;
-                },
+                base: `artifacts/ibcgapp`,
                 collections: {
                     users: `public/data/users`, events: `public/data/events`, 
                     parroquianos: `public/data/parroquianos`, news: `public/data/news`, 
@@ -1394,17 +1484,22 @@
         // =================================================================================
         const FirebaseService = {
             db: null, auth: null,
+            init(onAuthChangeCallback) {
+                const app = initializeApp(Config.firebase);
+                this.db = getFirestore(app);
+                this.auth = getAuth(app);
+                onAuthStateChanged(this.auth, onAuthChangeCallback);
+            },
             _getCollectionPath(type) {
                 const collectionPath = Config.paths.collections[type];
                 if (!collectionPath) throw new Error(`Collection type "${type}" no definida.`);
-                return `${Config.paths.getBasePath()}/${collectionPath}`;
+                return `${Config.paths.base}/${collectionPath}`;
             },
-            onCollectionSnapshot(type, onNext, onError) {
+            onCollectionSnapshot(type, callback) {
                 const path = this._getCollectionPath(type);
-                const defaultOnError = (error) => console.error(`Error en listener de ${type}: `, error);
                 return onSnapshot(collection(this.db, path), (snapshot) => {
-                    onNext(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-                }, onError || defaultOnError);
+                    callback(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+                }, (error) => console.error(`Error en listener de ${type}: `, error));
             },
             async saveDoc(type, id, data) {
                 const collectionPath = this._getCollectionPath(type);
@@ -1434,12 +1529,12 @@
                 const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=es`;
                 try {
                     const response = await fetch(url);
+                    if (!response.ok) throw new Error('Respuesta inválida de la API del clima');
                     const data = await response.json();
-                    if (!response.ok) throw new Error(data.message || 'Respuesta inválida de la API');
                     return { temp: data.main.temp, description: data.weather[0].description, location: data.name };
                 } catch (error) {
                     console.error("Error al obtener el clima:", error);
-                    throw error;
+                    return { description: 'Error de red', location: '' };
                 }
             }
         };
@@ -1450,109 +1545,29 @@
         const UI = {
             elements: {},
             init() {
-                this.elements = {
-                    appLoading: document.getElementById('app-loading'),
-                    appContainer: document.getElementById('app-container'),
-                    lockscreen: {
-                        container: document.getElementById('app-lockscreen'),
-                        time: document.getElementById('lockscreen-time'),
-                        date: document.getElementById('lockscreen-date'),
-                        message: document.getElementById('lockscreen-message'),
-                        unlockSwitch: document.getElementById('unlock-switch'),
-                        unlockSwitchLabel: document.querySelector('.unlock-switch-label'),
-                    },
-                    header: {
-                        adminControlsContainer: document.getElementById('admin-controls-container'),
-                        themeSwitch: document.getElementById('theme-switch-checkbox'),
-                    },
-                    nav: {
-                        tabsContainer: document.getElementById('tabs-container'),
-                        pagesContainer: document.getElementById('pages-container'),
-                        edgeHandle: document.getElementById('edge-handle'),
-                        mobileSidenav: document.getElementById('mobile-sidenav'),
-                        mobileSidenavOverlay: document.getElementById('mobile-sidenav-overlay'),
-                        mobileNavLinks: document.getElementById('mobile-nav-links'),
-                    },
-                    pages: {
-                        tablero: {
-                            currentDate: document.getElementById('current-date'),
-                            currentTime: document.getElementById('current-time'),
-                            weatherTemp: document.getElementById('weather-temp'),
-                            weatherDesc: document.getElementById('weather-desc'),
-                            weatherLocation: document.getElementById('weather-location'),
-                            upcomingEventsList: document.getElementById('upcoming-events-list'),
-                            birthdayCard: document.getElementById('birthday-card'),
-                            birthdayList: document.getElementById('birthday-list'),
-                        },
-                        agenda: { tableBody: document.getElementById('agenda-table-body') },
-                        directorio: { tableBody: document.getElementById('directorio-table-body') },
-                        noticias: { grid: document.getElementById('news-grid') },
-                        manuales: { container: document.getElementById('manuales-container') },
-                        recursos: { container: document.getElementById('archivos-container') },
-                        calendario: {
-                            header: document.getElementById('month-year-header'),
-                            grid: document.getElementById('calendar-grid'),
-                        },
-                        userManagement: { tableBody: document.getElementById('user-management-table-body') }
-                    },
-                    modals: {
-                        userAuth: document.getElementById('user-auth-modal'),
-                        generic: document.getElementById('generic-modal'),
-                        newsDetail: document.getElementById('news-detail-modal'),
-                        confirm: document.getElementById('confirm-modal'),
-                        calendarDay: document.getElementById('calendar-day-modal'),
-                    },
-                    genericModal: {
-                        title: document.getElementById('generic-modal-title'),
-                        form: document.getElementById('generic-modal-form'),
-                    },
-                    newsDetail: {
-                        title: document.getElementById('news-detail-title'),
-                        date: document.getElementById('news-detail-date'),
-                        image: document.getElementById('news-detail-image'),
-                        content: document.getElementById('news-detail-content'),
-                        galleryContainer: document.getElementById('news-gallery-container'),
-                        thumbnails: document.getElementById('news-gallery-thumbnails'),
-                        prevBtn: document.getElementById('gallery-prev-btn'),
-                        nextBtn: document.getElementById('gallery-next-btn'),
-                    },
-                    confirmModal: {
-                        message: document.getElementById('confirm-message'),
-                        deleteBtn: document.getElementById('confirm-delete-btn'),
-                    },
-                    calendarDayModal: {
-                        title: document.getElementById('calendar-day-modal-title'),
-                        eventsList: document.getElementById('calendar-day-events-list'),
-                        birthdaysSection: document.getElementById('calendar-day-birthdays-section'),
-                        birthdaysList: document.getElementById('calendar-day-birthdays-list'),
-                    },
-                    toastContainer: document.getElementById('toast-container')
-                };
-            },
-            
-            showToast(message, type = 'info') {
-                const iconSvg = {
-                    success: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`,
-                    error: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`,
-                    info: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`
-                };
-                const toast = document.createElement('div');
-                toast.className = `toast toast-${type}`;
-                toast.innerHTML = `
-                    <div class="toast-icon">${iconSvg[type] || iconSvg.info}</div>
-                    <div>${message}</div>
-                `;
-                this.elements.toastContainer.appendChild(toast);
-                
-                setTimeout(() => toast.classList.add('show'), 10);
-                
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                    toast.addEventListener('transitionend', () => toast.remove());
-                }, 5000);
+                const ids = [
+                    'app-loading', 'app-container', 'app-lockscreen', 'lockscreen-time', 'lockscreen-date', 
+                    'lockscreen-message', 'unlock-switch', 'admin-controls-container', 'theme-switch-checkbox',
+                    'tabs-container', 'pages-container', 'mobile-sidenav', 'mobile-sidenav-overlay', 'mobile-nav-links',
+                    'current-date', 'current-time', 'weather-temp', 'weather-desc', 'weather-location', 
+                    'upcoming-events-list', 'birthday-card', 'birthday-list', 'agenda-table-body', 
+                    'directorio-table-body', 'news-grid', 'manuales-container', 'archivos-container', 
+                    'month-year-header', 'calendar-grid', 'user-management-table-body', 'user-auth-modal',
+                    'event-modal', 'parroquiano-modal', 'news-modal', 'news-detail-modal', 'bloque-manual-modal',
+                    'manual-modal', 'bloque-archivo-modal', 'archivo-modal', 'confirm-modal', 'calendar-day-modal',
+                    'news-detail-title', 'news-detail-date', 'news-detail-image', 'news-detail-content',
+                    'news-gallery-container', 'news-gallery-thumbnails', 'gallery-prev-btn', 'gallery-next-btn',
+                    'confirm-message', 'confirm-delete-btn', 'calendar-day-modal-title', 'calendar-day-events-list',
+                    'calendar-day-birthdays-section', 'calendar-day-birthdays-list'
+                ];
+                ids.forEach(id => {
+                    const camelCaseId = id.replace(/-(\w)/g, (_, c) => c.toUpperCase());
+                    this.elements[camelCaseId] = document.getElementById(id);
+                });
+                this.elements.unlockSwitchLabel = document.querySelector('.unlock-switch-label');
             },
             showPage(pageId) {
-                this.elements.nav.pagesContainer.querySelectorAll('.page').forEach(page => page.classList.toggle('active', page.id === pageId));
+                this.elements.pagesContainer.querySelectorAll('.page').forEach(page => page.classList.toggle('active', page.id === pageId));
                 document.querySelectorAll(`[data-target]`).forEach(tab => tab.classList.toggle('active', tab.dataset.target === pageId));
             },
             renderTable(tbody, data, rowRenderer, emptyMessage) {
@@ -1589,10 +1604,9 @@
                                     <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform"></div>
                                 </div>
                             </label>
-                        </div>
-                    ` : '';
+                        </div>` : '';
 
-                     this.elements.header.adminControlsContainer.innerHTML = `
+                     this.elements.adminControlsContainer.innerHTML = `
                         <div class="flex items-center gap-4">
                             ${isSuperAdminView}
                             <span class="font-semibold hidden sm:inline">${user.nombre.split(' ')[0]}</span>
@@ -1601,7 +1615,7 @@
                             </button>
                         </div>`;
                 } else {
-                     this.elements.header.adminControlsContainer.innerHTML = ``;
+                     this.elements.adminControlsContainer.innerHTML = ``;
                 }
                 this.nav.initMobileNav();
             },
@@ -1687,7 +1701,7 @@
                         <tr class="border-b border-gray-300/50">
                             <td class="p-3 font-medium">${p.nombre || ''}</td>
                             <td class="p-3 hidden md:table-cell">${p.telefono || ''}</td>
-                            <td class="p-3 hidden lg:table-cell">${p.emergencia_nombre || ''}</td>
+                            <td class="p-3 hidden lg:table-cell">${p.emergencia_nombre || ''} (${p.emergencia_telefono || 'N/A'})</td>
                             <td class="p-3 admin-only-table-cell" data-permission="directorio">
                                  <div class="flex gap-2">
                                     <button data-action="edit" data-type="parroquiano" data-id="${p.id}" class="neumorphic-btn btn-sm">Editar</button>
@@ -1747,7 +1761,7 @@
                                     <h3 class="text-xl font-bold">${block.nombre}</h3>
                                     <div class="flex items-center gap-4">
                                         <div class="admin-only" data-permission="${typeConfig.permission}" style="gap: 0.5rem;">
-                                            <button data-action="open-modal" data-form-type="${typeConfig.item}" data-block-id="${block.id}" class="neumorphic-btn primary btn-sm">Añadir</button>
+                                            <button data-action="add-item" data-modal-target="${typeConfig.item}-modal" data-block-id="${block.id}" class="neumorphic-btn primary btn-sm">Añadir</button>
                                             <button data-action="edit" data-type="${typeConfig.block}" data-id="${block.id}" class="neumorphic-btn btn-sm">Editar</button>
                                             <button data-action="delete" data-type="${typeConfig.block}" data-id="${block.id}" class="neumorphic-btn danger btn-sm">Eliminar</button>
                                         </div>
@@ -1861,17 +1875,13 @@
                         const target = btn.dataset.target;
                         const isActive = btn.classList.contains('active');
                         
-                        linksHtml += `
-                            <button class="nav-button ${isActive ? 'active' : ''}" data-target="${target}" style="width: 100%;">
-                                ${text}
-                            </button>`;
+                        linksHtml += `<button class="nav-button ${isActive ? 'active' : ''}" data-target="${target}" style="width: 100%;">${text}</button>`;
                     });
-                    UI.elements.nav.mobileNavLinks.innerHTML = linksHtml;
+                    UI.elements.mobileNavLinks.innerHTML = linksHtml;
                 },
                 toggleSidenav(open) {
-                    const { mobileSidenav, mobileSidenavOverlay } = UI.elements.nav;
-                    mobileSidenav.classList.toggle('active', open);
-                    mobileSidenavOverlay.classList.toggle('active', open);
+                    UI.elements.mobileSidenav.classList.toggle('active', open);
+                    UI.elements.mobileSidenavOverlay.classList.toggle('active', open);
                 }
             },
         };
@@ -1893,84 +1903,16 @@
                     this.setupEventListeners();
                     this.initTheme();
                     this.initTimers();
-                    
-                    const firebaseApp = this.initializeFirebase();
-                    if (firebaseApp) {
-                        await this.authenticateUser(firebaseApp);
-                    }
+                    FirebaseService.init(this.onAuthStateChanged.bind(this));
                 } catch (error) {
                      console.error("Error fatal durante la inicialización:", error);
-                     UI.showToast('Error crítico al iniciar la aplicación.', 'error');
                     document.body.innerHTML = `<div class="fixed inset-0 bg-red-100 text-red-800 p-8 flex flex-col justify-center items-center text-center"><h1 class="text-3xl font-bold mb-4">¡Ups! Ocurrió un error crítico.</h1><p class="mb-4">${error.message}</p></div>`;
-                }
-            },
-
-            initializeFirebase() {
-                try {
-                    const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
-                    const firebaseConfig = JSON.parse(firebaseConfigStr);
-                    
-                    if (!firebaseConfig.apiKey) {
-                        throw new Error("La configuración de Firebase no está disponible.");
-                    }
-
-                    const app = initializeApp(firebaseConfig);
-                    FirebaseService.db = getFirestore(app);
-                    FirebaseService.auth = getAuth(app);
-                    return app;
-                } catch (error) {
-                    console.error("Error al inicializar Firebase:", error);
-                    UI.showToast("Error de configuración. La app no puede conectar.", "error");
-                    return null;
-                }
-            },
-
-            async authenticateUser(app) {
-                if (!app) return;
-                const auth = getAuth(app);
-
-                const authPromise = new Promise((resolve, reject) => {
-                    const unsubscribe = onAuthStateChanged(auth, (user) => {
-                        unsubscribe(); // Nos desuscribimos para que solo se ejecute una vez al inicio
-                        resolve(user);
-                    }, (error) => {
-                        unsubscribe();
-                        reject(error);
-                    });
-                });
-                
-                try {
-                    // Espera a que el estado de autenticación inicial se resuelva.
-                    await authPromise;
-                    
-                    // Si después de la comprobación inicial no hay usuario, intentamos el login.
-                    if (!auth.currentUser) {
-                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                            await signInWithCustomToken(auth, __initial_auth_token);
-                        } else {
-                            await signInAnonymously(auth);
-                        }
-                    }
-                    
-                    // Ahora que estamos seguros de tener un estado (autenticado o no),
-                    // volvemos a poner el listener principal para futuros cambios (como login/logout manual).
-                    onAuthStateChanged(auth, this.onAuthStateChanged.bind(this));
-
-                } catch (error) {
-                    console.error("Error de autenticación inicial:", error);
-                    if (error.code === 'auth/operation-not-allowed') {
-                         UI.showToast("Error de configuración: Habilita el inicio de sesión anónimo en Firebase.", "error");
-                    } else {
-                        UI.showToast("Fallo en la autenticación.", "error");
-                    }
-                    // Aunque falle, ponemos el listener para que el login manual funcione.
-                    onAuthStateChanged(auth, this.onAuthStateChanged.bind(this));
                 }
             },
             
             async onAuthStateChanged(authUser) {
                  let userProfile = null;
-                 if (authUser && !authUser.isAnonymous) {
+                 if (authUser) {
                      const userDoc = await FirebaseService.getDoc('users', authUser.uid);
                      if (userDoc.exists()) {
                          userProfile = { id: authUser.uid, ...userDoc.data() };
@@ -1979,9 +1921,6 @@
                          await FirebaseService.setDoc('users', authUser.uid, superAdminProfile);
                          userProfile = { id: authUser.uid, ...superAdminProfile };
                      }
-                 } else if (authUser && authUser.isAnonymous) {
-                    // Creamos un perfil de "invitado" temporal
-                    userProfile = { id: authUser.uid, nombre: 'Invitado', email: '', role: 'viewer', permissions: { verAgendaCalendario: true } };
                  }
                 
                 this.state.auth.user = userProfile;
@@ -1994,7 +1933,7 @@
                 if (!this.dataListenersInitialized && userProfile) {
                     this.setupDataListeners();
                     this.loadWeather();
-                    UI.calendario.render(this.state.ui.currentCalendarDate, this.state.data.events, this.state.data.parroquianos, UI.elements.pages.calendario.header, UI.elements.pages.calendario.grid);
+                    this.renderCalendario();
                     this.dataListenersInitialized = true;
                 }
 
@@ -2005,32 +1944,27 @@
             },
             
             setupDataListeners() {
-                const onError = (type) => (error) => {
-                    console.error(`Error al cargar datos de ${type}: `, error);
-                    UI.showToast(`Error al cargar ${type}.`, 'error');
-                };
-
-                FirebaseService.onCollectionSnapshot('events', d => { this.state.data.events = d; this.renderAgenda(); this.renderTablero(); this.renderCalendario(); }, onError('eventos'));
-                FirebaseService.onCollectionSnapshot('parroquianos', d => { this.state.data.parroquianos = d; this.renderDirectorio(); this.renderTablero(); this.renderCalendario(); }, onError('parroquianos'));
-                FirebaseService.onCollectionSnapshot('news', d => { this.state.data.news = d; UI.renderGrid(UI.elements.pages.noticias.grid, d, UI.noticias.createCard, 'No hay noticias.'); }, onError('noticias'));
-                FirebaseService.onCollectionSnapshot('manuales', d => { this.state.data.manuales = d; UI.acordeon.render(UI.elements.pages.manuales.container, d, 'No hay manuales.', {plural: 'manuales', block: 'bloqueManual', item: 'manual', permission: 'manuales'}); }, onError('manuales'));
-                FirebaseService.onCollectionSnapshot('archivos', d => { this.state.data.archivos = d; UI.acordeon.render(UI.elements.pages.recursos.container, d, 'No hay archivos.', {plural: 'archivos', block: 'bloqueArchivo', item: 'archivo', permission: 'recursos'}); }, onError('archivos'));
-                FirebaseService.onCollectionSnapshot('users', users => { this.state.data.allUsers = users; if(this.state.auth.isSuperAdmin) { UI.userManagement.render(users, UI.elements.pages.userManagement.tableBody); } }, onError('usuarios'));
+                FirebaseService.onCollectionSnapshot('events', d => { this.state.data.events = d; this.renderAgenda(); this.renderTablero(); this.renderCalendario(); });
+                FirebaseService.onCollectionSnapshot('parroquianos', d => { this.state.data.parroquianos = d; this.renderDirectorio(); this.renderTablero(); this.renderCalendario(); });
+                FirebaseService.onCollectionSnapshot('news', d => { this.state.data.news = d; UI.renderGrid(UI.elements.newsGrid, d, UI.noticias.createCard, 'No hay noticias.'); });
+                FirebaseService.onCollectionSnapshot('manuales', d => { this.state.data.manuales = d; UI.acordeon.render(UI.elements.manualesContainer, d, 'No hay manuales.', {plural: 'manuales', block: 'bloqueManual', item: 'manual', permission: 'manuales'}); });
+                FirebaseService.onCollectionSnapshot('archivos', d => { this.state.data.archivos = d; UI.acordeon.render(UI.elements.archivosContainer, d, 'No hay archivos.', {plural: 'archivos', block: 'bloqueArchivo', item: 'archivo', permission: 'recursos'}); });
+                FirebaseService.onCollectionSnapshot('users', users => { this.state.data.allUsers = users; if(this.state.auth.isSuperAdmin) { UI.userManagement.render(users, UI.elements.userManagementTableBody); } });
             },
 
             // --- Renderizadores de Páginas Completas ---
             renderTablero() {
-                UI.tablero.renderUpcomingEvents(this.state.data.events, UI.elements.pages.tablero.upcomingEventsList);
-                UI.tablero.renderBirthdayReminders(this.state.data.parroquianos, UI.elements.pages.tablero.birthdayCard, UI.elements.pages.tablero.birthdayList);
+                UI.tablero.renderUpcomingEvents(this.state.data.events, UI.elements.upcomingEventsList);
+                UI.tablero.renderBirthdayReminders(this.state.data.parroquianos, UI.elements.birthdayCard, UI.elements.birthdayList);
             },
             renderAgenda() {
-                UI.renderTable(UI.elements.pages.agenda.tableBody, this.state.data.events, UI.agenda.createRow, 'No hay eventos.');
+                UI.renderTable(UI.elements.agendaTableBody, this.state.data.events, UI.agenda.createRow, 'No hay eventos.');
             },
             renderDirectorio() {
-                UI.renderTable(UI.elements.pages.directorio.tableBody, this.state.data.parroquianos, UI.directorio.createRow, 'No hay registros.');
+                UI.renderTable(UI.elements.directorioTableBody, this.state.data.parroquianos, UI.directorio.createRow, 'No hay registros.');
             },
             renderCalendario() {
-                 UI.calendario.render(this.state.ui.currentCalendarDate, this.state.data.events, this.state.data.parroquianos, UI.elements.pages.calendario.header, UI.elements.pages.calendario.grid);
+                 UI.calendario.render(this.state.ui.currentCalendarDate, this.state.data.events, this.state.data.parroquianos, UI.elements.monthYearHeader, UI.elements.calendarGrid);
             },
 
             // --- Lógica de Permisos ---
@@ -2038,29 +1972,30 @@
                 const { viewAsUser, isSuperAdmin, isAdmin, user } = this.state.auth;
                 if (viewAsUser) return false;
                 if (isSuperAdmin) return true;
-                return (isAdmin || user?.role === 'viewer') && user.permissions?.[section] === true;
+                return isAdmin && user.permissions?.[section] === true;
             },
             updateUIPermissions() {
                  UI.updateAdminUI(this.state.auth.isSuperAdmin, this.state.auth.isAdmin, this.state.auth.user, this.state.auth.viewAsUser);
                  document.querySelectorAll('[data-permission]').forEach(el => {
-                    el.style.display = this.hasPermission(el.dataset.permission) ? '' : 'none';
+                    const elStyle = el.style;
+                    elStyle.display = this.hasPermission(el.dataset.permission) ? '' : 'none';
                  });
                  UI.nav.initMobileNav();
             },
             updateLockscreenStatus() {
-                const { user } = this.state.auth;
-                const { unlockSwitch, unlockSwitchLabel, message, container } = UI.elements.lockscreen;
-                if (user) {
+                const { user, isSuperAdmin, isAdmin } = this.state.auth;
+                const { unlockSwitch, unlockSwitchLabel, lockscreenMessage, appLockscreen } = UI.elements;
+                if (isSuperAdmin || isAdmin || user?.role === 'viewer') {
                     unlockSwitch.disabled = false;
                     unlockSwitchLabel.classList.remove('disabled');
-                    message.classList.add('hidden');
+                    lockscreenMessage.classList.add('hidden');
                 } else {
                     unlockSwitch.disabled = true;
                     unlockSwitch.checked = false;
                     unlockSwitchLabel.classList.add('disabled');
-                    if (container.classList.contains('fade-out')) {
-                        container.style.display = 'flex';
-                        setTimeout(() => container.classList.remove('fade-out'), 10);
+                    if (appLockscreen.classList.contains('fade-out')) {
+                        appLockscreen.style.display = 'flex';
+                        setTimeout(() => appLockscreen.classList.remove('fade-out'), 10);
                     }
                 }
             },
@@ -2070,41 +2005,37 @@
                 document.body.addEventListener('click', this.handleGlobalClick.bind(this));
                 document.addEventListener('submit', this.handleFormSubmission.bind(this));
                 document.body.addEventListener('change', this.handleGlobalChange.bind(this));
-
-                UI.elements.lockscreen.unlockSwitch.addEventListener('change', (e) => {
-                    if (e.target.checked) setTimeout(() => UI.elements.lockscreen.container.classList.add('fade-out'), 300);
+                UI.elements.unlockSwitch.addEventListener('change', (e) => {
+                    if (e.target.checked) setTimeout(() => UI.elements.appLockscreen.classList.add('fade-out'), 300);
                 });
                 document.getElementById('prev-month-btn').addEventListener('click', () => { this.state.ui.currentCalendarDate.setMonth(this.state.ui.currentCalendarDate.getMonth() - 1); this.renderCalendario(); });
                 document.getElementById('next-month-btn').addEventListener('click', () => { this.state.ui.currentCalendarDate.setMonth(this.state.ui.currentCalendarDate.getMonth() + 1); this.renderCalendario(); });
-
-                UI.elements.nav.edgeHandle.addEventListener('click', () => UI.nav.toggleSidenav(true));
-                UI.elements.nav.mobileSidenavOverlay.addEventListener('click', () => UI.nav.toggleSidenav(false));
             },
             
             handleGlobalClick(e) {
-                const target = e.target.closest('[data-action], [data-target], .accordion-toggle');
+                const target = e.target.closest('[data-action], [data-target], [data-modal-target], .accordion-toggle');
                 if (!target) return;
 
-                const { action, target: pageTarget, formType, type, id, blockId, itemId } = target.dataset;
+                const { action, target: pageTarget, modalTarget, type, id, blockId, itemId, userId, date } = target.dataset;
 
                 if (pageTarget) {
                     UI.showPage(pageTarget);
-                    if (target.closest('#mobile-nav-links')) UI.nav.toggleSidenav(false);
+                    if (UI.elements.mobileSidenav.classList.contains('active')) {
+                        UI.nav.toggleSidenav(false);
+                    }
                 }
-                
+                if (modalTarget) this.openModal(modalTarget, null, blockId);
+
                 if (action) {
                     const actionHandlers = {
-                        'open-modal': () => this.openModal(formType, null, blockId),
-                        'logout': this.handleLogout,
-                        'close-modal': () => this.closeModal(target.closest('.fixed.inset-0').id),
-                        'close-sidenav': () => UI.nav.toggleSidenav(false),
-                        'edit': () => this.handleEdit(type, id, blockId, itemId),
-                        'delete': () => this.handleDelete(type, id, blockId, itemId),
-                        'delete-user': () => this.handleDeleteUser(target.dataset.userId),
-                        'read-more': () => this.handleReadMore(id),
-                        'show-day-details': () => this.handleShowDayDetails(target.dataset.date),
+                        'logout': this.handleLogout, 'close-modal': () => this.closeModal(target.closest('.fixed.inset-0').id),
+                        'open-sidenav': () => UI.nav.toggleSidenav(true), 'close-sidenav': () => UI.nav.toggleSidenav(false),
+                        'edit': () => this.handleEdit(type, id, blockId, itemId), 'delete': () => this.handleDelete(type, id, blockId, itemId),
+                        'delete-user': () => this.handleDeleteUser(userId), 'read-more': () => this.handleReadMore(id),
+                        'add-item': () => this.openModal(`${modalTarget.replace('-modal', '')}-modal`, null, blockId),
+                        'show-day-details': () => this.handleShowDayDetails(date),
                     };
-                    if(actionHandlers[action]) actionHandlers[action]();
+                    actionHandlers[action]?.();
                 }
                 
                 if (target.matches('.accordion-toggle')) {
@@ -2114,7 +2045,6 @@
                 }
                  if(target.id === 'show-register-btn') { e.preventDefault(); document.getElementById('login-view').classList.add('hidden'); document.getElementById('register-view').classList.remove('hidden'); target.classList.add('active'); document.getElementById('show-login-btn').classList.remove('active'); }
                  if(target.id === 'show-login-btn') { e.preventDefault(); document.getElementById('register-view').classList.add('hidden'); document.getElementById('login-view').classList.remove('hidden'); target.classList.add('active'); document.getElementById('show-register-btn').classList.remove('active'); }
-
             },
 
             handleFormSubmission(e) {
@@ -2123,21 +2053,18 @@
                 const formHandlers = {
                     'login-form': this.handleLogin,
                     'register-form': this.handleRegister,
-                    'generic-modal-form': this.handleGenericFormSubmit
                 };
-                if(formHandlers[formId]) formHandlers[formId].call(this, e.target);
+                (formHandlers[formId] || this.handleGenericFormSubmit).call(this, e.target);
             },
             
             handleGlobalChange(e) {
                 const target = e.target;
                 if (target.id === 'view-as-user-switch') {
-                    this.state.auth.viewAsUser = e.target.checked;
-                    this.updateUIPermissions();
+                    this.state.auth.viewAsUser = e.target.checked; this.updateUIPermissions();
                 } else if (target.matches('.user-role-switch')) {
                     const userId = target.dataset.userId;
                     const newRole = target.checked ? 'admin' : 'viewer';
-                    const label = document.getElementById(`role-label-${userId}`);
-                    if (label) label.textContent = newRole === 'admin' ? 'Admin' : 'Espectador';
+                    document.getElementById(`role-label-${userId}`).textContent = newRole === 'admin' ? 'Admin' : 'Espectador';
                     this.updateUserRole(userId, newRole);
                 } else if (target.matches('.user-permission-checkbox')) {
                     this.updateUserPermission(target.dataset.userId, target.dataset.permission, target.checked);
@@ -2148,65 +2075,51 @@
             async handleLogin(form) {
                 const email = form.querySelector('#login-email').value;
                 const password = form.querySelector('#login-password').value;
+                const errorMsg = form.querySelector('#login-error-msg');
+                errorMsg.classList.add('hidden');
+                
                 try {
                     let userCredential;
                     if (email === 'admin@portal.com' && password === 'admin123') {
-                         userCredential = await signInWithEmailAndPassword(FirebaseService.auth, email, password).catch(err => 
+                        userCredential = await signInWithEmailAndPassword(FirebaseService.auth, email, password).catch(err => 
                             err.code === 'auth/user-not-found' ? createUserWithEmailAndPassword(FirebaseService.auth, email, password) : Promise.reject(err)
-                         );
+                        );
                     } else {
                         userCredential = await signInWithEmailAndPassword(FirebaseService.auth, email, password);
                     }
                     this.closeModal('user-auth-modal');
-                    UI.showToast('¡Bienvenido de nuevo!', 'success');
-
-                    const { unlockSwitch } = UI.elements.lockscreen;
-                    if (unlockSwitch.disabled) {
-                        unlockSwitch.disabled = false;
-                        UI.elements.lockscreen.unlockSwitchLabel.classList.remove('disabled');
-                        UI.elements.lockscreen.message.classList.add('hidden');
-                    }
-                    unlockSwitch.checked = true;
-                    unlockSwitch.dispatchEvent(new Event('change'));
+                    UI.elements.unlockSwitch.checked = true;
+                    UI.elements.unlockSwitch.dispatchEvent(new Event('change'));
                 } catch(error) {
-                    console.error("Error de inicio de sesión:", error);
-                    UI.showToast('Correo o contraseña incorrectos.', 'error');
+                    errorMsg.textContent = 'Correo o contraseña incorrectos.';
+                    errorMsg.classList.remove('hidden');
                 }
             },
             async handleRegister(form) {
                  const name = form.querySelector('#register-name').value;
                  const email = form.querySelector('#register-email').value;
                  const password = form.querySelector('#register-password').value;
+                 const errorMsg = form.querySelector('#register-error-msg');
+                 errorMsg.classList.add('hidden');
+
                 try {
                     const userCredential = await createUserWithEmailAndPassword(FirebaseService.auth, email, password);
                     const newUserProfile = { nombre: name, email: email, role: 'viewer', permissions: {} };
                     await FirebaseService.setDoc('users', userCredential.user.uid, newUserProfile);
                     this.closeModal('user-auth-modal');
-                    UI.showToast('¡Cuenta creada! Bienvenido.', 'success');
-
-                    const { unlockSwitch } = UI.elements.lockscreen;
-                    if (unlockSwitch.disabled) {
-                        unlockSwitch.disabled = false;
-                        UI.elements.lockscreen.unlockSwitchLabel.classList.remove('disabled');
-                        UI.elements.lockscreen.message.classList.add('hidden');
-                    }
-                    unlockSwitch.checked = true;
-                    unlockSwitch.dispatchEvent(new Event('change'));
+                    UI.elements.unlockSwitch.checked = true;
+                    UI.elements.unlockSwitch.dispatchEvent(new Event('change'));
                 } catch(error) {
-                     console.error("Error de registro:", error);
-                     if (error.code === 'auth/email-already-in-use') UI.showToast('Este correo ya está registrado.', 'error');
-                     else if (error.code === 'auth/weak-password') UI.showToast('La contraseña debe tener al menos 6 caracteres.', 'error');
-                     else UI.showToast('Error al registrar la cuenta.', 'error');
+                     if (error.code === 'auth/email-already-in-use') errorMsg.textContent = 'Este correo ya está registrado.';
+                     else if (error.code === 'auth/weak-password') errorMsg.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+                     else errorMsg.textContent = 'Error al registrar la cuenta.';
+                     errorMsg.classList.remove('hidden');
                 }
             },
             async handleLogout() { 
-                await signOut(FirebaseService.auth); 
-                UI.showToast('Has cerrado sesión.', 'info');
-                // Forzar el rebloqueo de la pantalla al cerrar sesión
-                const { container, unlockSwitch } = UI.elements.lockscreen;
-                container.classList.remove('fade-out');
-                unlockSwitch.checked = false;
-                this.updateLockscreenStatus();
+                await signOut(FirebaseService.auth);
+                UI.elements.unlockSwitch.checked = false;
+                UI.elements.appLockscreen.classList.remove('fade-out');
             },
             async handleGenericFormSubmit(form) {
                 const type = form.dataset.type;
@@ -2215,10 +2128,7 @@
                     bloqueManual: 'manuales', manual: 'manuales',
                     bloqueArchivo: 'recursos', archivo: 'recursos'
                 };
-                if (!this.hasPermission(permissionMap[type])) {
-                    UI.showToast('No tienes permiso para realizar esta acción.', 'error');
-                    return;
-                }
+                if (!this.hasPermission(permissionMap[type])) return;
                 
                 const submitButton = form.querySelector('button[type="submit"]');
                 if (submitButton) submitButton.disabled = true;
@@ -2245,19 +2155,18 @@
                             const index = items.findIndex(item => item.id === itemData.id);
                             if (index > -1) items[index] = { ...items[index], ...itemData };
                         } else {
-                             itemData.id = crypto.randomUUID();
-                             items.push(itemData);
+                            itemData.id = crypto.randomUUID();
+                            items.push(itemData);
                         }
                         await FirebaseService.saveDoc(config.collection, blockId, { items });
                     } else {
-                         if (type === 'news') data.galleryUrls = data.galleryUrls ? data.galleryUrls.split('\n').map(url => url.trim()).filter(Boolean) : [];
-                        await FirebaseService.saveDoc(type === 'news' ? 'news' : type + 's', id, data);
+                        if (type === 'news') data.galleryUrls = data.galleryUrls ? data.galleryUrls.split('\n').map(url => url.trim()).filter(Boolean) : [];
+                        const collectionName = type === 'news' ? 'news' : type + 's';
+                        await FirebaseService.saveDoc(collectionName, id, data);
                     }
-                    this.closeModal('generic-modal');
-                    UI.showToast('¡Operación exitosa!', 'success');
+                    this.closeModal(`${type}-modal`);
                 } catch (err) {
                     console.error(`Error al guardar:`, err);
-                    UI.showToast('Hubo un error al guardar. Intenta de nuevo.', 'error');
                 } finally {
                     if (submitButton) submitButton.disabled = false;
                 }
@@ -2276,11 +2185,11 @@
                 if (itemTypes[type]) {
                     const block = this.state.data[itemTypes[type]].find(b => b.id === blockId);
                     const item = block?.items.find(i => i.id === itemId);
-                    if (item) this.openModal(type, { ...item, blockId });
+                    if (item) this.openModal(`${type}-modal`, { ...item, blockId });
                 } else {
                     const collectionName = blockTypes[type] || (type === 'news' ? 'news' : type + 's');
                     const item = this.state.data[collectionName].find(i => i.id === id);
-                    if (item) this.openModal(type, item);
+                    if (item) this.openModal(`${type}-modal`, item);
                 }
             },
             handleDelete(type, id, blockId, itemId) {
@@ -2291,10 +2200,10 @@
                 };
                 if (!this.hasPermission(permissionMap[type])) return;
 
-                UI.elements.confirmModal.message.textContent = `¿Seguro de eliminar este registro?`;
-                this.openModal('confirm');
+                UI.elements.confirmMessage.textContent = `¿Seguro de eliminar este registro?`;
+                this.openModal('confirm-modal');
 
-                UI.elements.confirmModal.deleteBtn.onclick = async () => {
+                UI.elements.confirmDeleteBtn.onclick = async () => {
                     try {
                         const itemTypes = { manual: 'manuales', archivo: 'archivos' };
                         const blockTypes = { bloqueManual: 'manuales', bloqueArchivo: 'archivos' };
@@ -2306,85 +2215,69 @@
                                 await FirebaseService.saveDoc(itemTypes[type], blockId, { items });
                             }
                         } else {
-                            await FirebaseService.deleteDoc(blockTypes[type] || (type === 'news' ? 'news' : type + 's'), id);
+                            const collectionName = blockTypes[type] || (type === 'news' ? 'news' : type + 's');
+                            await FirebaseService.deleteDoc(collectionName, id);
                         }
-                        this.closeModal('confirm');
-                        UI.showToast('Registro eliminado con éxito.', 'success');
-                    } catch (err) { 
-                        console.error(`Error al eliminar:`, err); 
-                        UI.showToast('No se pudo eliminar el registro.', 'error');
-                        this.closeModal('confirm');
-                    }
+                        this.closeModal('confirm-modal');
+                    } catch (err) { console.error(`Error al eliminar:`, err); }
                 };
             },
             handleDeleteUser(userId) {
                 if (!this.state.auth.isSuperAdmin || this.state.auth.user.id === userId) return;
-
                 const userToDelete = this.state.data.allUsers.find(u => u.id === userId);
                 if (!userToDelete) return;
 
-                UI.elements.confirmModal.message.textContent = `¿Seguro de eliminar al usuario "${userToDelete.nombre}"? Esta acción eliminará su perfil de la app, pero no su cuenta de autenticación.`;
-                this.openModal('confirm');
+                UI.elements.confirmMessage.textContent = `¿Seguro de eliminar al usuario "${userToDelete.nombre}"? Esta acción no se puede deshacer.`;
+                this.openModal('confirm-modal');
 
-                UI.elements.confirmModal.deleteBtn.onclick = async () => {
+                UI.elements.confirmDeleteBtn.onclick = async () => {
                     try {
                         await FirebaseService.deleteDoc('users', userId);
-                        this.closeModal('confirm');
-                        UI.showToast('Usuario eliminado.', 'success');
-                    } catch (err) {
-                        console.error(`Error al eliminar usuario:`, err);
-                        UI.showToast('No se pudo eliminar el usuario.', 'error');
-                        this.closeModal('confirm');
-                    }
+                        this.closeModal('confirm-modal');
+                    } catch (err) { console.error(`Error al eliminar usuario:`, err); }
                 };
             },
             handleReadMore(id) {
                 const item = this.state.data.news.find(i => i.id === id);
                 if (!item) return;
-                const { title, date, content, image, thumbnails, prevBtn, nextBtn } = UI.elements.newsDetail;
-
-                title.textContent = item.titulo;
-                date.textContent = new Date(item.fechaPublicacion).toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'});
-                content.innerHTML = item.contenido.replace(/\n/g,'<br>');
-
+                const { newsDetailTitle, newsDetailDate, newsDetailContent, newsDetailImage, newsGalleryThumbnails, galleryPrevBtn, galleryNextBtn } = UI.elements;
+                
+                newsDetailTitle.textContent = item.titulo;
+                newsDetailDate.textContent = new Date(item.fechaPublicacion).toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'});
+                newsDetailContent.innerHTML = item.contenido.replace(/\n/g,'<br>');
+                
                 this.state.ui.currentGalleryImages = [item.imageUrl, ...(item.galleryUrls || [])].filter(Boolean);
                 this.state.ui.currentGalleryIndex = 0;
-
-                const mainImagePlaceholder = 'https://placehold.co/800x600/eef0f4/4b5563?text=No+disponible';
-                image.onerror = function() {
-                    this.onerror = null;
-                    this.src = mainImagePlaceholder;
-                };
-
-                thumbnails.innerHTML = this.state.ui.currentGalleryImages.map((url, index) => 
-                    `<img src="${url}" loading="lazy" data-action="set-gallery-image" data-index="${index}" class="gallery-thumbnail ${index === 0 ? 'active' : ''}" onerror="this.onerror=null; this.src='https://placehold.co/80x60/eef0f4/4b5563?text=Error';">`
+                
+                newsGalleryThumbnails.innerHTML = this.state.ui.currentGalleryImages.map((url, index) => 
+                    `<img src="${url}" data-index="${index}" class="gallery-thumbnail ${index === 0 ? 'active' : ''}">`
                 ).join('');
-
+                
                 const showBtns = this.state.ui.currentGalleryImages.length > 1;
-                prevBtn.classList.toggle('hidden', !showBtns);
-                nextBtn.classList.toggle('hidden', !showBtns);
+                galleryPrevBtn.classList.toggle('hidden', !showBtns);
+                galleryNextBtn.classList.toggle('hidden', !showBtns);
 
                 const showImage = (index) => {
-                    image.style.opacity = 0;
+                    newsDetailImage.style.opacity = 0;
                     setTimeout(() => {
-                        image.src = this.state.ui.currentGalleryImages[index] || mainImagePlaceholder;
-                        image.style.opacity = 1;
+                        newsDetailImage.src = this.state.ui.currentGalleryImages[index] || 'https://placehold.co/800x600/eef0f4/4b5563?text=No+disponible';
+                        newsDetailImage.style.opacity = 1;
                     }, 150);
-                    thumbnails.querySelectorAll('.gallery-thumbnail').forEach((thumb, i) => {
+                    newsGalleryThumbnails.querySelectorAll('.gallery-thumbnail').forEach((thumb, i) => {
                         thumb.classList.toggle('active', i === index);
                         if (i === index) thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
                     });
                     this.state.ui.currentGalleryIndex = index;
                 };
 
-                prevBtn.onclick = () => showImage((this.state.ui.currentGalleryIndex - 1 + this.state.ui.currentGalleryImages.length) % this.state.ui.currentGalleryImages.length);
-                nextBtn.onclick = () => showImage((this.state.ui.currentGalleryIndex + 1) % this.state.ui.currentGalleryImages.length);
-                thumbnails.onclick = (e) => {
+                galleryPrevBtn.onclick = () => showImage((this.state.ui.currentGalleryIndex - 1 + this.state.ui.currentGalleryImages.length) % this.state.ui.currentGalleryImages.length);
+                galleryNextBtn.onclick = () => showImage((this.state.ui.currentGalleryIndex + 1) % this.state.ui.currentGalleryImages.length);
+                newsGalleryThumbnails.onclick = (e) => {
                     if(e.target.matches('.gallery-thumbnail')) showImage(parseInt(e.target.dataset.index, 10));
                 };
 
                 showImage(0);
-                this.openModal('newsDetail');
+                this.openModal('news-detail-modal');
             },
             handleShowDayDetails(dateString) {
                 const date = new Date(dateString + 'T00:00:00Z');
@@ -2395,73 +2288,44 @@
                     return birthDate.getMonth() === date.getMonth() && birthDate.getDate() === date.getDate();
                 });
 
-                const { title, eventsList, birthdaysSection, birthdaysList } = UI.elements.calendarDayModal;
-                title.textContent = `Detalles del ${date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
-
-                eventsList.innerHTML = dailyEvents.length > 0
-                    ? dailyEvents.map(e => `<li class="p-2 neumorphic-inset rounded-lg">${e.name} - ${e.time}h</li>`).join('')
-                    : '<li class="text-sm text-gray-500">No hay eventos para este día.</li>';
-
+                const { calendarDayModalTitle, calendarDayEventsList, calendarDayBirthdaysSection, calendarDayBirthdaysList } = UI.elements;
+                calendarDayModalTitle.textContent = `Detalles del ${date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
+                calendarDayEventsList.innerHTML = dailyEvents.length > 0 ? dailyEvents.map(e => `<li class="p-2 neumorphic-inset rounded-lg">${e.name} - ${e.time}h</li>`).join('') : '<li class="text-sm text-gray-500">No hay eventos.</li>';
+                
                 if (this.hasPermission('verAgendaCalendario')) {
-                    birthdaysSection.classList.remove('hidden');
-                    birthdaysList.innerHTML = dailyBirthdays.length > 0
-                        ? dailyBirthdays.map(p => `<li class="p-2 neumorphic-inset rounded-lg">🎂 Cumpleaños de ${p.nombre}</li>`).join('')
-                        : '<li class="text-sm text-gray-500">No hay cumpleaños este día.</li>';
+                    calendarDayBirthdaysSection.classList.remove('hidden');
+                    calendarDayBirthdaysList.innerHTML = dailyBirthdays.length > 0 ? dailyBirthdays.map(p => `<li class="p-2 neumorphic-inset rounded-lg">🎂 Cumpleaños de ${p.nombre}</li>`).join('') : '<li class="text-sm text-gray-500">No hay cumpleaños.</li>';
                 } else {
-                    birthdaysSection.classList.add('hidden');
+                    calendarDayBirthdaysSection.classList.add('hidden');
                 }
-
-                this.openModal('calendarDay');
+                this.openModal('calendar-day-modal');
             },
-
             async updateUserRole(userId, newRole) {
                 if (!this.state.auth.isSuperAdmin) return;
-                try {
-                    await FirebaseService.saveDoc('users', userId, { role: newRole });
-                    UI.showToast('Rol de usuario actualizado.', 'success');
-                } catch (error) {
-                    console.error("Error al actualizar rol:", error);
-                    UI.showToast('No se pudo actualizar el rol.', 'error');
-                }
+                const permissions = newRole === 'admin' ? { agenda: true } : {};
+                await FirebaseService.saveDoc('users', userId, { role: newRole, permissions });
             },
             async updateUserPermission(userId, permission, isEnabled) {
                  if (!this.state.auth.isSuperAdmin) return;
                  const user = this.state.data.allUsers.find(u => u.id === userId);
                  if (user) {
                      const permissions = { ...(user.permissions || {}), [permission]: isEnabled };
-                     try {
-                        await FirebaseService.saveDoc('users', userId, { permissions });
-                        UI.showToast('Permiso actualizado.', 'success');
-                     } catch(error) {
-                        console.error("Error al actualizar permiso:", error);
-                        UI.showToast('No se pudo actualizar el permiso.', 'error');
-                     }
+                     await FirebaseService.saveDoc('users', userId, { permissions });
                  }
             },
-
-            // --- Utilidades ---
             initTimers() {
                 setInterval(() => {
-                    const { currentDate, currentTime } = UI.elements.pages.tablero;
-                    UI.tablero.updateDateTime(currentDate, currentTime);
-                    const { time, date } = UI.elements.lockscreen;
-                    if(time) time.textContent = new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-                    if(date) date.textContent = new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+                    UI.tablero.updateDateTime(UI.elements.currentDate, UI.elements.currentTime);
+                    if(UI.elements.lockscreenTime) UI.elements.lockscreenTime.textContent = new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                    if(UI.elements.lockscreenDate) UI.elements.lockscreenDate.textContent = new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
                 }, 1000);
             },
             async loadWeather() { 
-                try {
-                    const data = await WeatherService.fetch();
-                    const { weatherTemp, weatherDesc, weatherLocation } = UI.elements.pages.tablero;
-                    UI.tablero.updateWeather(data, weatherTemp, weatherDesc, weatherLocation);
-                } catch(error) {
-                    UI.showToast('No se pudo cargar el clima.', 'error');
-                    const { weatherTemp, weatherDesc, weatherLocation } = UI.elements.pages.tablero;
-                    UI.tablero.updateWeather({ description: 'Error de red', location: '' }, weatherTemp, weatherDesc, weatherLocation);
-                }
+                const data = await WeatherService.fetch();
+                UI.tablero.updateWeather(data, UI.elements.weatherTemp, UI.elements.weatherDesc, UI.elements.weatherLocation);
             },
             initTheme() {
-                const themeSwitch = UI.elements.header.themeSwitch;
+                const themeSwitch = UI.elements.themeSwitchCheckbox;
                 const savedTheme = localStorage.getItem('theme');
                 const applyTheme = (theme) => {
                     document.body.classList.toggle('dark-theme', theme === 'dark');
@@ -2477,150 +2341,43 @@
                     applyTheme(newTheme);
                 });
             },
-            
-            openModal(modalType, data = null, blockId = null) {
-                const nonGenericModals = ['userAuth', 'newsDetail', 'confirm', 'calendarDay'];
-                if (nonGenericModals.includes(modalType)) {
-                    const modal = UI.elements.modals[modalType];
-                    if (modal) modal.classList.remove('hidden');
-                    return;
-                }
-                this.openGenericModal(modalType, data, blockId);
-            },
+             openModal(modalId, data = null, blockId = null) {
+                const modal = document.getElementById(modalId);
+                if (!modal) return;
+                const form = modal.querySelector('form');
+                if (form) {
+                    form.reset();
+                    const titleEl = modal.querySelector('h2'); 
+                    const type = form.dataset.type;
+                    const typeName = {
+                        'bloqueManual': 'Bloque de Manual', 'manual': 'Manual', 'bloqueArchivo': 'Bloque de Archivo', 
+                        'archivo': 'Archivo', 'news': 'Noticia', 'event': 'Evento', 'parroquiano': 'Parroquiano'
+                    }[type] || type;
 
-            openGenericModal(formType, data = null, blockId = null) {
-                const { title: titleEl, form: formEl } = UI.elements.genericModal;
-                const definition = this.getFormDefinition(formType);
-                if (!definition) return;
-
-                const isEdit = data !== null;
-                titleEl.textContent = `${isEdit ? 'Editar' : 'Agregar'} ${definition.title}`;
-                formEl.dataset.type = formType;
-                
-                let formHtml = '<input type="hidden" name="id">';
-                if (definition.requiresBlockId) formHtml += '<input type="hidden" name="blockId">';
-
-                definition.sections.forEach(section => {
-                    if (section.title) {
-                        formHtml += `<div class="pt-4 border-t border-gray-300/50"><h3 class="text-lg font-semibold mb-2">${section.title}</h3>`;
+                    if (modalId !== 'user-auth-modal' && titleEl) {
+                        titleEl.textContent = data ? `Editar ${typeName}` : `Agregar ${typeName}`;
                     }
-                    section.fields.forEach(field => formHtml += this._createFieldHtml(field));
-                    if (section.title) formHtml += `</div>`;
-                });
-                
-                formHtml += `<div class="flex justify-end gap-4 pt-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>`;
-                formEl.innerHTML = formHtml;
-                
-                if (data) {
-                    Object.keys(data).forEach(key => {
-                        const input = formEl.querySelector(`[name="${key}"]`);
-                        if (input) {
-                            if (key === 'galleryUrls' && Array.isArray(data[key])) input.value = data[key].join('\n');
-                            else input.value = data[key];
-                        }
-                    });
-                }
-                if (blockId && formEl.querySelector('[name="blockId"]')) {
-                    formEl.querySelector('[name="blockId"]').value = blockId;
-                }
 
-                UI.elements.modals.generic.classList.remove('hidden');
+                    if (data) {
+                        Object.keys(data).forEach(key => {
+                            const input = form.querySelector(`[name="${key}"]`);
+                            if (input) {
+                                if (key === 'galleryUrls' && Array.isArray(data[key])) input.value = data[key].join('\n');
+                                else input.value = data[key];
+                            }
+                        });
+                    }
+                    const blockIdInput = form.querySelector('input[name="blockId"]');
+                    if (blockId && blockIdInput) blockIdInput.value = blockId;
+                }
+                modal.classList.remove('hidden');
             },
-
             closeModal(modalId) { 
                 const modal = document.getElementById(modalId);
-                if (modal) {
-                    modal.classList.add('hidden');
-                    if (modalId === 'generic-modal') {
-                        UI.elements.genericModal.form.innerHTML = '';
-                    }
-                }
-            },
-
-            _createFieldHtml(field) {
-                const requiredAttr = field.required ? 'required' : '';
-                const placeholderAttr = field.placeholder ? `placeholder="${field.placeholder}"` : '';
-                let inputHtml = '';
-                const inputId = `generic-form-${field.name}`;
-
-                switch (field.type) {
-                    case 'textarea':
-                        inputHtml = `<textarea id="${inputId}" name="${field.name}" rows="${field.rows || 3}" class="neumorphic-input" ${placeholderAttr} ${requiredAttr}></textarea>`;
-                        break;
-                    default:
-                        inputHtml = `<input type="${field.type}" id="${inputId}" name="${field.name}" class="neumorphic-input" ${placeholderAttr} ${requiredAttr}>`;
-                        break;
-                }
-                return `<div><label for="${inputId}" class="block text-sm font-medium mb-1">${field.label}</label>${inputHtml}</div>`;
-            },
-            
-            getFormDefinition(formType) {
-                const definitions = {
-                    event: {
-                        title: 'Evento',
-                        sections: [{ fields: [
-                            { name: 'name', label: 'Nombre del Evento', type: 'text', required: true },
-                            { name: 'date', label: 'Fecha', type: 'date', required: true },
-                            { name: 'time', label: 'Hora', type: 'time', required: true },
-                            { name: 'imageUrl', label: 'URL de la Imagen (Opcional)', type: 'url', placeholder: 'https://ejemplo.com/imagen.jpg' }
-                        ]}]
-                    },
-                    parroquiano: {
-                        title: 'Parroquiano',
-                        sections: [
-                            { fields: [
-                                { name: 'nombre', label: 'Nombre Completo', type: 'text', required: true },
-                                { name: 'telefono', label: 'Teléfono', type: 'tel' },
-                                { name: 'email', label: 'Correo Electrónico', type: 'email' },
-                                { name: 'nacimiento', label: 'Fecha de Nacimiento', type: 'date' },
-                                { name: 'direccion', label: 'Dirección', type: 'text' },
-                            ]},
-                            { title: 'Contacto de Emergencia', fields: [
-                                { name: 'emergencia_nombre', label: 'Nombre de Contacto', type: 'text' },
-                                { name: 'emergencia_telefono', label: 'Teléfono de Contacto', type: 'tel' },
-                            ]}
-                        ]
-                    },
-                    news: {
-                        title: 'Noticia',
-                        sections: [{ fields: [
-                            { name: 'titulo', label: 'Título', type: 'text', required: true },
-                            { name: 'resumen', label: 'Resumen', type: 'text', required: true },
-                            { name: 'contenido', label: 'Contenido Completo', type: 'textarea', rows: 5, required: true },
-                            { name: 'imageUrl', label: 'URL de Imagen Principal', type: 'url', placeholder: 'https://ejemplo.com/imagen.jpg', required: true },
-                            { name: 'galleryUrls', label: 'URLs de Galería Adicional (una por línea)', type: 'textarea', rows: 3, placeholder: 'https://ejemplo.com/foto1.jpg\nhttps://ejemplo.com/foto2.jpg' }
-                        ]}]
-                    },
-                    bloqueManual: {
-                        title: 'Bloque de Manual',
-                        sections: [{ fields: [ { name: 'nombre', label: 'Nombre del Bloque', type: 'text', required: true } ] }]
-                    },
-                    bloqueArchivo: {
-                        title: 'Bloque de Archivo',
-                        sections: [{ fields: [ { name: 'nombre', label: 'Nombre del Bloque', type: 'text', required: true } ] }]
-                    },
-                    manual: {
-                        title: 'Manual',
-                        requiresBlockId: true,
-                        sections: [{ fields: [
-                            { name: 'nombre', label: 'Nombre del Manual', type: 'text', required: true },
-                            { name: 'url', label: 'URL del Manual', type: 'url', placeholder: 'https://ejemplo.com/documento.pdf', required: true }
-                        ]}]
-                    },
-                    archivo: {
-                        title: 'Archivo',
-                        requiresBlockId: true,
-                        sections: [{ fields: [
-                            { name: 'nombre', label: 'Nombre del Archivo', type: 'text', required: true },
-                            { name: 'url', label: 'URL del Archivo', type: 'url', placeholder: 'https://ejemplo.com/recurso.zip', required: true }
-                        ]}]
-                    }
-                };
-                return definitions[formType];
+                if (modal) modal.classList.add('hidden');
             }
         };
 
-        // Iniciar la aplicación
         document.addEventListener('DOMContentLoaded', () => App.init());
     </script>
 </body>
