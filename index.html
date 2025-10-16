@@ -567,7 +567,7 @@
         <div id="mobile-sidenav">
             <div class="flex justify-between items-center mb-8">
                 <h2 class="text-xl font-bold">Menú</h2>
-                <button data-action="close-sidenav" class="neumorphic-btn p-2"><svg xmlns="http://www.w.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
+                <button data-action="close-sidenav" class="neumorphic-btn p-2"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
             </div>
             <nav id="mobile-nav-links" class="flex flex-col gap-3 flex-grow"></nav>
             <div class="mt-auto pt-4 border-t">
@@ -615,7 +615,7 @@
         <!-- Navegación Principal (Desktop) -->
         <nav class="mb-8 hidden md:block">
             <div id="tabs-container" class="flex flex-wrap justify-center items-center gap-4">
-                <button class="icon-nav-btn active" data-target="page-tablero" title="Tablero"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg></button>
+                <button class="icon-nav-btn active" data-target="page-inicio" title="INICIO"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></button>
                 <button class="icon-nav-btn" data-target="page-agenda" title="Eventos"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg></button>
                 <button class="icon-nav-btn" data-target="page-directorio" title="Directorio"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 0H4v2h16V0zM4 24h16v-2H4v2zM20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1.4c0-2 4-3.1 6-3.1s6 1.1 6 3.1V22z"/></svg></button>
                 <button class="icon-nav-btn" data-target="page-noticias" title="Noticias"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 3H2v16h6v2h8v-2h6V3zm-2 14H4V5h16v12zM6 7h12v2H6zm0 4h12v2H6zm0 4h8v2H6z"/></svg></button>
@@ -629,7 +629,7 @@
         <main>
             <div id="pages-container">
                 <!-- Páginas de Contenido -->
-                <div id="page-tablero" class="page active">
+                <div id="page-inicio" class="page active">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="md:col-span-1">
                            <div class="neumorphic-card p-0 h-full flex flex-col justify-between overflow-hidden">
@@ -661,6 +661,19 @@
                                 <h2 class="text-xl font-bold mb-4">Próximos Eventos</h2>
                                 <ul id="upcoming-events-list" class="space-y-3"><li class="text-gray-500">Cargando eventos...</li></ul>
                             </div>
+                        </div>
+                    </div>
+                    <!-- Sección de Galería de Temas Integrada -->
+                    <div class="mt-8 neumorphic-card p-6">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                            <h2 class="text-2xl font-bold">Galería de Temas</h2>
+                            <button data-modal-target="tema-modal" data-permission="temas" class="neumorphic-btn primary w-full sm:w-auto admin-only">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg>
+                                <span>Agregar Tema</span>
+                            </button>
+                        </div>
+                        <div id="temas-grid-inicio" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            <!-- Las tarjetas de temas se insertarán aquí -->
                         </div>
                     </div>
                 </div>
@@ -817,10 +830,34 @@
             </div>
         </div>
     </div>
+    <div id="tema-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-8 w-full max-w-lg">
+            <h2 class="text-2xl font-bold mb-6"></h2>
+            <form id="tema-form" data-type="tema" class="space-y-4">
+                <input type="hidden" name="id">
+                <div><label for="tema-title" class="block text-sm font-medium mb-1">Título del Tema</label><input type="text" id="tema-title" name="title" class="neumorphic-input" required></div>
+                <div><label for="tema-description" class="block text-sm font-medium mb-1">Descripción</label><textarea id="tema-description" name="description" rows="3" class="neumorphic-input" required></textarea></div>
+                <div><label for="tema-imageUrl" class="block text-sm font-medium mb-1">URL de la Imagen</label><input type="url" id="tema-imageUrl" name="imageUrl" class="neumorphic-input" placeholder="https://ejemplo.com/imagen.jpg" required></div>
+                <div class="flex justify-end gap-4 pt-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div>
+            </form>
+        </div>
+    </div>
     <div id="manual-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4"><div class="neumorphic-card p-8 w-full max-w-md"><h2 class="text-2xl font-bold mb-6"></h2><form id="manual-form" data-type="manual"><input type="hidden" name="id"><input type="hidden" name="blockId"><div class="mb-4"><label for="manual-nombre" class="block text-sm font-medium mb-1">Nombre del Manual</label><input type="text" id="manual-nombre" name="nombre" class="neumorphic-input" required></div><div class="mb-6"><label for="manual-url" class="block text-sm font-medium mb-1">URL</label><input type="url" id="manual-url" name="url" class="neumorphic-input" placeholder="https://ejemplo.com/documento.pdf" required></div><div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div></form></div></div>
     <div id="archivo-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4"><div class="neumorphic-card p-8 w-full max-w-md"><h2 class="text-2xl font-bold mb-6"></h2><form id="archivo-form" data-type="archivo"><input type="hidden" name="id"><input type="hidden" name="blockId"><div class="mb-4"><label for="archivo-nombre" class="block text-sm font-medium mb-1">Nombre del Archivo</label><input type="text" id="archivo-nombre" name="nombre" class="neumorphic-input" required></div><div class="mb-6"><label for="archivo-url" class="block text-sm font-medium mb-1">URL</label><input type="url" id="archivo-url" name="url" class="neumorphic-input" placeholder="https://ejemplo.com/recurso.zip" required></div><div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="submit" class="neumorphic-btn primary">Guardar</button></div></form></div></div>
     <div id="confirm-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4"><div class="neumorphic-card p-8 w-full max-w-sm"><h2 class="text-xl font-bold mb-4">Confirmar Eliminación</h2><p id="confirm-message" class="mb-6">¿Estás seguro?</p><div class="flex justify-end gap-4"><button type="button" data-action="close-modal" class="neumorphic-btn">Cancelar</button><button type="button" id="confirm-delete-btn" class="neumorphic-btn danger">Eliminar</button></div></div></div>
     <div id="calendar-day-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4"><div class="neumorphic-card p-8 w-full max-w-md"><h2 id="calendar-day-modal-title" class="text-xl font-bold mb-6"></h2><div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2"><div><h3 class="font-semibold mb-2">Eventos</h3><ul id="calendar-day-events-list" class="space-y-2"></ul></div><div id="calendar-day-birthdays-section" class="hidden"><h3 class="font-semibold mb-2">Cumpleaños</h3><ul id="calendar-day-birthdays-list" class="space-y-2"></ul></div></div><div class="flex justify-end gap-4 mt-6"><button type="button" data-action="close-modal" class="neumorphic-btn">Cerrar</button></div></div></div>
+    <div id="tema-detail-modal" class="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center hidden z-50 p-4">
+        <div class="neumorphic-card p-6 w-full max-w-3xl max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4 flex-shrink-0">
+                <h2 id="tema-detail-title" class="text-2xl font-bold"></h2>
+                <button data-action="close-modal" class="neumorphic-btn p-2"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
+            </div>
+            <div class="overflow-y-auto">
+                <img id="tema-detail-image" src="" alt="Imagen del Tema" class="w-full h-64 object-cover rounded-lg mb-4">
+                <p id="tema-detail-description" class="whitespace-pre-wrap"></p>
+            </div>
+        </div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -830,7 +867,7 @@
         /**
          * @file Portal Parroquial - Aplicación de una sola página (SPA)
          * @description Este archivo contiene toda la lógica para un portal de gestión de comunidad parroquial,
-         * incluyendo autenticación, gestión de datos (eventos, directorio, noticias), y una
+         * incluyendo autenticación, gestión de datos (eventos, directorio, noticias, temas), y una
          * interfaz de usuario reactiva con diseño neumorfista.
          * @author Senior Developer Review
          */
@@ -851,9 +888,10 @@
             paths: {
                 base: `artifacts/ibcgapp`,
                 collections: {
-                    users: `public/data/users`, events: `public/data/events`, 
-                    parroquianos: `public/data/parroquianos`, news: `public/data/news`, 
-                    manuales: `public/data/manuales`, archivos: `public/data/archivos`
+                    user: `public/data/users`, event: `public/data/events`,
+                    parroquiano: `public/data/parroquianos`, news: `public/data/news`,
+                    manual: `public/data/manuales`, archivo: `public/data/archivos`,
+                    tema: `public/data/temas`
                 }
             }
         };
@@ -885,7 +923,7 @@
                 if (id) {
                     await updateDoc(doc(this.db, collectionPath, id), data);
                 } else {
-                    if (type === 'news' && !data.fechaPublicacion) {
+                    if ((type === 'news' || type === 'tema') && !data.fechaPublicacion) {
                         data.fechaPublicacion = new Date().toISOString();
                     }
                     return await addDoc(collection(this.db, collectionPath), data);
@@ -928,7 +966,19 @@
                     header: { adminControlsContainer: document.getElementById('admin-controls-container'), themeSwitch: document.getElementById('theme-switch-checkbox'), },
                     nav: { tabsContainer: document.getElementById('tabs-container'), pagesContainer: document.getElementById('pages-container'), edgeHandle: document.getElementById('edge-handle'), mobileSidenav: document.getElementById('mobile-sidenav'), mobileSidenavOverlay: document.getElementById('mobile-sidenav-overlay'), mobileNavLinks: document.getElementById('mobile-nav-links'), },
                     pages: {
-                        tablero: { currentDate: document.getElementById('current-date'), currentTime: document.getElementById('current-time'), weatherTemp: document.getElementById('weather-temp'), weatherDesc: document.getElementById('weather-desc'), weatherLocation: document.getElementById('weather-location'), upcomingEventsList: document.getElementById('upcoming-events-list'), birthdayCard: document.getElementById('birthday-card'), birthdayList: document.getElementById('birthday-list'), weatherWidget: document.getElementById('weather-widget'), animatedWeatherIcon: document.getElementById('animated-weather-icon'), },
+                        inicio: { 
+                            currentDate: document.getElementById('current-date'), 
+                            currentTime: document.getElementById('current-time'), 
+                            weatherTemp: document.getElementById('weather-temp'), 
+                            weatherDesc: document.getElementById('weather-desc'), 
+                            weatherLocation: document.getElementById('weather-location'), 
+                            upcomingEventsList: document.getElementById('upcoming-events-list'), 
+                            birthdayCard: document.getElementById('birthday-card'), 
+                            birthdayList: document.getElementById('birthday-list'), 
+                            weatherWidget: document.getElementById('weather-widget'), 
+                            animatedWeatherIcon: document.getElementById('animated-weather-icon'),
+                            temasGrid: document.getElementById('temas-grid-inicio')
+                        },
                         agenda: { tableBody: document.getElementById('agenda-table-body') },
                         directorio: { tableBody: document.getElementById('directorio-table-body') },
                         noticias: { grid: document.getElementById('news-grid') },
@@ -937,7 +987,7 @@
                         calendario: { header: document.getElementById('month-year-header'), grid: document.getElementById('calendar-grid'), },
                         userManagement: { tableBody: document.getElementById('user-management-table-body') }
                     },
-                    modals: { userAuth: document.getElementById('user-auth-modal'), event: document.getElementById('event-modal'), parroquiano: document.getElementById('parroquiano-modal'), news: document.getElementById('news-modal'), newsDetail: document.getElementById('news-detail-modal'), bloqueManual: document.getElementById('bloque-manual-modal'), manual: document.getElementById('manual-modal'), bloqueArchivo: document.getElementById('bloque-archivo-modal'), archivo: document.getElementById('archivo-modal'), confirm: document.getElementById('confirm-modal'), calendarDay: document.getElementById('calendar-day-modal'), },
+                    modals: { userAuth: document.getElementById('user-auth-modal'), event: document.getElementById('event-modal'), parroquiano: document.getElementById('parroquiano-modal'), news: document.getElementById('news-modal'), newsDetail: document.getElementById('news-detail-modal'), bloqueManual: document.getElementById('bloque-manual-modal'), manual: document.getElementById('manual-modal'), bloqueArchivo: document.getElementById('bloque-archivo-modal'), archivo: document.getElementById('archivo-modal'), tema: document.getElementById('tema-modal'), temaDetail: document.getElementById('tema-detail-modal'), confirm: document.getElementById('confirm-modal'), calendarDay: document.getElementById('calendar-day-modal'), },
                     confirmModal: { message: document.getElementById('confirm-message'), deleteBtn: document.getElementById('confirm-delete-btn'), },
                     calendarDayModal: { title: document.getElementById('calendar-day-modal-title'), eventsList: document.getElementById('calendar-day-events-list'), birthdaysSection: document.getElementById('calendar-day-birthdays-section'), birthdaysList: document.getElementById('calendar-day-birthdays-list'), }
                 };
@@ -1039,7 +1089,7 @@
             userManagement: {
                 render(users, tbody) {
                     tbody.innerHTML = '';
-                    const permissionLabels = { agenda: 'Eventos', directorio: 'Directorio', noticias: 'Noticias', manuales: 'Manuales', recursos: 'Recursos' };
+                    const permissionLabels = { agenda: 'Eventos', directorio: 'Directorio', noticias: 'Noticias', manuales: 'Manuales', recursos: 'Recursos', temas: 'Temas' };
                     users.sort((a, b) => a.nombre.localeCompare(b.nombre)).forEach(user => {
                         const isSuperAdmin = user.role === 'superadmin';
                         
@@ -1100,15 +1150,15 @@
         // CONTROLADOR PRINCIPAL DE LA APLICACIÓN (App)
         // =================================================================================
         const App = {
-            state: { auth: { user: null, isSuperAdmin: false, isAdmin: false, viewAsUser: false }, data: { events: [], parroquianos: [], news: [], manuales: [], archivos: [], allUsers: [] }, ui: { currentCalendarDate: new Date() }, },
+            state: { auth: { user: null, isSuperAdmin: false, isAdmin: false, viewAsUser: false }, data: { event: [], parroquiano: [], news: [], manual: [], archivo: [], tema: [], user: [] }, ui: { currentCalendarDate: new Date() }, },
             dataListenersInitialized: false,
             async init() { try { UI.init(); this.setupEventListeners(); this.initTheme(); this.initTimers(); FirebaseService.init(this.onAuthStateChanged.bind(this)); } catch (error) { console.error("Error fatal durante la inicialización:", error); document.body.innerHTML = `<div class="fixed inset-0 bg-red-100 text-red-800 p-8 flex flex-col justify-center items-center text-center"><h1 class="text-3xl font-bold">¡Ups! Ocurrió un error crítico.</h1><p class="mb-4">${error.message}</p></div>`; } },
             async onAuthStateChanged(authUser) {
                  let userProfile = null;
                  if (authUser) {
-                     const userDoc = await FirebaseService.getDoc('users', authUser.uid);
+                     const userDoc = await FirebaseService.getDoc('user', authUser.uid);
                      if (userDoc.exists()) { userProfile = { id: authUser.uid, ...userDoc.data() }; } 
-                     else if (authUser.email === 'admin@portal.com') { const superAdminProfile = { nombre: 'Super Admin', email: authUser.email, role: 'superadmin', permissions: {} }; await FirebaseService.setDoc('users', authUser.uid, superAdminProfile); userProfile = { id: authUser.uid, ...superAdminProfile }; }
+                     else if (authUser.email === 'admin@portal.com') { const superAdminProfile = { nombre: 'Super Admin', email: authUser.email, role: 'superadmin', permissions: {} }; await FirebaseService.setDoc('user', authUser.uid, superAdminProfile); userProfile = { id: authUser.uid, ...superAdminProfile }; }
                  }
                 this.state.auth.user = userProfile;
                 this.state.auth.isSuperAdmin = userProfile?.role === 'superadmin';
@@ -1119,14 +1169,47 @@
                 if (UI.elements.appLoading.style.display !== 'none') { UI.elements.appLoading.style.display = 'none'; UI.elements.appContainer.classList.add('loaded'); }
             },
             setupDataListeners() {
-                FirebaseService.onCollectionSnapshot('events', d => { this.state.data.events = d; this.renderAgenda(); this.renderTablero(); this.renderCalendario(); });
-                FirebaseService.onCollectionSnapshot('parroquianos', d => { this.state.data.parroquianos = d; this.renderDirectorio(); this.renderTablero(); this.renderCalendario(); });
-                FirebaseService.onCollectionSnapshot('users', users => { this.state.data.allUsers = users; if(this.state.auth.isSuperAdmin) { UI.userManagement.render(users, UI.elements.pages.userManagement.tableBody); } });
+                FirebaseService.onCollectionSnapshot('event', d => { this.state.data.event = d; this.renderAgenda(); this.renderInicio(); this.renderCalendario(); });
+                FirebaseService.onCollectionSnapshot('parroquiano', d => { this.state.data.parroquiano = d; this.renderDirectorio(); this.renderInicio(); this.renderCalendario(); });
+                FirebaseService.onCollectionSnapshot('tema', d => { this.state.data.tema = d; this.renderTemas(); });
+                FirebaseService.onCollectionSnapshot('user', users => { this.state.data.user = users; if(this.state.auth.isSuperAdmin) { UI.userManagement.render(users, UI.elements.pages.userManagement.tableBody); } });
             },
-            renderTablero() { UI.tablero.renderUpcomingEvents(this.state.data.events, UI.elements.pages.tablero.upcomingEventsList); UI.tablero.renderBirthdayReminders(this.state.data.parroquianos, UI.elements.pages.tablero.birthdayCard, UI.elements.pages.tablero.birthdayList); },
-            renderAgenda() { UI.renderTable(UI.elements.pages.agenda.tableBody, this.state.data.events, UI.agenda.createRow, 'No hay eventos.'); },
-            renderDirectorio() { UI.renderTable(UI.elements.pages.directorio.tableBody, this.state.data.parroquianos, UI.directorio.createRow, 'No hay registros.'); },
-            renderCalendario() { UI.calendario.render(this.state.ui.currentCalendarDate, this.state.data.events, this.state.data.parroquianos, UI.elements.pages.calendario.header, UI.elements.pages.calendario.grid); },
+            renderInicio() { 
+                UI.tablero.renderUpcomingEvents(this.state.data.event, UI.elements.pages.inicio.upcomingEventsList); 
+                UI.tablero.renderBirthdayReminders(this.state.data.parroquiano, UI.elements.pages.inicio.birthdayCard, UI.elements.pages.inicio.birthdayList); 
+            },
+            renderAgenda() { UI.renderTable(UI.elements.pages.agenda.tableBody, this.state.data.event, UI.agenda.createRow, 'No hay eventos.'); },
+            renderDirectorio() { UI.renderTable(UI.elements.pages.directorio.tableBody, this.state.data.parroquiano, UI.directorio.createRow, 'No hay registros.'); },
+            renderCalendario() { UI.calendario.render(this.state.ui.currentCalendarDate, this.state.data.event, this.state.data.parroquiano, UI.elements.pages.calendario.header, UI.elements.pages.calendario.grid); },
+            renderTemas() {
+                const grid = UI.elements.pages.inicio.temasGrid;
+                if (!grid) return;
+                grid.innerHTML = '';
+                if (this.state.data.tema.length === 0) {
+                    grid.innerHTML = `<p class="text-gray-500 col-span-full text-center">No hay temas para mostrar.</p>`;
+                    return;
+                }
+                const sortedTemas = [...this.state.data.tema].sort((a, b) => new Date(b.fechaPublicacion) - new Date(a.fechaPublicacion));
+                sortedTemas.forEach(tema => {
+                    const placeholderImage = 'https://placehold.co/600x400/eef0f4/4b5563?text=Tema';
+                    const descriptionSnippet = tema.description.length > 120 ? tema.description.substring(0, 120) + '...' : tema.description;
+                    const itemHtml = `
+                        <div class="neumorphic-card flex flex-col overflow-hidden">
+                            <img src="${tema.imageUrl || placeholderImage}" alt="${tema.title}" class="w-full h-48 object-cover" onerror="this.src='${placeholderImage}'">
+                            <div class="p-4 flex flex-col flex-grow">
+                                <h3 class="font-bold text-lg mb-2">${tema.title}</h3>
+                                <p class="text-sm flex-grow">${descriptionSnippet}</p>
+                                <button data-action="view-tema" data-id="${tema.id}" class="neumorphic-btn primary btn-sm mt-4 self-start">Leer Más</button>
+                                <div class="flex gap-2 mt-auto pt-4 border-t admin-only" data-permission="temas">
+                                    <button data-action="edit" data-type="tema" data-id="${tema.id}" class="neumorphic-btn btn-sm flex-grow">Editar</button>
+                                    <button data-action="delete" data-type="tema" data-id="${tema.id}" class="neumorphic-btn danger btn-sm flex-grow">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>`;
+                    grid.insertAdjacentHTML('beforeend', itemHtml);
+                });
+                this.updateUIPermissions(); // Asegura que los botones de admin se muestren/oculten
+            },
             hasPermission(section) { const { viewAsUser, isSuperAdmin, isAdmin, user } = this.state.auth; if (viewAsUser) return false; if (isSuperAdmin) return true; return isAdmin && user.permissions?.[section] === true; },
             updateUIPermissions() { UI.updateAdminUI(this.state.auth.isSuperAdmin, this.state.auth.isAdmin, this.state.auth.user, this.state.auth.viewAsUser); document.querySelectorAll('[data-permission]').forEach(el => { el.style.display = this.hasPermission(el.dataset.permission) ? '' : 'none'; }); UI.nav.initMobileNav(); },
             updateLockscreenStatus() { const { user } = this.state.auth; const { unlockSwitch, unlockSwitchLabel, container } = UI.elements.lockscreen; if (user) { unlockSwitch.disabled = false; unlockSwitchLabel.classList.remove('disabled'); } else { unlockSwitch.disabled = true; unlockSwitch.checked = false; unlockSwitchLabel.classList.add('disabled'); if (container.classList.contains('fade-out')) { container.classList.remove('fade-out'); } } },
@@ -1157,7 +1240,19 @@
                 const { action, target: pageTarget, modalTarget, type, id, userid } = target.dataset;
                 if (pageTarget) { UI.showPage(pageTarget); if (target.closest('#mobile-nav-links')) UI.nav.toggleSidenav(false); }
                 if (modalTarget) this.openModal(modalTarget);
-                if (action) { const actionHandlers = { 'logout': this.handleLogout.bind(this), 'close-modal': () => this.closeModal(target.closest('.fixed.inset-0').id), 'close-sidenav': () => UI.nav.toggleSidenav(false), 'edit': () => this.handleEdit(type, id), 'delete': () => this.handleDelete(type, id), 'delete-user': () => this.handleDeleteUser(userid), 'show-day-details': () => this.handleShowDayDetails(target.dataset.date), }; if(actionHandlers[action]) actionHandlers[action](); }
+                if (action) { 
+                    const actionHandlers = { 
+                        'logout': this.handleLogout.bind(this), 
+                        'close-modal': () => this.closeModal(target.closest('.fixed.inset-0').id), 
+                        'close-sidenav': () => UI.nav.toggleSidenav(false), 
+                        'edit': () => this.handleEdit(type, id), 
+                        'delete': () => this.handleDelete(type, id), 
+                        'delete-user': () => this.handleDeleteUser(userid), 
+                        'show-day-details': () => this.handleShowDayDetails(target.dataset.date),
+                        'view-tema': () => this.handleViewTema(id)
+                    }; 
+                    if(actionHandlers[action]) actionHandlers[action](); 
+                }
                 if (target.matches('.accordion-toggle')) { target.classList.toggle('active'); const content = target.nextElementSibling; content.style.maxHeight = content.style.maxHeight ? null : `${content.scrollHeight}px`; }
                 if(target.id === 'show-register-btn') { e.preventDefault(); document.getElementById('login-view').classList.add('hidden'); document.getElementById('register-view').classList.remove('hidden'); target.classList.add('active'); document.getElementById('show-login-btn').classList.remove('active'); }
                 if(target.id === 'show-login-btn') { e.preventDefault(); document.getElementById('register-view').classList.add('hidden'); document.getElementById('login-view').classList.remove('hidden'); target.classList.add('active'); document.getElementById('show-register-btn').classList.remove('active'); }
@@ -1198,9 +1293,9 @@
                         nombre: name,
                         email: email,
                         role: 'user',
-                        permissions: { agenda: false, directorio: false, noticias: false, manuales: false, recursos: false }
+                        permissions: { agenda: false, directorio: false, noticias: false, manuales: false, recursos: false, temas: false }
                     };
-                    await FirebaseService.setDoc('users', userCredential.user.uid, newUser);
+                    await FirebaseService.setDoc('user', userCredential.user.uid, newUser);
                     this.closeModal('user-auth-modal');
                     form.reset();
                 } catch (error) {
@@ -1230,7 +1325,7 @@
                 }
             },
             handleEdit(type, id) {
-                const collection = this.state.data[type + 's'] || this.state.data[type]; // 'events', 'parroquianos' etc.
+                const collection = this.state.data[type];
                 const item = collection.find(i => i.id === id);
                 if (item) {
                     this.openModal(`${type}-modal`, item);
@@ -1254,20 +1349,20 @@
             },
             async handleRoleChange(userId, newRole) {
                 try {
-                    await FirebaseService.saveDoc('users', userId, { role: newRole });
+                    await FirebaseService.saveDoc('user', userId, { role: newRole });
                 } catch (error) {
                     console.error("Error al cambiar el rol:", error);
                 }
             },
             async handlePermissionChange(userId, permission, value) {
                 try {
-                    await FirebaseService.saveDoc('users', userId, { [`permissions.${permission}`]: value });
+                    await FirebaseService.saveDoc('user', userId, { [`permissions.${permission}`]: value });
                 } catch (error) {
                     console.error("Error al cambiar el permiso:", error);
                 }
             },
             handleDeleteUser(userId) {
-                const userToDelete = this.state.data.allUsers.find(u => u.id === userId);
+                const userToDelete = this.state.data.user.find(u => u.id === userId);
                 if (!userToDelete) return;
 
                 UI.elements.confirmModal.message.textContent = `¿Estás seguro de que quieres eliminar al usuario ${userToDelete.nombre}? Esta acción no se puede deshacer.`;
@@ -1278,7 +1373,7 @@
                     // Se necesita una función de backend (Cloud Function) para eso de forma segura.
                     // Por ahora, solo lo eliminamos de la colección de usuarios.
                     try {
-                        await FirebaseService.deleteDoc('users', userId);
+                        await FirebaseService.deleteDoc('user', userId);
                         this.closeModal('confirm-modal');
                     } catch (error) {
                         console.error("Error al eliminar el usuario:", error);
@@ -1289,10 +1384,10 @@
             },
             handleShowDayDetails(dateString) {
                 const date = new Date(dateString + 'T00:00:00Z');
-                const { events, parroquianos } = this.state.data;
+                const { event, parroquiano } = this.state.data;
                 
-                const dayEvents = events.filter(e => e.date === dateString).sort((a,b) => a.time.localeCompare(b.time));
-                const dayBirthdays = parroquianos.filter(p => p.nacimiento && p.nacimiento.substring(5) === dateString.substring(5));
+                const dayEvents = event.filter(e => e.date === dateString).sort((a,b) => a.time.localeCompare(b.time));
+                const dayBirthdays = parroquiano.filter(p => p.nacimiento && p.nacimiento.substring(5) === dateString.substring(5));
 
                 UI.calendarDayModal.title.textContent = date.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
                 
@@ -1310,17 +1405,30 @@
 
                 this.openModal('calendar-day-modal');
             },
+            handleViewTema(id) {
+                const tema = this.state.data.tema.find(t => t.id === id);
+                if (tema) {
+                    const modal = UI.elements.modals.temaDetail;
+                    const placeholderImage = 'https://placehold.co/800x400/eef0f4/4b5563?text=Tema';
+                    modal.querySelector('#tema-detail-title').textContent = tema.title;
+                    modal.querySelector('#tema-detail-description').textContent = tema.description;
+                    const img = modal.querySelector('#tema-detail-image');
+                    img.src = tema.imageUrl || placeholderImage;
+                    img.onerror = () => { img.src = placeholderImage; };
+                    this.openModal('tema-detail-modal');
+                }
+            },
             initTimers() {
                 setInterval(() => {
                     const now = new Date();
-                    UI.tablero.updateDateTime(UI.elements.pages.tablero.currentDate, UI.elements.pages.tablero.currentTime);
+                    UI.tablero.updateDateTime(UI.elements.pages.inicio.currentDate, UI.elements.pages.inicio.currentTime);
                     if(UI.elements.lockscreen.time) {
                         UI.elements.lockscreen.time.textContent = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
                         UI.elements.lockscreen.date.textContent = now.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
                     }
                 }, 1000);
             },
-            async loadWeather() { const data = await WeatherService.fetch(); UI.tablero.updateWeather(data, UI.elements.pages.tablero.weatherTemp, UI.elements.pages.tablero.weatherDesc, UI.elements.pages.tablero.weatherLocation, UI.elements.pages.tablero.weatherWidget, UI.elements.pages.tablero.animatedWeatherIcon); },
+            async loadWeather() { const data = await WeatherService.fetch(); UI.tablero.updateWeather(data, UI.elements.pages.inicio.weatherTemp, UI.elements.pages.inicio.weatherDesc, UI.elements.pages.inicio.weatherLocation, UI.elements.pages.inicio.weatherWidget, UI.elements.pages.inicio.animatedWeatherIcon); },
             initTheme() { const themeSwitch = UI.elements.header.themeSwitch; const savedTheme = localStorage.getItem('theme'); const applyTheme = (theme) => { document.body.classList.toggle('dark-theme', theme === 'dark'); themeSwitch.checked = theme === 'dark'; }; if (savedTheme) applyTheme(savedTheme); else if (window.matchMedia?.('(prefers-color-scheme: dark)').matches) applyTheme('dark'); themeSwitch.addEventListener('change', () => { const newTheme = themeSwitch.checked ? 'dark' : 'light'; localStorage.setItem('theme', newTheme); applyTheme(newTheme); }); },
             openModal(modalId, data = null) { 
                 const modal = document.getElementById(modalId); 
@@ -1355,3 +1463,4 @@
     </script>
 </body>
 </html>
+
